@@ -1,0 +1,59 @@
+Wie zijn de stakeholders van het systeem?
+	directe gebruikers
+		fotograven
+			performance
+			reliability/availability
+			ease of use
+			security
+			functionality
+			internationalization
+			expand or retain market share
+			maintain or improve reputation
+			maintain/expand reputation
+		klanten
+			performance
+			reliability/availability
+			ease of use
+			security
+			functionality
+			internationalization
+			maintain or improve reputation
+	indirecte gebruikers
+		producenten
+			product lines
+			ease of use
+			security
+			functionality
+			internationalization
+			expand or retain market share
+			maintain or improve reputation
+	funders of the project
+		Developer Team
+			product lines
+			expand or retain market share
+			enter new market
+			reduce time to market
+			support distributed development
+			maintain/expand reputation
+			distributed development
+			testability
+			
+	developers working on other systems
+		Oracle
+		MySql
+	
+	
+	productowner
+		Carli Kleijnen
+			performance
+			reliability/availability
+			ease of use
+			security
+			scalability/extendibility
+			functionality
+			internationalization
+			
+			
+		
+		
+	
