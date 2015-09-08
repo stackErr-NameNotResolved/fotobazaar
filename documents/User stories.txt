@@ -1,0 +1,29 @@
+Als fotograaf:
+	wil ik mijn foto's kunnen uploaden naar het systeem	
+	wil ik mijn foto's als bulk kunnen uploaden
+	wil ik mijn foto's kunnen identificeren met een uniek nummer
+	wil ik mijn foto's kunnen verwijderen
+	wil ik de prijzen van mijn foto's kunnen wijzigen
+	
+Als producent:
+	wil ik orders/bestellingen kunnen inzien zodat ik de foto's kan afdrukken
+	wil ik de prijzen van mijn producten kunnen wijzigen
+	wil ik mijn indexkaart kunnen inzien
+	
+Als klant:
+	wil ik producten kunnen nabestellen
+	wil ik mijn foto's visueel kunnen bewerken
+	wil ik mijn bestellingen kunnen betalen
+	wil ik mijn foto's kunnen bekijken
+	wil ik producten kunnen toevoegen aan de winkelwagen
+	wil ik producten kunnen verwijderen van de winkelwagen
+	wil ik productaantallen kunnen aanpassen in de winkelwagen
+	wil ik mijn winkelwagen/bestellingen kunnen inzien
+	wil ik een account kunnen aanmaken
+	
+Als admin:
+	wil ik accounts kunnen aanmaken voor fotograven en producenten
+	
+Als gebruiker:
+	wil ik in meerdere talen het systeem kunnen gebruiken
+	wil ik kunnen inloggen zodat ik bij het voor mij specifieke gedeelde kan komen zodat ik mijn specifieke taken kan uitvoeren
