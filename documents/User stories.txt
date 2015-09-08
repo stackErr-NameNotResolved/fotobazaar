@@ -1,74 +1,72 @@
 Als fotograaf:
 	wil ik een of meerdere foto's kunnen uploaden naar het systeem
-		GUI (foto's uploaden)
-		Foto verkleinen
-		Foto opslaan
-		Prijs opslaan
-		Upload voortgang
+		GUI (foto's uploaden)	13
+		Foto verkleinen		5	
+		Foto opslaan	5
+		Prijs opslaan	1
 	wil ik mijn foto's kunnen identificeren met een uniek nummer
-		Uniek nummer genereren bij uploaden
+		Uniek nummer genereren bij uploaden		3
 	wil ik mijn foto's kunnen verwijderen
-		GUI (foto verwijderen)
-		Foto verwijderen
+		GUI (foto verwijderen)	5
+		Foto verwijderen	1
 	wil ik de prijzen van mijn foto's kunnen wijzigen
-		GUI (prijs wijzigen)
-		Foto laden
-		Prijs wijzigen
+		GUI (prijs wijzigen)	8
+		Foto laden		5
+		Prijs wijzigen	1
 	
 Als producent:
 	wil ik orders/bestellingen kunnen inzien zodat ik de foto's kan afdrukken
-		GUI (bestellingen)
-		GUI (bestelling details)
-		Laden bestellingen
-		Laden producten
-		Bestelling afhandelen/afvinken
-	wil ik de prijzen van mijn producten kunnen wijzigen
-		GUI (producten)
-		Laden producten
-		Prijs wijzigen
-		Product toevoegen
-		Product verwijderen
-		Product wijzigen
+		GUI (bestellingen)	13
+		GUI (bestelling details)	20
+		Laden bestellingen		5
+		Laden producten		5		
+		Bestelling afhandelen/afvinken		3
+	wil ik de prijzen van mijn items kunnen wijzigen
+		GUI (items)		13
+		GUI (item toevoegen)	13
+		Laden items		5
+		Prijs wijzigen		2
+		Item toevoegen		5
+		Item verwijderen	3
+		Item wijzigen		5
 	wil ik mijn indexkaart kunnen inzien
-		GUI (indexkaart)
-		Indexkaart genereren
+		Indexkaart genereren		20
 	
 Als klant:
-	wil ik producten kunnen nabestellen
-		GUI (nabestellen)
-		Foto/product bestellen
+	wil ik producten kunnen nabestellen		
+		Foto/product bestellen	8
 	wil ik mijn foto's visueel kunnen bewerken
-		GUI (foto bewerken)
-		Filter toevoegen
-		Filter verwijderen
-		Foto bijknippen
-		Toevoegen aan winkelwagen (Foto editor)
+		GUI (foto bewerken)		40
+		Filter toevoegen		13
+		Filter verwijderen		2
+		Foto bijknippen			8
+		Toevoegen aan winkelwagen (Foto editor)		5
 	wil ik mijn bestellingen kunnen betalen
-		GUI (bestelling betalen)
-		Betalen via MockUp (Simulator)
-		Laden winkelwagen
-		Laden bestellingen
+		GUI (bestelling betalen)	13
+		Betalen via MockUp (Simulator + GUI)	??	
+		Laden winkelwagen		8	
 	wil ik mijn foto's kunnen bekijken en meteen kunnen bewerken
-		GUI (foto bekijken)
-		Foto laden
+		GUI (foto bekijken)		8
+		Foto laden		5
 	wil ik producten kunnen inzien/wijzigen/verwijderen uit de winkelwagen
-		GUI (winkelwagen)
-		Producten laden
-		Product aanpassen
-		Product aantal aanpassen
-		Product verwijderen		
+		GUI (winkelwagen)		20
+		Producten laden			5
+		Product aanpassen		8
+		Product aantal aanpassen	5
+		Product verwijderen		5
 	wil ik een account kunnen aanmaken
-		GUI (account aanmaken)
-		Account aanmaken
+		GUI (account aanmaken)		8
+		Account aanmaken		2
 	
 Als admin:
 	wil ik accounts kunnen aanmaken voor fotograven en producenten
-		GUI (admin, account aanmaken)
-		Account aanmaken
+		GUI (admin, account aanmaken)		8
+		Account aanmaken		2
 	
 Als gebruiker:
 	wil ik in meerdere talen het systeem kunnen gebruiken
-		Taal laden
+		GUI (taal)		1
+		Taal laden		13
 	wil ik kunnen inloggen zodat ik bij het voor mij specifieke gedeelde kan komen zodat ik mijn specifieke taken kan uitvoeren
-		GUI (inloggen)
-		Inloggen
+		GUI (inloggen)		8
+		Inloggen		2
