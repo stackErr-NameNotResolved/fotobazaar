@@ -2,7 +2,7 @@ CREATE TABLE ACCOUNT (
 	ID 				numeric(19, 0) 		NOT NULL,
 	USERNAME 		varchar(30) 		NOT NULL UNIQUE,
 	PASSWORD 		varchar(80) 		NOT NULL,
-	'ACCESS' 		numeric(19, 0) 		NOT NULL, 
+	`ACCESS` 		numeric(19, 0) 		NOT NULL, 
 	
 	PRIMARY KEY (ID)
 );
@@ -26,7 +26,7 @@ CREATE TABLE ITEM (
 	PRIMARY KEY (ID)
 );
 	
-CREATE TABLE 'ORDER' (
+CREATE TABLE `ORDER` (
 	ID 				numeric(19, 0) 		NOT NULL, 
 	CUSTOMER_ID 	numeric(19, 0) 		NOT NULL,
 	ORDERDATE 		datetime 			NOT NULL, 
@@ -97,7 +97,7 @@ ALTER TABLE ITEM_PER_ORDER
 	ADD INDEX FKITEM_PER_O612022 (ORDER_ID), 
 	ADD CONSTRAINT FKITEM_PER_O612022 
 		FOREIGN KEY (ORDER_ID) 
-		REFERENCES 'ORDER' (ID)
+		REFERENCES `ORDER` (ID)
 ;
 	
 ALTER TABLE CUSTOMER 
@@ -107,7 +107,7 @@ ALTER TABLE CUSTOMER
 		REFERENCES ACCOUNT (ID)
 ;
 	
-ALTER TABLE 'ORDER'
+ALTER TABLE `ORDER`
 	ADD INDEX FKORDER205112 (CUSTOMER_ID), 
 	ADD CONSTRAINT FKORDER205112 
 		FOREIGN KEY (CUSTOMER_ID) 
@@ -116,14 +116,14 @@ ALTER TABLE 'ORDER'
 	
 	
 INSERT INTO ACCOUNT
-			(ID, 	USERNAME, 		PASSWORD, 	'ACCESS') 
+			(ID, 	USERNAME, 		PASSWORD, 	`ACCESS`) 
 	VALUES
-			(0, 	'corpelijn',	'Welkom01',		1),
-			(1,		'taskent'		'Welkom01', 	1),
-			(2, 	'vijfeijke',	'Welkom01', 	1),
-			(3,		'mierlo'		'Welkom01',		1),
-			(4,		'horloo', 		'Welkom01',		1),
-			(5, 	'dijk',			'Welkom01', 	1)
+			('0', 	'corpelijn',	'Welkom01',		'1'),
+			('1',	'taskent',		'Welkom01', 	'1'),
+			('2', 	'vijfeijke',	'Welkom01', 	'1'),
+			('3',	'mierlo',		'Welkom01',		'1'),
+			('4',	'horloo', 		'Welkom01',		'1'),
+			('5', 	'dijk',			'Welkom01', 	'1')
 ;
 
 
