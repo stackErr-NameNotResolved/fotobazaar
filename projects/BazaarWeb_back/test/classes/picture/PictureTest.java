@@ -8,6 +8,8 @@ package classes.picture;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -23,22 +25,22 @@ import static org.junit.Assert.*;
  * @author Jip
  */
 public class PictureTest {
-    
+
     public PictureTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -48,7 +50,7 @@ public class PictureTest {
      */
     @Test
     public void testGetThumbnail() {
-       BufferedImage imageToConvert = null;
+        BufferedImage imageToConvert = null;
         
         try {
             imageToConvert = ImageIO.read(new File("image1.png"));
