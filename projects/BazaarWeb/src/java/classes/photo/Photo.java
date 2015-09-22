@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package classes.database;
+package classes.photo;
 
 /**
  *
- * @author Jip
+ * @author Bas
  */
-public class test {
+public class Photo {
     
 }
