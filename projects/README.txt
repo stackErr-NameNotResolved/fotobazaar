@@ -1,1 +1,0 @@
-Please keep projects in a folder. Do not put files directly in this directory.
