@@ -20,11 +20,13 @@ public class FotoBazaarServer {
      */
     public static void main(String[] args) {
         DatabaseConnector.Initialize("192.168.94.5", 3306, "test", "user", "test", false);
-        
-        System.out.println(DatabaseConnector.Instance.isOpen());
-        DataTable dt = DatabaseConnector.Instance.executeQuery("SELECT ID, ACTIVE, USERNAME, PASSWORD FROM ACCOUNT;"); 
-        Object[] o = dt.getRow(0, "ID,PASSWORD,USERNAME"); 
-        System.out.println(dt.getRowCount());
+
+        if (DatabaseConnector.Instance.isOpen()) {
+
+            DataTable dt = DatabaseConnector.Instance.executeQuery("SELECT ID, ACCESS, USERNAME, PASSWORD FROM ACCOUNT;");
+            Object[] o = dt.getRow(0, "ID,PASSWORD,USERNAME");
+            System.out.println(dt.getRowCount());
+        }
     }
-    
+
 }
