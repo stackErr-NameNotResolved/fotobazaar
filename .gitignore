@@ -70,3 +70,8 @@ Thumbs.db
 /projects/BazaarWeb/nbproject/private/
 /projects/BazaarWeb/build/
 /projects/BazaarWeb/dist/
+projects/BazaarWeb/nbproject/build-impl.xml
+projects/BazaarWeb/nbproject/ant-deploy.xml
+projects/BazaarWeb/nbproject/genfiles.properties
+projects/BazaarWeb/nbbuild.xml
+projects/BazaarWeb/nbproject/project.xml
