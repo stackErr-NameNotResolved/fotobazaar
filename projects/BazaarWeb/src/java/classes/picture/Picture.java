@@ -30,7 +30,7 @@ public class Picture {
 
     }
 
-    public static BufferedImage getThumbnail(BufferedImage picture) {
+    public static BufferedImage getThumbnail(BufferedImage picture, int maximumSize) {
 
         BufferedImage resizedImage = new BufferedImage(100, 100, picture.getType());
         Graphics2D g = resizedImage.createGraphics();
