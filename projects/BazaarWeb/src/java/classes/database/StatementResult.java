@@ -7,8 +7,10 @@ package classes.database;
 
 /**
  *
- * @author Jip
+ * @author Bas
  */
-public class test {
-    
+public enum StatementResult {
+    ROWS_UPDATED,
+    ERROR,
+    NO_ROWS_UPDATED
 }
