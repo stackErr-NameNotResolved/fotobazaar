@@ -10,9 +10,19 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -24,6 +34,41 @@ public class Picture {
 
     public Picture() {
 
+    }
+
+    public static boolean uploadPicture(Part imagePart, int photographerId, double price, int thumbnailSize) {
+        try {
+            InputStream fileContent = imagePart.getInputStream();
+            DatabaseConnector.Instance.executeNonQuery("INSERT INTO photo (CODE,PHOTOGRAPHER_ID,PRICE,DATA_BIG,DATA_SMALL) VALUES (?,?,1.00,?,?)", generateNewID(), photographerId, price, fileContent, BufferedImageToInputstream(getThumbnail(inputStreamToBufferedImage(fileContent), thumbnailSize)));
+
+            return true;
+        } catch (IOException | SQLException ex) {
+            Logger.getLogger(Picture.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    public static BufferedImage inputStreamToBufferedImage(InputStream input) {
+        BufferedImage returnImage = null;
+        try {
+            returnImage = ImageIO.read(input);
+        } catch (IOException ex) {
+            Logger.getLogger(Picture.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return returnImage;
+    }
+
+    public static InputStream BufferedImageToInputstream(BufferedImage input) throws IOException {
+        ImageInputStream iis = ImageIO.createImageInputStream(input);
+
+        Iterator<ImageReader> imageReaders = ImageIO.getImageReaders(iis);
+
+        while (imageReaders.hasNext()) {
+            ImageReader reader = (ImageReader) imageReaders.next();
+            System.out.printf("formatName: %s%n", reader.getFormatName());
+        }
+        return null;
     }
 
     public static BufferedImage getThumbnail(BufferedImage originalPicture, int maximumSize) {
@@ -55,7 +100,7 @@ public class Picture {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         return resizedImage;
     }
-    
+
     public static String generateNewID() {
         // Get the new ID from the database
         int nextId = 1;
@@ -103,7 +148,7 @@ public class Picture {
         total = total.replaceAll("o", "0").toUpperCase().substring(0, 15);
 
         // Check if the final UID exists in the database
-        if ((long)DatabaseConnector.Instance.executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'").getDataFromRow(0, "COUNT") != 0) {
+        if ((long) DatabaseConnector.Instance.executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'").getDataFromRow(0, "COUNT") != 0) {
             total = classes.picture.Picture.generateNewID();
         } else {
             try {
