@@ -38,7 +38,7 @@ public class Picture {
     public static boolean uploadPicture(Part imagePart, int photographerId, double price, int thumbnailSize) {
         try {
             InputStream fileContent = imagePart.getInputStream();
-            DatabaseConnector.Instance.executeNonQuery("INSERT INTO photo (CODE,PHOTOGRAPHER_ID,PRICE,DATA_BIG,DATA_SMALL) VALUES (?,?,1.00,?,?)", generateNewID(), photographerId, price, fileContent, BufferedImageToInputstream(getThumbnail(inputStreamToBufferedImage(fileContent), thumbnailSize)));
+            DatabaseConnector.getInstance().executeNonQuery("INSERT INTO photo (CODE,PHOTOGRAPHER_ID,PRICE,DATA_BIG,DATA_SMALL) VALUES (?,?,1.00,?,?)", generateNewID(), photographerId, price, fileContent, BufferedImageToInputstream(getThumbnail(inputStreamToBufferedImage(fileContent), thumbnailSize)));
 
             return true;
         } catch (IOException | SQLException ex) {
