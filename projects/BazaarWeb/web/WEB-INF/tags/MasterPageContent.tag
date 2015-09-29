@@ -1,5 +1,5 @@
-<%@tag description="MasterPage" pageEncoding="UTF-8"%>
-
+<%@tag description="MasterPageContent" pageEncoding="UTF-8"%>
+<%@ attribute name="title" required="true" %>
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- <%@attribute name="message"%> -->
 
@@ -90,7 +90,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-sm-4">
-                    <h1>Titel van pagina</h1>
+                    <h1>${title}</h1>
                 </div>
             </div>
         </div>
