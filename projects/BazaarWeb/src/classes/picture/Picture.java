@@ -42,11 +42,8 @@ public class Picture {
 
     public static boolean uploadPicture(Part imagePart, int photographerId, double price, int thumbnailSize) {
         try {
-            byte[] imgBig = new byte[(int)imagePart.getSize()];
-            imagePart.getInputStream().read(imgBig);
-
-            InputStream imageBig = new ByteArrayInputStream(imgBig);
-            InputStream imageSmall = BufferedImageToInputstream(getThumbnail(inputStreamToBufferedImage(imageBig), thumbnailSize));
+            InputStream imageBig = imagePart.getInputStream();
+            InputStream imageSmall = BufferedImageToInputstream(getThumbnail(inputStreamToBufferedImage(imageBig), thumbnailSize),imagePart.getName());
 
             DatabaseConnector.getInstance().executeNonQuery("INSERT INTO photo (CODE,PHOTOGRAPHER_ID,PRICE,DATA_BIG,DATA_SMALL) VALUES (?,?,?,?,?)", generateNewID(), photographerId, price, imageBig, imageSmall);
 
@@ -68,9 +65,10 @@ public class Picture {
         return returnImage;
     }
 
-    public static InputStream BufferedImageToInputstream(BufferedImage input) throws IOException {
+    public static InputStream BufferedImageToInputstream(BufferedImage input, String imagename) throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(input, "jpg", os);
+        String[] splittedImagename = imagename.split(".");
+        ImageIO.write(input, splittedImagename[splittedImagename.length-1], os);
         InputStream is = new ByteArrayInputStream(os.toByteArray());
         return is;
 
