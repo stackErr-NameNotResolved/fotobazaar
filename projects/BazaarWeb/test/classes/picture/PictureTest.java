@@ -6,19 +6,17 @@
 package classes.picture;
 
 
+import classes.database.DatabaseConnector;
+import junit.framework.Assert;
+import org.junit.*;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.classes.database.DatabaseConnector;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import junit.framework.Assert;
-import org.junit.After;
-import org.junit.AfterClass;
+
 import static org.junit.Assert.fail;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 
 /**
