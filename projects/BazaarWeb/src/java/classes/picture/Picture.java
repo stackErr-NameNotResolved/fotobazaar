@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package classes.picture;
+package java.classes.picture;
 
-import classes.database.DatabaseConnector;
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.classes.database.DatabaseConnector;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Random;
@@ -104,7 +102,7 @@ public class Picture {
 
         // Check if the final UID exists in the database
         if ((long)DatabaseConnector.Instance.executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'").getDataFromRow(0, "COUNT") != 0) {
-            total = classes.picture.Picture.generateNewID();
+            total = Picture.generateNewID();
         } else {
             try {
                 DatabaseConnector.Instance.executeNonQuery("INSERT INTO `photo`(`CODE`, `PHOTOGRAPHER_ID`, `PRICE`, `DATA_BIG`) VALUES (?,?,?,?)", total, 1, 1, "data");
