@@ -7,7 +7,10 @@ package classes.picture;
 
 
 import java.awt.image.BufferedImage;
+<<<<<<< HEAD:projects/BazaarWeb/test/classes/picture/PictureTest.java
+=======
 import java.classes.database.DatabaseConnector;
+>>>>>>> origin/master:projects/BazaarWeb/test/java/classes/picture/PictureTest.java
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
