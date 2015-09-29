@@ -7,16 +7,8 @@ package classes.picture;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -26,15 +18,28 @@ public class Picture {
 
     private BufferedImage photo;
 
-    public Picture(){
+    public Picture() {
 
     }
 
-    public static BufferedImage getThumbnail(BufferedImage picture, int maximumSize) {
+    public static BufferedImage getThumbnail(BufferedImage originalPicture, int maximumSize) {
+        int newWidth = 0;
+        int newHeight = 0;
 
-        BufferedImage resizedImage = new BufferedImage(100, 100, picture.getType());
+        if (originalPicture.getWidth() > originalPicture.getHeight()) {
+            newWidth = maximumSize;
+            newHeight = originalPicture.getHeight() / (originalPicture.getWidth() / maximumSize);
+        } else if (originalPicture.getWidth() < originalPicture.getHeight()) {
+            newWidth = originalPicture.getWidth() / (originalPicture.getHeight() / maximumSize);
+            newHeight = maximumSize;
+        } else {
+            newWidth = maximumSize;
+            newHeight = maximumSize;
+        }
+
+        BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, originalPicture.getType());
         Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(picture, 0, 0, 100, 100, null);
+        g.drawImage(originalPicture, 0, 0, newWidth, newHeight, null);
         g.dispose();
         g.setComposite(AlphaComposite.Src);
 

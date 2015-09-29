@@ -68,7 +68,7 @@ public class PictureTest {
         BufferedImage convertedImage2 = Picture.getThumbnail(imageToConvert2,maximumSize);
         BufferedImage convertedImage3 = Picture.getThumbnail(imageToConvert3,maximumSize);
 
-        if (convertedImage1.getWidth() != maximumSize || convertedImage2.getHeight() != maximumSize || convertedImage3.getHeight() != imageToConvert3.getHeight()||convertedImage3.getWidth()!= imageToConvert3.getWidth()) {
+        if (convertedImage1.getWidth() != maximumSize || convertedImage2.getHeight() != maximumSize || convertedImage3.getHeight() != maximumSize||convertedImage3.getWidth()!= maximumSize) {
             fail("atleast the width or height needs to be "+maximumSize+" pixels or smaller when the image is smaller than "+maximumSize+" pixels");
         }
     }
