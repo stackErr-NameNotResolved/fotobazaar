@@ -6,8 +6,8 @@
 package java.classes.picture;
 
 import java.awt.*;
-import classes.database.DatabaseConnector;
 import java.awt.image.BufferedImage;
+import java.classes.database.DatabaseConnector;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Random;
@@ -89,7 +89,7 @@ public class Picture {
 
         // Check if the final UID exists in the database
         if (DatabaseConnector.Instance.executeQuery("SELECT CODE FROM PHOTO WHERE CODE=\'" + total + "\'").getRowCount() != 0) {
-            total = classes.picture.Picture.generateNewID();
+            total = Picture.generateNewID();
         } else {
             try {
                 DatabaseConnector.Instance.executeNonQuery("INSERT INTO `photo`(`CODE`, `PHOTOGRAPHER_ID`, `PRICE`, `DATA_BIG`) VALUES (?,?,?,?)", total, 1, 1, "data");
