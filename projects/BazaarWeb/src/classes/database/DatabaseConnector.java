@@ -49,7 +49,6 @@ public class DatabaseConnector {
      * @param databasename The name of the database running on the server
      * @param username     The username needed to connect to the database
      * @param password     The password needed to connect to the database
-     * @param debugMode    Enables or disables the debugmode of the connector
      * @return Returns true if the connection was successfull; otherwise false
      */
     private static boolean Initialize(String hostname, int port, String databasename, String username, String password) {

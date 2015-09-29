@@ -5,9 +5,10 @@
  */
 package classes.picture;
 
+import classes.database.DatabaseConnector;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import classes.database.DatabaseConnector;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.Calendar;
@@ -58,7 +59,7 @@ public class Picture {
         // Get the new ID from the database
         int nextId = 1;
         try {
-            nextId = ((BigDecimal) DatabaseConnector.Instance.executeQuery("SELECT MAX(ID) AS ID FROM PHOTO").getDataFromRow(0, "ID")).intValue() + 1;
+            nextId = ((BigDecimal) DatabaseConnector.getInstance().executeQuery("SELECT MAX(ID) AS ID FROM PHOTO").getDataFromRow(0, "ID")).intValue() + 1;
         } catch (Exception ex) {
         }
 
@@ -101,11 +102,11 @@ public class Picture {
         total = total.replaceAll("o", "0").toUpperCase().substring(0, 15);
 
         // Check if the final UID exists in the database
-        if ((long)DatabaseConnector.Instance.executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'").getDataFromRow(0, "COUNT") != 0) {
+        if ((long)DatabaseConnector.getInstance().executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'").getDataFromRow(0, "COUNT") != 0) {
             total = Picture.generateNewID();
         } else {
             try {
-                DatabaseConnector.Instance.executeNonQuery("INSERT INTO `photo`(`CODE`, `PHOTOGRAPHER_ID`, `PRICE`, `DATA_BIG`) VALUES (?,?,?,?)", total, 1, 1, "data");
+                DatabaseConnector.getInstance().executeNonQuery("INSERT INTO `photo`(`CODE`, `PHOTOGRAPHER_ID`, `PRICE`, `DATA_BIG`) VALUES (?,?,?,?)", total, 1, 1, "data");
             } catch (Exception ex) {
             }
         }
