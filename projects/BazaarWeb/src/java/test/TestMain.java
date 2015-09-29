@@ -5,7 +5,6 @@
  */
 package test;
 
-import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.picture.Picture;
 
@@ -17,6 +16,7 @@ public class TestMain {
 
     /**
      * @param args the command line arguments
+     * @throws java.lang.InterruptedException
      */
     public static void main(String[] args) throws InterruptedException {
         DatabaseConnector.Initialize("192.168.27.10", 3306, "fotobazaar", "admin", "Server01!", false);

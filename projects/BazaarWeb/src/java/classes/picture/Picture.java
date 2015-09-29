@@ -103,7 +103,7 @@ public class Picture {
         total = total.replaceAll("o", "0").toUpperCase().substring(0, 15);
 
         // Check if the final UID exists in the database
-        if (DatabaseConnector.Instance.executeQuery("SELECT CODE FROM PHOTO WHERE CODE=\'" + total + "\'").getRowCount() != 0) {
+        if ((long)DatabaseConnector.Instance.executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'").getDataFromRow(0, "COUNT") != 0) {
             total = classes.picture.Picture.generateNewID();
         } else {
             try {
