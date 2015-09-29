@@ -5,14 +5,21 @@
  */
 package java.classes.picture;
 
-import java.awt.*;
+<<<<<<< HEAD:projects/BazaarWeb/src/java/classes/picture/Picture.java
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
+=======
+>>>>>>> origin/master:projects/BazaarWeb/src/java/java/classes/picture/Picture.java
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.classes.database.DatabaseConnector;
+import java.classes.database.StatementResult;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.Calendar;
+
 
 /**
  *
@@ -20,10 +27,15 @@ import java.util.Calendar;
  */
 public class Picture {
 
+    private static int databaseId;
     private BufferedImage photo;
 
     public Picture() {
 
+    }
+    
+    public Picture(int _databaseId){
+        this.databaseId = _databaseId;
     }
 
     public static BufferedImage getThumbnail(BufferedImage originalPicture, int maximumSize) {
@@ -55,7 +67,7 @@ public class Picture {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         return resizedImage;
     }
-    
+
     public static String generateNewID() {
         // Get the new ID from the database
         int nextId = 1;
@@ -103,11 +115,20 @@ public class Picture {
         total = total.replaceAll("o", "0").toUpperCase().substring(0, 15);
 
         // Check if the final UID exists in the database
+<<<<<<< HEAD:projects/BazaarWeb/src/java/classes/picture/Picture.java
         DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'");
-            total = Picture.generateNewID();
+        if (dt != null && dt.containsData()) {
             if ((long) dt.getDataFromRow(0, "COUNT") != 0) {
                 total = classes.picture.Picture.generateNewID();
                 //System.out.println("code was already used");
+=======
+        if ((long)DatabaseConnector.Instance.executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'").getDataFromRow(0, "COUNT") != 0) {
+            total = Picture.generateNewID();
+        } else {
+            try {
+                DatabaseConnector.Instance.executeNonQuery("INSERT INTO `photo`(`CODE`, `PHOTOGRAPHER_ID`, `PRICE`, `DATA_BIG`) VALUES (?,?,?,?)", total, 1, 1, "data");
+            } catch (Exception ex) {
+>>>>>>> origin/master:projects/BazaarWeb/src/java/java/classes/picture/Picture.java
             }
 //        else {
 //            try {
@@ -120,4 +141,35 @@ public class Picture {
         System.out.println(total);
         return total;
     }
+
+    /***
+     * updates the existing price of the picture.
+     * @param newPrice the new price of the picture.
+     * @return boolean if the price is updated or not.
+     */
+    public boolean updatePrice(double newPrice) {
+
+        boolean result = false;
+
+        if (newPrice > -0.01) {
+            try {
+                StatementResult dbResult = DatabaseConnector.Instance.executeNonQuery(String.format("UPDATE PHOTO SET PRICE = %s WHERE ID = %s", newPrice, databaseId));
+
+                if (dbResult == null || dbResult == StatementResult.ERROR || dbResult == StatementResult.NO_ROWS_UPDATED) {
+                    result = false;
+                } else {
+                    result = true;
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        else{
+            result = false;
+        }
+        
+        return result;
+    }
+
 }
