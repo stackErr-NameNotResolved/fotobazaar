@@ -9,8 +9,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.classes.database.DatabaseConnector;
 import java.math.BigDecimal;
+import java.security.SecureRandom;
 import java.util.Calendar;
-import java.util.Random;
 
 /**
  *
@@ -64,7 +64,7 @@ public class Picture {
 
         long ticks = Calendar.getInstance().getTime().getTime();
 
-        Random rand = new Random();
+        SecureRandom rand = new SecureRandom();
         long rand_val = ticks % nextId * rand.nextInt();
 
         StringBuilder sb = new StringBuilder();
