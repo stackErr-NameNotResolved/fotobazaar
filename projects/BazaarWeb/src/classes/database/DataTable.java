@@ -68,7 +68,7 @@ public class DataTable implements Iterable<DataRow> {
         try {
             int cursorPosition = resultSet.getRow();
             result = resultSet.first();
-            resultSet.absolute(cursorPosition);
+            resultSet.absolute(cursorPosition < 1 ? 1 : cursorPosition);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
