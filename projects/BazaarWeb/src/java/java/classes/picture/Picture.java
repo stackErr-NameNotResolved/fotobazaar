@@ -5,12 +5,16 @@
  */
 package java.classes.picture;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.classes.database.DatabaseConnector;
+import java.classes.database.StatementResult;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.Calendar;
+
 
 /**
  *
@@ -18,10 +22,15 @@ import java.util.Calendar;
  */
 public class Picture {
 
+    private static int databaseId;
     private BufferedImage photo;
 
     public Picture() {
 
+    }
+    
+    public Picture(int _databaseId){
+        this.databaseId = _databaseId;
     }
 
     public static BufferedImage getThumbnail(BufferedImage originalPicture, int maximumSize) {
@@ -53,7 +62,7 @@ public class Picture {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         return resizedImage;
     }
-    
+
     public static String generateNewID() {
         // Get the new ID from the database
         int nextId = 1;
@@ -113,4 +122,35 @@ public class Picture {
         System.out.println(total);
         return total;
     }
+
+    /***
+     * updates the existing price of the picture.
+     * @param newPrice the new price of the picture.
+     * @return boolean if the price is updated or not.
+     */
+    public boolean updatePrice(double newPrice) {
+
+        boolean result = false;
+
+        if (newPrice > -0.01) {
+            try {
+                StatementResult dbResult = DatabaseConnector.Instance.executeNonQuery(String.format("UPDATE PHOTO SET PRICE = %s WHERE ID = %s", newPrice, databaseId));
+
+                if (dbResult == null || dbResult == StatementResult.ERROR || dbResult == StatementResult.NO_ROWS_UPDATED) {
+                    result = false;
+                } else {
+                    result = true;
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        else{
+            result = false;
+        }
+        
+        return result;
+    }
+
 }

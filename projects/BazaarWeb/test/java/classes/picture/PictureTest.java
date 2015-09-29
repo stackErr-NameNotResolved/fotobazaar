@@ -5,17 +5,21 @@
  */
 package java.classes.picture;
 
-import org.junit.*;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.classes.database.DatabaseConnector;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import javax.imageio.ImageIO;
+import junit.framework.Assert;
+import org.junit.After;
+import org.junit.AfterClass;
 import static org.junit.Assert.fail;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 
 /**
  *
@@ -36,6 +40,7 @@ public class PictureTest {
 
     @Before
     public void setUp() {
+
     }
 
     @After
@@ -61,13 +66,55 @@ public class PictureTest {
         }
 
         int maximumSize = 200;
-        
-        BufferedImage convertedImage1 = Picture.getThumbnail(imageToConvert1,maximumSize);
-        BufferedImage convertedImage2 = Picture.getThumbnail(imageToConvert2,maximumSize);
-        BufferedImage convertedImage3 = Picture.getThumbnail(imageToConvert3,maximumSize);
 
-        if (convertedImage1.getWidth() != maximumSize || convertedImage2.getHeight() != maximumSize || convertedImage3.getHeight() != maximumSize||convertedImage3.getWidth()!= maximumSize) {
-            fail("atleast the width or height needs to be "+maximumSize+" pixels or smaller when the image is smaller than "+maximumSize+" pixels");
+        BufferedImage convertedImage1 = Picture.getThumbnail(imageToConvert1, maximumSize);
+        BufferedImage convertedImage2 = Picture.getThumbnail(imageToConvert2, maximumSize);
+        BufferedImage convertedImage3 = Picture.getThumbnail(imageToConvert3, maximumSize);
+
+        if (convertedImage1.getWidth() != maximumSize || convertedImage2.getHeight() != maximumSize || convertedImage3.getHeight() != imageToConvert3.getHeight() || convertedImage3.getWidth() != imageToConvert3.getWidth()) {
+            fail("atleast the width or height needs to be " + maximumSize + " pixels or smaller when the image is smaller than " + maximumSize + " pixels");
+
         }
+    }
+
+    /**
+     * Test of updatePrice method, of class Picture.
+     */
+    @Test
+    public void testUpdatePrice() {
+        DatabaseConnector.Initialize("192.168.27.10", 3306, "fotobazaar", "admin", "Server01!", false);
+        //ARRANGE
+        //The new prices that will be tried to update.
+        final double price1 = 0.01;
+        final double price2 = -0.01;
+        final double price3 = 0.00;
+
+        //The picture ids that are going to be tested.
+        final int databaseId1 = 1;
+        final int databaseId2 = 2;
+        final int databaseId3 = 3;
+
+        //Create new picture instances.
+        Picture p1 = new Picture(databaseId1);
+        Picture p2 = new Picture(databaseId2);
+        Picture p3 = new Picture(databaseId3);
+
+        //The expected output from the updatePrice method.
+        final boolean expected1 = true;
+        final boolean expected2 = false;
+        final boolean expected3 = true;
+
+        //ACT
+        //Let the method do its job.
+        boolean actual1 = p1.updatePrice(price1);
+        boolean actual2 = p2.updatePrice(price2);
+        boolean actual3 = p3.updatePrice(price3);
+
+        //ASSERT
+        //Test if the actual output is equal to the expected value.
+        Assert.assertEquals("P1 should be updated!", expected1, actual1);
+        Assert.assertEquals("P2 should not be updated!", expected2, actual2);
+        Assert.assertEquals("P3 should be updated!", expected3, actual3);
+
     }
 }
