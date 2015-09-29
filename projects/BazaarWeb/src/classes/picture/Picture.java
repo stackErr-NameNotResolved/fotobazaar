@@ -113,4 +113,8 @@ public class Picture {
         System.out.println(total);
         return total;
     }
+
+    public boolean updatePrice(double price2) {
+        return false;
+    }
 }
