@@ -10,13 +10,17 @@ import classes.database.DatabaseConnector;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -38,8 +42,13 @@ public class Picture {
 
     public static boolean uploadPicture(Part imagePart, int photographerId, double price, int thumbnailSize) {
         try {
-            InputStream fileContent = imagePart.getInputStream();
-            DatabaseConnector.getInstance().executeNonQuery("INSERT INTO photo (CODE,PHOTOGRAPHER_ID,PRICE,DATA_BIG,DATA_SMALL) VALUES (?,?,1.00,?,?)", generateNewID(), photographerId, price, fileContent, BufferedImageToInputstream(getThumbnail(inputStreamToBufferedImage(fileContent), thumbnailSize)));
+            byte[] imgBig = new byte[(int)imagePart.getSize()];
+            imagePart.getInputStream().read(imgBig);
+
+            InputStream imageBig = new ByteArrayInputStream(imgBig);
+            InputStream imageSmall = BufferedImageToInputstream(getThumbnail(inputStreamToBufferedImage(imageBig), thumbnailSize));
+
+            DatabaseConnector.getInstance().executeNonQuery("INSERT INTO photo (CODE,PHOTOGRAPHER_ID,PRICE,DATA_BIG,DATA_SMALL) VALUES (?,?,?,?,?)", generateNewID(), photographerId, price, imageBig, imageSmall);
 
             return true;
         } catch (IOException | SQLException ex) {
@@ -60,15 +69,11 @@ public class Picture {
     }
 
     public static InputStream BufferedImageToInputstream(BufferedImage input) throws IOException {
-        ImageInputStream iis = ImageIO.createImageInputStream(input);
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(input, "jpg", os);
+        InputStream is = new ByteArrayInputStream(os.toByteArray());
+        return is;
 
-        Iterator<ImageReader> imageReaders = ImageIO.getImageReaders(iis);
-
-        while (imageReaders.hasNext()) {
-            ImageReader reader = (ImageReader) imageReaders.next();
-            System.out.printf("formatName: %s%n", reader.getFormatName());
-        }
-        return null;
     }
 
     public static BufferedImage getThumbnail(BufferedImage originalPicture, int maximumSize) {

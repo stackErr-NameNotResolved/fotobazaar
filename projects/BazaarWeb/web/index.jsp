@@ -7,7 +7,11 @@
       <div class="row mar-b-50">
         <div class="col-md-12">
             <p>
-             dit is wat text
+            <form action="fotoUpload" method="post" enctype="multipart/form-data">
+            Select image to upload:
+            <input type="file" name="imageControlId" id="imageControlId" multiple accept='image/*'>
+            <input type="submit" value="Upload Image" id="submit" name="submit1">
+        </form>
             </p>
         </div>
       </div>

@@ -82,9 +82,9 @@ public class fotoUpload extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-                Part filePart = request.getPart("imageControlId"); // Retrieves <input type="file" name="file">
-        Picture.uploadPicture(filePart, 1, 1.00,30);
+
+        Part filePart = request.getPart("imageControlId"); // Retrieves <input type="file" name="file">
+        Picture.uploadPicture(filePart, 1, 1.00, 30);
 
     }
 

@@ -6,6 +6,8 @@
 package classes.database;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Bas
@@ -105,6 +107,7 @@ public class DatabaseConnector {
             return true;
         }
     }
+   
 
     /**
      * Execute a query to the database
