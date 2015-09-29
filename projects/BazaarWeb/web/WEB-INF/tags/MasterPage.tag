@@ -95,7 +95,7 @@
             </div>
         </div>
     </div>
-	 <img src="css/1.png"/>
+    
         <jsp:doBody/>
         
         
