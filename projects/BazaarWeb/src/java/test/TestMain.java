@@ -7,7 +7,7 @@ package test;
 
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
-import classes.photo.Picture;
+import classes.picture.Picture;
 
 /**
  *
