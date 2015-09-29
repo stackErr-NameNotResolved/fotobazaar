@@ -3,11 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package classes.picture;
+package classes.domain;
 
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import javax.servlet.http.Part;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -19,10 +23,6 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-import javax.servlet.http.Part;
 
 /**
  *
@@ -151,7 +151,7 @@ public class Picture {
         DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'");
         if (dt != null && dt.containsData()) {
             if ((long) dt.getDataFromRow(0, "COUNT") != 0) {
-                total = classes.picture.Picture.generateNewID();
+                total = classes.domain.Picture.generateNewID();
                 //System.out.println("code was already used");
             }
             //        else {
