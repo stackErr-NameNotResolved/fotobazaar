@@ -2,5 +2,15 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:MasterPage>
-    <h2>this is the content</h2>
+    	<!-- Sub-Container for ui elements/text -->
+	<div class="container">
+      <div class="row mar-b-50">
+        <div class="col-md-12">
+            <p>
+             dit is wat text
+            </p>
+        </div>
+      </div>
+    </div>
+	<!-- End Sub-Container -->
 </t:MasterPage>
