@@ -25,9 +25,9 @@
     <!-- <link href="css/bootstrap.min.css" rel="stylesheet">-->
 
     <!--external css-->
-    <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="/stylesheet" href="css/flexslider.css"/>
-    <link href="/assets/bxslider/jquery.bxslider.css" rel="stylesheet" />
+    <link href="assets/bxslider/jquery.bxslider.css" rel="stylesheet" />
     <link rel="/stylesheet" href="css/animate.css">
     <link rel="/stylesheet" href="assets/owlcarousel/owl.carousel.css">
     <link rel="/stylesheet" href="assets/owlcarousel/owl.theme.css">
