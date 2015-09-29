@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package java.classes.picture;
+package classes.picture;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.classes.database.DatabaseConnector;
+import classes.database.DatabaseConnector;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.Calendar;

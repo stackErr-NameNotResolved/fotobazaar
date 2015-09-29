@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package java.classes.database;
+package classes.database;
 
 import java.sql.*;
 import java.util.Arrays;
 
 /**
- *
  * @author Bas
  */
 public class DatabaseConnector {
@@ -38,12 +37,12 @@ public class DatabaseConnector {
      * Create a new instance of the database connector. Run this method only
      * once. Connecting to the database can take some time.
      *
-     * @param hostname The hostname/ip of the database server
-     * @param port The portnumber of the database server
+     * @param hostname     The hostname/ip of the database server
+     * @param port         The portnumber of the database server
      * @param databasename The name of the database running on the server
-     * @param username The username needed to connect to the database
-     * @param password The password needed to connect to the database
-     * @param debugMode Enables or disables the debugmode of the connector
+     * @param username     The username needed to connect to the database
+     * @param password     The password needed to connect to the database
+     * @param debugMode    Enables or disables the debugmode of the connector
      * @return Returns true if the connection was successfull; otherwise false
      */
     public static boolean Initialize(String hostname, int port, String databasename, String username, String password, boolean debugMode) {
@@ -158,7 +157,7 @@ public class DatabaseConnector {
             }
             return StatementResult.ERROR;
         }
-        
+
         PreparedStatement statement;
         try {
             statement = connection.prepareStatement(command);
