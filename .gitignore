@@ -76,3 +76,5 @@ projects/BazaarWeb/nbproject/genfiles.properties
 projects/BazaarWeb/nbbuild.xml
 projects/BazaarWeb/nbproject/project.xml
 projects/BazaarWeb/nbproject/project.properties
+*/build.xml
+projects/BazaarWeb/web/WEB-INF/glassfish-web.xml
