@@ -5,6 +5,7 @@
  */
 package classes.picture;
 
+import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
@@ -55,12 +56,12 @@ public class Picture {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         return resizedImage;
     }
-    
+
     public static String generateNewID() {
         // Get the new ID from the database
         int nextId = 1;
         try {
-            nextId = ((BigDecimal) DatabaseConnector.Instance.executeQuery("SELECT MAX(ID) AS ID FROM PHOTO").getDataFromRow(0, "ID")).intValue() + 1;
+            nextId = ((BigDecimal) DatabaseConnector.getInstance().executeQuery("SELECT MAX(ID) AS ID FROM PHOTO").getDataFromRow(0, "ID")).intValue() + 1;
         } catch (Exception ex) {
         }
 
@@ -70,7 +71,7 @@ public class Picture {
         long rand_val = ticks % nextId * rand.nextInt();
 
         StringBuilder sb = new StringBuilder();
-        sb.append(ticks).append(nextId).append(rand_val).append(ticks);
+        sb.append(nextId).append(ticks).append(rand_val).append(ticks);
         String total = sb.toString();
 
         int index = 0;
@@ -103,13 +104,18 @@ public class Picture {
         total = total.replaceAll("o", "0").toUpperCase().substring(0, 15);
 
         // Check if the final UID exists in the database
-        if ((long)DatabaseConnector.Instance.executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'").getDataFromRow(0, "COUNT") != 0) {
-            total = classes.picture.Picture.generateNewID();
-        } else {
-            try {
-                DatabaseConnector.Instance.executeNonQuery("INSERT INTO `photo`(`CODE`, `PHOTOGRAPHER_ID`, `PRICE`, `DATA_BIG`) VALUES (?,?,?,?)", total, 1, 1, "data");
-            } catch (Exception ex) {
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'");
+        if (dt != null && dt.containsData()) {
+            if ((long) dt.getDataFromRow(0, "COUNT") != 0) {
+                total = classes.picture.Picture.generateNewID();
+                //System.out.println("code was already used");
             }
+//        else {
+//            try {
+//                DatabaseConnector.Instance.executeNonQuery("INSERT INTO `photo`(`ID`, `CODE`, `PHOTOGRAPHER_ID`, `PRICE`, `DATA_BIG`) VALUES (?,?,?,?,?)", nextId, total, 1, 1, "data");
+//            } catch (Exception ex) {
+//            }
+//        }
         }
 
         System.out.println(total);

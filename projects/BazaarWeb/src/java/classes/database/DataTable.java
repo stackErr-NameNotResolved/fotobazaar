@@ -8,7 +8,6 @@ package classes.database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,8 +27,8 @@ public class DataTable implements Iterable<DataRow> {
      *
      */
     /**
-     *
-     * @param data
+     * Create a new DataTable object
+     * @param data The ResultSet the DataTable object should read
      */
     public DataTable(ResultSet data) {
         this.resultSet = data;
@@ -40,7 +39,6 @@ public class DataTable implements Iterable<DataRow> {
      */
     /**
      * Gets the specified row from the table
-     *
      * @param row The row of the row to fetch
      * @return The data in the row
      */
@@ -61,10 +59,38 @@ public class DataTable implements Iterable<DataRow> {
         return data.toArray();
     }
 
+    /**
+     * Checks if the DataTable contains any rows with data
+     * @return Returns true if there is any is data found; otherwise false
+     */
+    public boolean containsData() {
+        boolean result = false;
+        try {
+            int cursorPosition = resultSet.getRow();
+            result = resultSet.first();
+            resultSet.absolute(cursorPosition);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * Gets a row from the DataTable with data from the specified columns
+     * @param row The number of the row you want to read. Zero-based index
+     * @param columns A String object with the names of the columns to read. Format (no spaces): COLUMN1,COLUMN2,COLUMN3...
+     * @return An array of Object types containing the data read from the database
+     */
     public Object[] getRow(int row, String columns) {
         return getRow(row, columns.split(","));
     }
 
+    /**
+     * Gets a row from the DataTable with data from the specified columns
+     * @param row The number of the row you want to read. Zero-based index
+     * @param columns An array of String objects with the names of the columns to read. One column per String object
+     * @return An array of Object types containing the data read from the database
+     */
     public Object[] getRow(int row, String[] columns) {
         List<Object> data = new ArrayList();
 
@@ -82,6 +108,11 @@ public class DataTable implements Iterable<DataRow> {
         return data.toArray();
     }
 
+    /**
+     * Fetch a single row from the DataTable
+     * @param row The number of the row to return. Zero-based index
+     * @return Return a DataRow object containing the data from the row
+     */
     private DataRow getDataRow(int row) {
         String[] columns = null;
         try {
@@ -95,6 +126,10 @@ public class DataTable implements Iterable<DataRow> {
         return new DataRow(columns, getRow(row, columns));
     }
 
+    /**
+     * Gets the next row from the DataTable
+     * @return A array of Objects with 
+     */
     public Object[] getNextRow() {
 
         List<Object> data = new ArrayList();

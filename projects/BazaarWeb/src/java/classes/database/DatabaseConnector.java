@@ -6,7 +6,6 @@
 package classes.database;
 
 import java.sql.*;
-import java.util.Arrays;
 
 /**
  *
@@ -24,9 +23,17 @@ public class DatabaseConnector {
     private String password;
     private Connection connection;
 
-    private boolean debugMode;
+    private Exception error;
 
-    public static DatabaseConnector Instance;
+    private static DatabaseConnector instance;
+    public static DatabaseConnector getInstance() {
+        if(instance == null)
+        {
+            Initialize("192.168.27.10", 3306, "fotobazaar", "admin", "Server01!");
+        }
+        
+        return instance;
+    }
 
     /**
      * Constructors
@@ -43,67 +50,46 @@ public class DatabaseConnector {
      * @param databasename The name of the database running on the server
      * @param username The username needed to connect to the database
      * @param password The password needed to connect to the database
-     * @param debugMode Enables or disables the debugmode of the connector
      * @return Returns true if the connection was successfull; otherwise false
      */
-    public static boolean Initialize(String hostname, int port, String databasename, String username, String password, boolean debugMode) {
-        DatabaseConnector.Instance = new DatabaseConnector();
-
-        if (DatabaseConnector.Instance == null) {
-            return false;
-        }
+    private static boolean Initialize(String hostname, int port, String databasename, String username, String password) {
+        instance = new DatabaseConnector();
 
         // Set the parameters for connecting to the database
-        DatabaseConnector.Instance.hostname = hostname;
-        DatabaseConnector.Instance.port = port;
-        DatabaseConnector.Instance.databasename = databasename;
-        DatabaseConnector.Instance.username = username;
-        DatabaseConnector.Instance.password = password;
-        DatabaseConnector.Instance.debugMode = debugMode;
+        DatabaseConnector.instance.hostname = hostname;
+        DatabaseConnector.instance.port = port;
+        DatabaseConnector.instance.databasename = databasename;
+        DatabaseConnector.instance.username = username;
+        DatabaseConnector.instance.password = password;
 
         // Connect to the database and return the success result
-        return DatabaseConnector.Instance.openConnection();
+        return DatabaseConnector.instance.openConnection();
     }
 
     /**
      * Methods
      */
     private boolean openConnection() {
-        if (debugMode) {
-            System.out.println("-------- MySQL JDBC Connection Testing ------------");
-        }
-
         // Check if the database connection driver is availible
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            System.out.println("Missing MySQL JDBC Driver");
+            error = new Exception("Missing MySQL JDBC Driver");
             return false;
-        }
-
-        if (debugMode) {
-            System.out.println("MySQL JDBC Driver Found\nOpening connection to the database . . .");
         }
 
         // Set up the connection to the database
         try {
             connection = DriverManager.getConnection("jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.databasename, this.username, this.password);
-
         } catch (SQLException e) {
-            if (debugMode) {
-                System.out.println(Arrays.toString(e.getStackTrace()));
-            }
+            error = e;
             return false;
         }
 
-        // If the debug mode is enabled, check if the database connection is establisched
-        if (debugMode) {
-            if (connection != null) {
-                System.out.println("Connection to the database is ready");
-            } else {
-                System.out.println("Failed to make the database connection");
-                return false;
-            }
+        // Check if the database connection is establisched
+        if (connection == null) {
+            error = new Exception("Failed to make the database connection");
+            return false;
         }
 
         return true;
@@ -130,9 +116,7 @@ public class DatabaseConnector {
      */
     public DataTable executeQuery(String command, Object... params) {
         if (!this.isOpen()) {
-            if (debugMode) {
-                System.out.println("The connection to the database is not open");
-            }
+            error = new Exception("The connection to the database is not open");
             return null;
         }
 
@@ -145,7 +129,7 @@ public class DatabaseConnector {
             }
             return new DataTable(statement.executeQuery());
         } catch (Exception ex) {
-            System.out.println(Arrays.toString(ex.getStackTrace()));
+            error = ex;
         }
 
         return null;
@@ -153,12 +137,10 @@ public class DatabaseConnector {
 
     public StatementResult executeNonQuery(String command, Object... params) throws SQLException {
         if (!this.isOpen()) {
-            if (debugMode) {
-                System.out.println("The connection to the database is not open");
-            }
+            error = new Exception("The connection to the database is not open");
             return StatementResult.ERROR;
         }
-        
+
         PreparedStatement statement;
         try {
             statement = connection.prepareStatement(command);
@@ -168,9 +150,17 @@ public class DatabaseConnector {
             }
             return (statement.executeUpdate() == 0 ? StatementResult.NO_ROWS_UPDATED : StatementResult.ROWS_UPDATED);
         } catch (SQLException ex) {
-            System.out.println(Arrays.toString(ex.getStackTrace()));
+            error = ex;
         }
 
         return StatementResult.ERROR;
+    }
+
+    public Exception getLastError() {
+        return error;
+    }
+
+    public String getLastErrorMessage() {
+        return error.getMessage();
     }
 }
