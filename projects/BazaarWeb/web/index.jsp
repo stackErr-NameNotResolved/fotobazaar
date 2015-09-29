@@ -1,10 +1,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:MasterPage>
-    	<!-- Sub-Container for ui elements/text -->
-	<div class="container">
-      <div class="row mar-b-50">
+<t:MasterPageContent title="eerst Index">
+    <jsp:attribute name="script">
+        <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
+        <script type="text/javascript">
+
+
+        </script>
+    </jsp:attribute>
+    <jsp:body>
+
         <div class="col-md-12">
             <p>
             <form action="fotoUpload" method="post" enctype="multipart/form-data">
@@ -14,7 +20,6 @@
         </form>
             </p>
         </div>
-      </div>
-    </div>
-	<!-- End Sub-Container -->
-</t:MasterPage>
+
+    </jsp:body>
+</t:MasterPageContent> 
