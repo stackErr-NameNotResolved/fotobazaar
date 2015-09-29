@@ -2,15 +2,20 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:MasterPageContent title="eerst Index">
-    <!-- Sub-Container for ui elements/text -->
-    <div class="container">
-        <div class="row mar-b-50">
-            <div class="col-md-12">
-                <p>
-                    dit is wat text 
-                </p>
-            </div>
+    <jsp:attribute name="script">
+        <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
+        <script type="text/javascript">
+
+
+        </script>
+    </jsp:attribute>
+    <jsp:body>
+
+        <div class="col-md-12">
+            <p>
+                dit is wat text 
+            </p>
         </div>
-    </div>
-    <!-- End Sub-Container -->
-</t:MasterPageContent>
+
+    </jsp:body>
+</t:MasterPageContent> 
