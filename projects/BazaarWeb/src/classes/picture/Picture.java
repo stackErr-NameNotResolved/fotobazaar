@@ -150,7 +150,19 @@ public class Picture {
             index++;
         }
 
-        total = total.replaceAll("o", "0").toUpperCase().substring(0, 15);
+        if(total.length() > 15) 
+        {
+            total= total.substring(0, 15);
+        }
+        else if(total.length() < 15)
+        {
+            while(total.length() < 15)
+            {
+                total += (char) (65 + rand.nextInt(26));
+            }
+        }
+        
+        total = total.replaceAll("o", "0").toUpperCase();
 
         // Check if the final UID exists in the database
         DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'");
@@ -167,7 +179,7 @@ public class Picture {
             //        }
         }
 
-        System.out.println(total);
+        //System.out.println(total);
         return total;
     }
 
