@@ -20,15 +20,28 @@ public class Picture {
 
     private BufferedImage photo;
 
-    public Picture(){
+    public Picture() {
 
     }
 
-    public static BufferedImage getThumbnail(BufferedImage picture, int maximumSize) {
+    public static BufferedImage getThumbnail(BufferedImage originalPicture, int maximumSize) {
+        int newWidth = 0;
+        int newHeight = 0;
 
-        BufferedImage resizedImage = new BufferedImage(100, 100, picture.getType());
+        if (originalPicture.getWidth() > originalPicture.getHeight()) {
+            newWidth = maximumSize;
+            newHeight = originalPicture.getHeight() / (originalPicture.getWidth() / maximumSize);
+        } else if (originalPicture.getWidth() < originalPicture.getHeight()) {
+            newWidth = originalPicture.getWidth() / (originalPicture.getHeight() / maximumSize);
+            newHeight = maximumSize;
+        } else {
+            newWidth = maximumSize;
+            newHeight = maximumSize;
+        }
+
+        BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, originalPicture.getType());
         Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(picture, 0, 0, 100, 100, null);
+        g.drawImage(originalPicture, 0, 0, newWidth, newHeight, null);
         g.dispose();
         g.setComposite(AlphaComposite.Src);
 
@@ -88,7 +101,7 @@ public class Picture {
         total = total.replaceAll("o", "0").toUpperCase().substring(0, 15);
 
         // Check if the final UID exists in the database
-        if (DatabaseConnector.Instance.executeQuery("SELECT CODE FROM PHOTO WHERE CODE=\'" + total + "\'").getRowCount() != 0) {
+        if ((long)DatabaseConnector.Instance.executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'").getDataFromRow(0, "COUNT") != 0) {
             total = Picture.generateNewID();
         } else {
             try {
