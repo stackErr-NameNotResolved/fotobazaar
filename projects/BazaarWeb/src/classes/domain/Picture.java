@@ -10,8 +10,6 @@ import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
 import javax.servlet.http.Part;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,7 +60,7 @@ public class Picture {
                 return false;
             }
             return true;
-        } catch (IOException | SQLException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(Picture.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }

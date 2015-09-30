@@ -1,9 +1,9 @@
 package classes.domain;
 
-import classes.database.orm.Column;
+import classes.database.orm.annotations.Column;
 import classes.database.orm.DataModel;
-import classes.database.orm.Id;
-import classes.database.orm.Table;
+import classes.database.orm.annotations.Id;
+import classes.database.orm.annotations.Table;
 
 @Table
 public class Account extends DataModel {

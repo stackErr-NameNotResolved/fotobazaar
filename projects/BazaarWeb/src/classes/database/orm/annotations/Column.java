@@ -1,4 +1,4 @@
-package classes.database.orm;
+package classes.database.orm.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -25,12 +25,12 @@ public class DatabaseConnector {
     private Connection connection;
 
     private static DatabaseConnector instance;
+
     public static DatabaseConnector getInstance() {
-        if(instance == null)
-        {
+        if (instance == null) {
             Initialize("192.168.27.10", 3306, "fotobazaar", "admin", "Server01!");
         }
-        
+
         return instance;
     }
 
@@ -73,7 +73,7 @@ public class DatabaseConnector {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null,  new Exception("Missing MySQL JDBC Driver"));
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, new Exception("Missing MySQL JDBC Driver"));
             return false;
         }
 
@@ -103,14 +103,14 @@ public class DatabaseConnector {
             return true;
         }
     }
-   
+
 
     /**
-     * Execute a query to the database
+     * Execute a query to the database.
      *
-     * @param command The query that needs to be executed
-     * @param params
-     * @return A ResultSet with the output of the query
+     * @param command The query that needs to be executed.
+     * @param params  Parameters to prepare with the SQL query. Each ? sign will be replaced by one object in the {@code params} parameter in order.
+     * @return A {@link ResultSet} with the output of the query.
      */
     public DataTable executeQuery(String command, Object... params) {
         if (!this.isOpen()) {
@@ -133,7 +133,7 @@ public class DatabaseConnector {
         return null;
     }
 
-    public StatementResult executeNonQuery(String command, Object... params) throws SQLException {
+    public StatementResult executeNonQuery(String command, Object... params) {
         if (!this.isOpen()) {
             Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, new Exception("The connection to the database is not open"));
             return StatementResult.ERROR;
