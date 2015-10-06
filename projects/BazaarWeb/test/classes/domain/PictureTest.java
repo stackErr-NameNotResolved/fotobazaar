@@ -5,17 +5,22 @@
  */
 package classes.domain;
 
-import org.junit.*;
-
-import javax.imageio.ImageIO;
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.Part;
-
+import javax.imageio.ImageIO;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
 import static org.junit.Assert.fail;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  *
@@ -103,8 +108,8 @@ public class PictureTest {
         //ACT
         //Let the method do its job.
         boolean actual1 = Picture.updatePrice(price1, databaseId1);
-        boolean actual2 = Picture.updatePrice(price1, databaseId2);
-        boolean actual3 = Picture.updatePrice(price1, databaseId3);
+        boolean actual2 = Picture.updatePrice(price2, databaseId2);
+        boolean actual3 = Picture.updatePrice(price3, databaseId3);
 
         //ASSERT
         //Test if the actual output is equal to the expected value.
@@ -112,8 +117,39 @@ public class PictureTest {
         Assert.assertEquals("P2 should not be updated!", expected2, actual2);
         Assert.assertEquals("P3 should be updated!", expected3, actual3);
 
-        //get price1 en kijk of die gelijk is aan prijs 1
-        //get price3 en kijk of die gelijk is aan prijs 3
+        //Tests if the price are actually updated in the database
+        //ID's 1 till 3 should exist in the database!
+        try {
+            DataTable dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT PRICE FROM PHOTO WHERE CODE = %s", databaseId1));
+
+            if (dt != null || dt.containsData()) {
+                if ((double) dt.getDataFromRow(0, "PRICE") != price1) {
+                    Assert.fail("Price1 did not update!");
+                }
+            }
+
+            dt = null;
+            dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT PRICE FROM PHOTO WHERE CODE = %s", databaseId2));
+
+            if (dt != null || dt.containsData()) {
+                if ((double) dt.getDataFromRow(0, "PRICE") == price2) {
+                    Assert.fail("Price2 did update!");
+                }
+            }
+
+            dt = null;
+            dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT PRICE FROM PHOTO WHERE CODE = %s", databaseId3));
+
+            if (dt != null || dt.containsData()) {
+                if ((double) dt.getDataFromRow(0, "PRICE") != price3) {
+                    Assert.fail("Price3 did not update!");
+                }
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     @Test
