@@ -84,6 +84,5 @@ public class DataModelTest extends TestCase {
 
         List<DataModel.ORMColumn> columnList = table.getColumns();
         assertEquals("First column should be City_2.", "City_2", columnList.get(0).getName());
-
     }
 }
