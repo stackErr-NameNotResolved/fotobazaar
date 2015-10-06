@@ -8,10 +8,9 @@ package classes.domain;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.Part;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,6 +21,8 @@ import java.security.SecureRandom;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -224,6 +225,7 @@ public class Picture {
      * updates the existing price of the picture.
      *
      * @param newPrice the new price of the picture.
+     * @param photoId  the ID of the photo
      * @return boolean if the price is updated or not.
      */
     public static boolean updatePrice(double newPrice, int photoId) {
