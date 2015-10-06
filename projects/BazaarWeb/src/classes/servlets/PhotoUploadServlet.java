@@ -5,12 +5,14 @@ package classes.servlets;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import classes.domain.Picture;
 import classes.domain.Picture;
+import java.io.BufferedReader;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +26,7 @@ import javax.servlet.http.Part;
  * @author Jip
  */
 @MultipartConfig
-@WebServlet(urlPatterns = {"/fotoUpload"})
+@WebServlet(urlPatterns = {"/PhotoUploadServlet"})
 public class PhotoUploadServlet extends HttpServlet {
 
     /**
@@ -80,10 +82,26 @@ public class PhotoUploadServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        try {
+            String value = getValueFromPart(request.getPart("PicturePrice"));
+            Double price = Double.parseDouble(value);
+            Part filePart = request.getPart("PictureControl"); // Retrieves <input type="file" name="file">
+            Picture.uploadPicture(filePart, 1, price, 100);
+        } catch (IOException | ServletException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
 
-        Part filePart = request.getPart("PictureControlId"); // Retrieves <input type="file" name="file">
-        Picture.uploadPicture(filePart, 1, 1.00, 100);
+    }
 
+    private static String getValueFromPart(Part part) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(part.getInputStream(), "UTF-8"));
+        StringBuilder value = new StringBuilder();
+        char[] buffer = new char[1024];
+        for (int length = 0; (length = reader.read(buffer)) > 0;) {
+            value.append(buffer, 0, length);
+        }
+        return value.toString();
     }
 
     /**

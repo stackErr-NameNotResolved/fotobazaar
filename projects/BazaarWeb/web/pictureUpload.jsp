@@ -17,7 +17,7 @@
                     }
                 }
 
-                $("#picUpload").change(function(){
+                $("#PictureControlId").change(function(){
                     readURL(this);
                 });
         </script>
@@ -27,17 +27,17 @@
         <div class="col-md-6">
 
             <div class="bs-example">
-                <form class="form-horizontal" role="form" action="fotoUpload">
+                <form class="form-horizontal" role="form" action="PhotoUploadServlet" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="prijs" class="col-sm-2 control-label">Prijs</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="PicturePriceID" id="PicturePrice" min="0" max="1000" step="0.01">
+                            <input type="number" class="form-control" name="PicturePrice"  id="PicturePriceID" min="0" max="1000" step="0.01">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="foto" class="col-sm-2 control-label">Foto</label>
                         <div class="col-sm-10">
-                            <input type="file" name="PictureControlId" id="PictureControlId" multiple accept='image/*' class="form-control">
+                            <input type="file" name="PictureControl" id="PictureControlId" multiple accept='image/*' class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
