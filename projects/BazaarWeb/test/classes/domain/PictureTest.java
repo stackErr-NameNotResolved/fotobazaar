@@ -5,7 +5,6 @@
  */
 package classes.domain;
 
-
 import org.junit.*;
 
 import javax.imageio.ImageIO;
@@ -16,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.fail;
-
 
 /**
  *
@@ -91,10 +89,6 @@ public class PictureTest {
         final int databaseId3 = 3;
 
         // Create new picture instances.
-        //Picture p1 = new Picture(databaseId1);
-        //Picture p2 = new Picture(databaseId2);
-        //Picture p3 = new Picture(databaseId3);
-
         // The expected output from the updatePrice method.
         final boolean expected1 = true;
         final boolean expected2 = false;
@@ -102,52 +96,50 @@ public class PictureTest {
 
         //ACT
         //Let the method do its job.
-        //boolean actual1 = p1.updatePrice(price1);
-        //boolean actual2 = p2.updatePrice(price2);
-        //boolean actual3 = p3.updatePrice(price3);
+        boolean actual1 = Picture.updatePrice(price1, databaseId1);
+        boolean actual2 = Picture.updatePrice(price1, databaseId2);
+        boolean actual3 = Picture.updatePrice(price1, databaseId3);
 
         //ASSERT
         //Test if the actual output is equal to the expected value.
-        //Assert.assertEquals("P1 should be updated!", expected1, actual1);
-        //Assert.assertEquals("P2 should not be updated!", expected2, actual2);
-        //Assert.assertEquals("P3 should be updated!", expected3, actual3);
+        Assert.assertEquals("P1 should be updated!", expected1, actual1);
+        Assert.assertEquals("P2 should not be updated!", expected2, actual2);
+        Assert.assertEquals("P3 should be updated!", expected3, actual3);
 
+        //get price1 en kijk of die gelijk is aan prijs 1
+        //get price3 en kijk of die gelijk is aan prijs 3
     }
-    
+
     @Test
-    public void testGenerateUniekID()
-    {
+    public void testGenerateUniekID() {
         // INITIALIZE
-        ArrayList<String> list= new ArrayList();
-        
+        ArrayList<String> list = new ArrayList();
+
         // ASSERT
         // Test 100 unique codes
-        for(int i= 0; i<100; i++)
-        {
+        for (int i = 0; i < 100; i++) {
             String id = Picture.generateNewID();
-            
+
             // Check if the id is unique
-            if(list.contains(id))
+            if (list.contains(id)) {
                 fail("The generated id has been generated before");
-            
+            }
+
             list.add(id);
-            
+
             // Check if the id has 15 characters
-            if(id.length() != 15)
-            {
-                fail ("The generated id has not exact 15 chracters");
+            if (id.length() != 15) {
+                fail("The generated id has not exact 15 chracters");
             }
-           
+
             // Check if the id contains a O
-            if(id.contains("O"))
-            {
-                fail ("The generated id contains a character \'O\'");
+            if (id.contains("O")) {
+                fail("The generated id contains a character \'O\'");
             }
-            
+
             // Check if the id has only uppercase characters
-            if(!id.equals(id.toUpperCase()))
-            {
-                fail ("The generated id contains lowercase characters");
+            if (!id.equals(id.toUpperCase())) {
+                fail("The generated id contains lowercase characters");
             }
         }
     }

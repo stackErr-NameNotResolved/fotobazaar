@@ -84,9 +84,11 @@ public class Picture {
     }
 
     /**
-     *Converts the bufferedimage to an inputstream
+     * Converts the bufferedimage to an inputstream
+     *
      * @param input the bufferedimage to convert
-     * @param imagename the name of the image to convert with the .png or .jpg postfix
+     * @param imagename the name of the image to convert with the .png or .jpg
+     * postfix
      * @return the converted image as inputstream
      */
     public static InputStream BufferedImageToInputstream(BufferedImage input, String imagename) {
@@ -103,7 +105,8 @@ public class Picture {
     }
 
     /**
-     *Creates a thumbnail of the given picture
+     * Creates a thumbnail of the given picture
+     *
      * @param originalPicture the picture to shrink
      * @param maximumSize
      * @return the actual thumbnail
@@ -139,7 +142,8 @@ public class Picture {
     }
 
     /**
-     *Generates a new ID for an image
+     * Generates a new ID for an image
+     *
      * @return the newly generated ID
      */
     public static String generateNewID() {
@@ -216,11 +220,33 @@ public class Picture {
     }
 
     /**
+     * *
+     * updates the existing price of the picture.
      *
-     * @param price2
-     * @return
+     * @param newPrice the new price of the picture.
+     * @return boolean if the price is updated or not.
      */
-    public boolean updatePrice(double price2) {
-        return false;
+    public static boolean updatePrice(double newPrice, int photoId) {
+
+        boolean result = false;
+
+        if (newPrice >= 0.00) {
+            try {
+                StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery(String.format("UPDATE PHOTO SET PRICE = %s WHERE ID = %s", newPrice, photoId));
+
+                if (dbResult == null || dbResult == StatementResult.ERROR || dbResult == StatementResult.NO_ROWS_UPDATED) {
+                    result = false;
+                } else {
+                    result = true;
+                }
+
+            } catch (Exception ex) {
+                result = false;
+            }
+        } else {
+            result = false;
+        }
+
+        return result;
     }
 }
