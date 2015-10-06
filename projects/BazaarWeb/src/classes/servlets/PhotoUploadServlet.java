@@ -1,9 +1,12 @@
+package classes.servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
+import classes.domain.Picture;
 import classes.domain.Picture;
 
 import java.io.IOException;
@@ -22,7 +25,7 @@ import javax.servlet.http.Part;
  */
 @MultipartConfig
 @WebServlet(urlPatterns = {"/fotoUpload"})
-public class fotoUpload extends HttpServlet {
+public class PhotoUploadServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -78,8 +81,8 @@ public class fotoUpload extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
-        Part filePart = request.getPart("imageControlId"); // Retrieves <input type="file" name="file">
-        Picture.uploadPicture(filePart, 1, 1.00, 30);
+        Part filePart = request.getPart("PictureControlId"); // Retrieves <input type="file" name="file">
+        Picture.uploadPicture(filePart, 1, 1.00, 100);
 
     }
 
