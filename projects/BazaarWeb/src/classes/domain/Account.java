@@ -5,18 +5,18 @@ import classes.database.orm.DataModel;
 import classes.database.orm.annotations.Id;
 import classes.database.orm.annotations.Table;
 
-@Table
+@Table(name = "ACCOUNT")
 public class Account extends DataModel {
-    @Id
+    @Id(name = "ID")
     private int id;
 
-    @Column
+    @Column(name = "USERNAME")
     private String username;
 
-    @Column
+    @Column(name = "PASSWORD")
     private String password;
 
-    @Column
+    @Column(name = "ACCESS")
     private int right;
 
     public int getId() {
@@ -36,7 +36,6 @@ public class Account extends DataModel {
     }
 
     public void setUsername(String username) {
-
         this.username = username;
     }
 

@@ -1,5 +1,6 @@
 package classes.database.orm;
 
+import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
 import classes.database.orm.annotations.Column;
@@ -8,11 +9,14 @@ import classes.database.orm.annotations.Table;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public abstract class DataModel {
     private static Map<Class<?>, ORMTable> cacheORM = new HashMap<>();
 
+    public DataModel() {
+    }
 
     public StatementResult insert() {
         ORMTable table = getORMTable();
@@ -21,7 +25,7 @@ public abstract class DataModel {
         StringBuilder queryBuilder = new StringBuilder();
 
         queryBuilder.append("INSERT INTO ");
-        queryBuilder.append(table.getName());
+        queryBuilder.append('`').append(table.getName()).append('`');
 
         // Insert column names.
         queryBuilder.append(" (");
@@ -29,8 +33,9 @@ public abstract class DataModel {
         for (int i = 0; i < table.getColumns().size(); i++) {
             ORMColumn column = table.getColumns().get(i);
 
-            queryBuilder.append(column.getName());
+            queryBuilder.append('`').append(column.getName()).append('`');
             try {
+                column.getField().setAccessible(true);
                 objectParams.add(column.getField().get(this));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -43,9 +48,13 @@ public abstract class DataModel {
 
         // Insert column values.
         queryBuilder.append(" VALUES(");
-        for (Object objectParam : objectParams) {
-            queryBuilder.append(objectToSQL(objectParam));
+        for (int i = 0; i < objectParams.size(); i++) {
+            Object o = objectParams.get(i);
+            queryBuilder.append(objectToSQL(o));
+
+            if (i < objectParams.size() - 1) queryBuilder.append(',');
         }
+
         queryBuilder.append(");");
 
         return DatabaseConnector.getInstance().executeNonQuery(queryBuilder.toString());
@@ -59,13 +68,65 @@ public abstract class DataModel {
         throw new NotImplementedException();
     }
 
+    public static <T extends DataModel> T fromId(Class<T> clazz, Object... ids) {
+        // Create DataModel.
+        T model;
+        try {
+            model = clazz.getConstructor().newInstance();
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            throw new IllegalStateException(String.format("No default constructor declared for the model %s.", clazz.getSimpleName()));
+        }
+
+        // SELECT.
+        ORMTable table = getORMTable(clazz);
+        StringBuilder queryBuilder = new StringBuilder("SELECT ");
+
+        // Insert column names.
+        for (int i = 0; i < table.getColumns().size(); i++) {
+            ORMColumn column = table.getColumns().get(i);
+
+            queryBuilder.append('`').append(column.getName()).append('`');
+            if (i < table.getColumns().size() - 1) queryBuilder.append(',');
+        }
+
+        // FROM.
+        queryBuilder.append(" FROM ");
+        queryBuilder.append('`').append(table.getName()).append('`');
+
+        // WHERE.
+        queryBuilder.append(" WHERE ");
+        List<ORMKey> keys = table.getKeys();
+        for (int i = 0; i < ids.length; i++) {
+            Object id = ids[i];
+            queryBuilder.append(keys.get(0).getName());
+            queryBuilder.append(" = ");
+            queryBuilder.append(objectToSQL(id));
+
+            if (i < ids.length - 1) queryBuilder.append(" AND ");
+        }
+
+        // Query.
+        DataTable rows = DatabaseConnector.getInstance().executeQuery(queryBuilder.toString());
+
+        // Store values in model.
+        if (!rows.containsData()) return null;
+
+        List<ORMColumn> columns = table.getColumns();
+        for (int i = 0; i < columns.size(); i++) {
+            ORMColumn column = columns.get(i);
+            //column.getField().set(model, rows.getNextRow());
+        }
+
+        return model;
+    }
+
     /**
      * Converts an Java object to a SQL friendly representation of use in queries.
      *
      * @param object Object to convert to text.
      * @return SQL friendly textual representation of the Java object.
      */
-    public String objectToSQL(Object object) {
+    public static String objectToSQL(Object object) {
         if (object == null) return "NULL";
         else if (object instanceof String) return String.format("'%s'", object);
         else if (object instanceof Integer) return Integer.toString((Integer) object);
@@ -81,8 +142,22 @@ public abstract class DataModel {
      * @return {@link classes.database.orm.DataModel.ORMTable} for this {@link DataModel}.
      */
     public ORMTable getORMTable() {
-        if (!cacheORM.containsKey(getClass())) cacheORM.put(getClass(), DataModel.ORMTable.fromClass(getClass()));
-        return cacheORM.get(getClass());
+        Class<? extends DataModel> clazz = getClass();
+        if (!cacheORM.containsKey(clazz)) cacheORM.put(clazz, DataModel.ORMTable.fromClass(clazz));
+        return cacheORM.get(clazz);
+    }
+
+    /**
+     * Gets the {@link classes.database.orm.DataModel.ORMTable} for this {@link DataModel}.
+     * If no {@link classes.database.orm.DataModel.ORMTable} exists it will be created and cached.
+     *
+     * @param clazz Type of class to get the table from. Must be a {@link DataModel}.
+     * @param <T>   Type that extends the {@link DataModel} class.
+     * @return {@link classes.database.orm.DataModel.ORMTable} for this {@link DataModel}.
+     */
+    public static <T extends DataModel> ORMTable getORMTable(Class<T> clazz) {
+        if (!cacheORM.containsKey(clazz)) cacheORM.put(clazz, DataModel.ORMTable.fromClass(clazz));
+        return cacheORM.get(clazz);
     }
 
     /**
@@ -123,7 +198,7 @@ public abstract class DataModel {
 
             // Get table name.
             Optional<Table> tableNameAnnotation = Arrays.asList(clazz.getAnnotationsByType(Table.class)).stream().findFirst();
-            if (tableNameAnnotation.isPresent()) {
+            if (tableNameAnnotation.isPresent() && tableNameAnnotation.get().name() != null && !tableNameAnnotation.get().name().isEmpty()) {
                 table.name = tableNameAnnotation.get().name();
             } else {
                 table.name = clazz.getSimpleName();
