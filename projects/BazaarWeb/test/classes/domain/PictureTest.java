@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.Part;
 
 import static org.junit.Assert.fail;
 
@@ -42,6 +43,12 @@ public class PictureTest {
     public void tearDown() {
     }
 
+    public void testUploadPicture() {
+        if (Picture.uploadPicture(null, 1, 1, 1) != false) {
+            fail("should return false because part == null");
+        }
+    }
+
     /**
      * Test of getThumbnail method, of class Picture.
      */
@@ -66,9 +73,8 @@ public class PictureTest {
         BufferedImage convertedImage2 = Picture.getThumbnail(imageToConvert2, maximumSize);
         BufferedImage convertedImage3 = Picture.getThumbnail(imageToConvert3, maximumSize);
 
-        if (convertedImage1.getWidth() != maximumSize || convertedImage2.getHeight() != maximumSize || convertedImage3.getHeight() != imageToConvert3.getHeight() || convertedImage3.getWidth() != imageToConvert3.getWidth()) {
+        if (convertedImage1.getWidth() != maximumSize || convertedImage2.getHeight() != maximumSize || convertedImage3.getHeight() == imageToConvert3.getHeight() || convertedImage3.getWidth() == imageToConvert3.getWidth()) {
             fail("atleast the width or height needs to be " + maximumSize + " pixels or smaller when the image is smaller than " + maximumSize + " pixels");
-
         }
     }
 

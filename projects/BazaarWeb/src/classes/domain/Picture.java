@@ -46,9 +46,13 @@ public class Picture {
      * @param photographerId the id of the photographer
      * @param price price of the image
      * @param thumbnailSize the max width or height of the thumbnail
-     * @return of the image got placed in the database
+     * @return true if the image got placed in the database, false if nothing got updated due part being null or on constraint violation
      */
     public static boolean uploadPicture(Part imagePart, int photographerId, double price, int thumbnailSize) {
+        if (imagePart == null) {
+            return false;
+        }
+        
         try {
             InputStream imageBig = imagePart.getInputStream();
             InputStream imageBigCopy = imagePart.getInputStream();//copy is made because filedescriptor is walked to the end due to the inputStreamToBufferedImage function

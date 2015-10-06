@@ -5,11 +5,12 @@ package classes.servlets;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import classes.domain.Picture;
 import classes.domain.Picture;
+import java.io.ByteArrayOutputStream;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -24,7 +25,7 @@ import javax.servlet.http.Part;
  * @author Jip
  */
 @MultipartConfig
-@WebServlet(urlPatterns = {"/fotoUpload"})
+@WebServlet(urlPatterns = {"/PhotoUploadServlet"})
 public class PhotoUploadServlet extends HttpServlet {
 
     /**
@@ -82,6 +83,7 @@ public class PhotoUploadServlet extends HttpServlet {
         processRequest(request, response);
 
         Part filePart = request.getPart("PictureControlId"); // Retrieves <input type="file" name="file">
+        
         Picture.uploadPicture(filePart, 1, 1.00, 100);
 
     }
