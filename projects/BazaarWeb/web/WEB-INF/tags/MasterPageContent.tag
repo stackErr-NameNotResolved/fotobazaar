@@ -1,6 +1,12 @@
 <%@tag description="MasterPageContent" pageEncoding="UTF-8"%>
 <%@ attribute name="title" required="true" %>
 <%@ attribute name="script" fragment="true" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="languages.text" />
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- <%@attribute name="message"%> -->
 
@@ -71,13 +77,21 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="contact.html">Mijn winkelwagen</a>
+                            <a for="cart" href="contact.html"><fmt:message key="master.menu.cart" /></a>
                         </li>
                         <li>
                             <a href="contact.html">???????</a>
                         </li>
                         <li>
-                            <a href="contact.html">Inloggen</a>
+                            <a for="login" href="contact.html"><fmt:message key="master.menu.login" /></a>
+                        </li>
+                        <li>
+                            <form>
+                                <select id="language" name="language" onchange="submit()">
+                                    <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+                                    <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
+                                </select>
+                            </form>
                         </li>
                         <!-- Search input
                                         <li><input class="form-control search" placeholder=" Search" type="text"></li> -->
