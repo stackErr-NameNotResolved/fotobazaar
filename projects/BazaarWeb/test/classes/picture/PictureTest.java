@@ -6,14 +6,16 @@
 package classes.picture;
 
 
+import classes.domain.Picture;
 import org.junit.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.Part;
 
 import static org.junit.Assert.fail;
 
@@ -113,42 +115,10 @@ public class PictureTest {
         //Assert.assertEquals("P3 should be updated!", expected3, actual3);
 
     }
-    
+    /**
+     * Test the uploadPicture method
+     */
     @Test
-    public void testGenerateUniekID()
-    {
-        // INITIALIZE
-        ArrayList<String> list= new ArrayList();
-        
-        // ASSERT
-        // Test 100 unique codes
-        for(int i= 0; i<100; i++)
-        {
-            String id = Picture.generateNewID();
-            
-            // Check if the id is unique
-            if(list.contains(id))
-                fail("The generated id has been generated before");
-            
-            list.add(id);
-            
-            // Check if the id has 15 characters
-            if(id.length() != 15)
-            {
-                fail ("The generated id has not exact 15 chracters");
-            }
-           
-            // Check if the id contains a O
-            if(id.contains("O"))
-            {
-                fail ("The generated id contains a character \'O\'");
-            }
-            
-            // Check if the id has only uppercase characters
-            if(!id.equals(id.toUpperCase()))
-            {
-                fail ("The generated id contains lowercase characters");
-            }
-        }
+    public void testUploadPicture() {
     }
 }

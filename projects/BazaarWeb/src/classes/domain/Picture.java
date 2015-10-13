@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package classes.picture;
+package classes.domain;
 
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
-
-import java.awt.*;
+import classes.database.StatementResult;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,16 +18,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Iterator;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
 import javax.servlet.http.Part;
 
 /**
@@ -36,27 +32,52 @@ public class Picture {
 
     private BufferedImage photo;
 
+    /**
+     *
+     */
     public Picture() {
 
     }
 
+    /**
+     * uploads the picture to the database and places a thumbnail in the
+     * database
+     *
+     * @param imagePart part that containt the image
+     * @param photographerId the id of the photographer
+     * @param price price of the image
+     * @param thumbnailSize the max width or height of the thumbnail
+     * @return true if the image got placed in the database, false if nothing
+     * got updated due part being null or on constraint violation
+     */
     public static boolean uploadPicture(Part imagePart, int photographerId, double price, int thumbnailSize) {
+        if (imagePart == null) {
+            return false;
+        }
+
         try {
-            byte[] imgBig = new byte[(int)imagePart.getSize()];
-            imagePart.getInputStream().read(imgBig);
+            InputStream imageBig = imagePart.getInputStream();
+            InputStream imageBigCopy = imagePart.getInputStream();//copy is made because filedescriptor is walked to the end due to the inputStreamToBufferedImage function
+            InputStream imageSmall = BufferedImageToInputstream(getThumbnail(inputStreamToBufferedImage(imageBigCopy), thumbnailSize), imagePart.getSubmittedFileName());
 
-            InputStream imageBig = new ByteArrayInputStream(imgBig);
-            InputStream imageSmall = BufferedImageToInputstream(getThumbnail(inputStreamToBufferedImage(imageBig), thumbnailSize));
+            StatementResult result = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO photo (CODE,PHOTOGRAPHER_ID,PRICE,DATA_BIG,DATA_SMALL,ACTIVE) VALUES (?,?,?,?,?,?)", generateNewID(), photographerId, price, imageBig, imageSmall,1);
 
-            DatabaseConnector.getInstance().executeNonQuery("INSERT INTO photo (CODE,PHOTOGRAPHER_ID,PRICE,DATA_BIG,DATA_SMALL) VALUES (?,?,?,?,?)", generateNewID(), photographerId, price, imageBig, imageSmall);
-
+            if (result.equals(StatementResult.ERROR) | result.equals(StatementResult.NO_ROWS_UPDATED)) {
+                return false;
+            }
             return true;
-        } catch (IOException | SQLException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(Picture.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
 
+    /**
+     * converts an inputstream to a bufferedimage
+     *
+     * @param input the inputstream to convert
+     * @return the newly created bufferedimage
+     */
     public static BufferedImage inputStreamToBufferedImage(InputStream input) {
         BufferedImage returnImage = null;
         try {
@@ -68,14 +89,34 @@ public class Picture {
         return returnImage;
     }
 
-    public static InputStream BufferedImageToInputstream(BufferedImage input) throws IOException {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(input, "jpg", os);
-        InputStream is = new ByteArrayInputStream(os.toByteArray());
-        return is;
-
+    /**
+     * Converts the bufferedimage to an inputstream
+     *
+     * @param input the bufferedimage to convert
+     * @param imagename the name of the image to convert with the .png or .jpg
+     * postfix
+     * @return the converted image as inputstream
+     */
+    public static InputStream BufferedImageToInputstream(BufferedImage input, String imagename) {
+        try {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            String[] splittedImagename = imagename.split("\\.");
+            ImageIO.write(input, splittedImagename[splittedImagename.length - 1], os);
+            InputStream is = new ByteArrayInputStream(os.toByteArray());
+            return is;
+        } catch (IOException ex) {
+            Logger.getLogger(Picture.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
+    /**
+     * Creates a thumbnail of the given picture
+     *
+     * @param originalPicture the picture to shrink
+     * @param maximumSize
+     * @return the actual thumbnail
+     */
     public static BufferedImage getThumbnail(BufferedImage originalPicture, int maximumSize) {
         int newWidth = 0;
         int newHeight = 0;
@@ -106,6 +147,11 @@ public class Picture {
         return resizedImage;
     }
 
+    /**
+     * Generates a new ID for an image
+     *
+     * @return the newly generated ID
+     */
     public static String generateNewID() {
         // Get the new ID from the database
         int nextId = 1;
@@ -150,25 +196,21 @@ public class Picture {
             index++;
         }
 
-        if(total.length() > 15) 
-        {
-            total= total.substring(0, 15);
-        }
-        else if(total.length() < 15)
-        {
-            while(total.length() < 15)
-            {
+        if (total.length() > 15) {
+            total = total.substring(0, 15);
+        } else if (total.length() < 15) {
+            while (total.length() < 15) {
                 total += (char) (65 + rand.nextInt(26));
             }
         }
-        
+
         total = total.replaceAll("o", "0").toUpperCase();
 
         // Check if the final UID exists in the database
         DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT COUNT(CODE) AS COUNT FROM PHOTO WHERE CODE=\'" + total + "\'");
         if (dt != null && dt.containsData()) {
             if ((long) dt.getDataFromRow(0, "COUNT") != 0) {
-                total = classes.picture.Picture.generateNewID();
+                total = classes.domain.Picture.generateNewID();
                 //System.out.println("code was already used");
             }
             //        else {
@@ -183,7 +225,58 @@ public class Picture {
         return total;
     }
 
-    public boolean updatePrice(double price2) {
-        return false;
+    /**
+     * *
+     * updates the existing price of the picture.
+     *
+     * @param newPrice the new price of the picture.
+     * @param photoId the ID of the photo
+     * @return boolean if the price is updated or not.
+     */
+    public static boolean updatePrice(double newPrice, int photoId) {
+
+        boolean result = false;
+
+        if (newPrice >= 0.00) {
+            try {
+                StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery(String.format("UPDATE PHOTO SET PRICE = %s WHERE ID = %s", newPrice, photoId));
+
+                if (dbResult == null || dbResult == StatementResult.ERROR || dbResult == StatementResult.NO_ROWS_UPDATED) {
+                    result = false;
+                } else {
+                    result = true;
+                }
+
+            } catch (Exception ex) {
+                result = false;
+            }
+        } else {
+            result = false;
+        }
+
+        return result;
+    }
+
+    /**
+     * sets the photo inactive in the database.
+     *
+     * @param photoId The ID of the photo.
+     * @return boolean if the photo is set inactive or not.
+     */
+    public static boolean deletePicture(int photoId) {
+        boolean result;
+
+        try {
+            StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery(String.format("UPDATE fotobazaar.PHOTO SET ACTIVE = 0 WHERE ID = %s", photoId));
+            if (dbResult == null || dbResult == StatementResult.ERROR || dbResult == StatementResult.NO_ROWS_UPDATED) {
+                result = false;
+            } else {
+                result = true;
+            }
+        } catch (Exception ex) {
+            result = false;
+        }
+
+        return result;
     }
 }

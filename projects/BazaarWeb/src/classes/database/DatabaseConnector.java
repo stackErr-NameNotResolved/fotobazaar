@@ -31,7 +31,7 @@ public class DatabaseConnector {
 
     public static DatabaseConnector getInstance() {
         if (instance == null) {
-            Initialize("192.168.27.10", 3306, "fotobazaar", "admin", "Server01!");
+            initialize("192.168.27.10", 3306, "fotobazaar", "admin", "Server01!");
         }
 
         return instance;
@@ -52,9 +52,9 @@ public class DatabaseConnector {
      * @param databasename The name of the database running on the server
      * @param username The username needed to connect to the database
      * @param password The password needed to connect to the database
-     * @return Returns true if the connection was successfull; otherwise false
+     * @return Returns true if the connection was successful, otherwise false
      */
-    private static boolean Initialize(String hostname, int port, String databasename, String username, String password) {
+    private static boolean initialize(String hostname, int port, String databasename, String username, String password) {
         instance = new DatabaseConnector();
 
         // Set the parameters for connecting to the database
@@ -89,7 +89,7 @@ public class DatabaseConnector {
         // Set up the connection to the database
         try {
             connection = DriverManager.getConnection("jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.databasename, this.username, this.password);
-        } catch (SQLException e) {
+        } catch (SQLException ignored) {
             Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, e);
             return false;
         }
@@ -128,11 +128,11 @@ public class DatabaseConnector {
     }
 
     /**
-     * Execute a query to the database
+     * Execute a query to the database.
      *
-     * @param command The query that needs to be executed
-     * @param params
-     * @return A ResultSet with the output of the query
+     * @param command The query that needs to be executed.
+     * @param params  Parameters to prepare with the SQL query. Each ? sign will be replaced by one object in the {@code params} parameter in order.
+     * @return A {@link ResultSet} with the output of the query.
      */
     public DataTable executeQuery(String command, Object... params) {
         if (!this.isOpen()) {
@@ -157,7 +157,7 @@ public class DatabaseConnector {
 
     public StatementResult executeNonQuery(String command, Object... params) {
         if (!this.isOpen()) {
-            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, new Exception("The connection to the database is not open"));
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, new Exception("The connection to the database is not open."));
             return StatementResult.ERROR;
         }
 
