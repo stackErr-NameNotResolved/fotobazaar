@@ -6,6 +6,7 @@
 package classes.picture;
 
 
+import classes.domain.Picture;
 import org.junit.*;
 
 import javax.imageio.ImageIO;
@@ -119,19 +120,5 @@ public class PictureTest {
      */
     @Test
     public void testUploadPicture() {
-        BufferedImage image = null;
-        InputStream imageInputStream = null;
-        Part imagePart = null;
-        try {
-            image = ImageIO.read(getClass().getResource("image2.jpg"));
-        } catch (IOException ex) {
-            Logger.getLogger(PictureTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        try {
-            imageInputStream = Picture.BufferedImageToInputstream(image);
-        } catch (IOException ex) {
-            Logger.getLogger(PictureTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }
