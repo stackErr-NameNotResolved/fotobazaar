@@ -1,18 +1,20 @@
+package classes.servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-import classes.database.DatabaseConnector;
-import classes.picture.Picture;
+import classes.domain.Picture;
+import classes.domain.Picture;
 import java.io.ByteArrayOutputStream;
+import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -26,8 +28,8 @@ import javax.servlet.http.Part;
  * @author Jip
  */
 @MultipartConfig
-@WebServlet(urlPatterns = {"/fotoUpload"})
-public class fotoUpload extends HttpServlet {
+@WebServlet(urlPatterns = {"/PhotoUploadServlet"})
+public class PhotoUploadServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -83,9 +85,25 @@ public class fotoUpload extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-                Part filePart = request.getPart("imageControlId"); // Retrieves <input type="file" name="file">
-        Picture.uploadPicture(filePart, 1, 1.00,30);
+        try {
+            String value = getValueFromPart(request.getPart("PicturePrice"));
+            Double price = Double.parseDouble(value);
+            Part filePart = request.getPart("PictureControl"); // Retrieves <input type="file" name="file">
+            Picture.uploadPicture(filePart, 1, price, 100);
+        } catch (IOException | ServletException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
 
+    }
+
+    private static String getValueFromPart(Part part) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(part.getInputStream(), "UTF-8"));
+        StringBuilder value = new StringBuilder();
+        char[] buffer = new char[1024];
+        for (int length = 0; (length = reader.read(buffer)) > 0;) {
+            value.append(buffer, 0, length);
+        }
+        return value.toString();
     }
 
     /**

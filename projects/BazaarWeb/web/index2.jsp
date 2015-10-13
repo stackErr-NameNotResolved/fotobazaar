@@ -1,11 +1,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+
+<t:MasterPageContent title="tweede Index">
+    <!-- Sub-Container for ui elements/text -->
+    <div class="container">
+        <div class="row mar-b-50">
+            <div class="col-md-12">
+                <p>
+                    dit is wat meer text 
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- End Sub-Container -->
+</t:MasterPageContent>

@@ -12,5 +12,5 @@ package classes.database;
 public enum StatementResult {
     ROWS_UPDATED,
     ERROR,
-    NO_ROWS_UPDATED
+    NO_ROWS_UPDATED,
 }

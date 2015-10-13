@@ -6,6 +6,8 @@
 package classes.database;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Bas
@@ -22,15 +24,13 @@ public class DatabaseConnector {
     private String password;
     private Connection connection;
 
-    private Exception error;
-
     private static DatabaseConnector instance;
+
     public static DatabaseConnector getInstance() {
-        if(instance == null)
-        {
-            Initialize("192.168.27.10", 3306, "fotobazaar", "admin", "Server01!");
+        if (instance == null) {
+            initialize("192.168.27.10", 3306, "fotobazaar", "admin", "Server01!");
         }
-        
+
         return instance;
     }
 
@@ -49,9 +49,9 @@ public class DatabaseConnector {
      * @param databasename The name of the database running on the server
      * @param username     The username needed to connect to the database
      * @param password     The password needed to connect to the database
-     * @return Returns true if the connection was successfull; otherwise false
+     * @return Returns true if the connection was successful, otherwise false
      */
-    private static boolean Initialize(String hostname, int port, String databasename, String username, String password) {
+    private static boolean initialize(String hostname, int port, String databasename, String username, String password) {
         instance = new DatabaseConnector();
 
         // Set the parameters for connecting to the database
@@ -73,21 +73,19 @@ public class DatabaseConnector {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            error = new Exception("Missing MySQL JDBC Driver");
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, new Exception("Missing MySQL JDBC Driver"));
             return false;
         }
 
         // Set up the connection to the database
         try {
             connection = DriverManager.getConnection("jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.databasename, this.username, this.password);
-        } catch (SQLException e) {
-            error = e;
-            return false;
+        } catch (SQLException ignored) {
         }
 
         // Check if the database connection is establisched
         if (connection == null) {
-            error = new Exception("Failed to make the database connection");
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, new Exception("Failed to make the database connection"));
             return false;
         }
 
@@ -106,16 +104,17 @@ public class DatabaseConnector {
         }
     }
 
+
     /**
-     * Execute a query to the database
+     * Execute a query to the database.
      *
-     * @param command The query that needs to be executed
-     * @param params
-     * @return A ResultSet with the output of the query
+     * @param command The query that needs to be executed.
+     * @param params  Parameters to prepare with the SQL query. Each ? sign will be replaced by one object in the {@code params} parameter in order.
+     * @return A {@link ResultSet} with the output of the query.
      */
     public DataTable executeQuery(String command, Object... params) {
         if (!this.isOpen()) {
-            error = new Exception("The connection to the database is not open");
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, new Exception("The connection to the database is not open"));
             return null;
         }
 
@@ -128,15 +127,15 @@ public class DatabaseConnector {
             }
             return new DataTable(statement.executeQuery());
         } catch (Exception ex) {
-            error = ex;
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return null;
     }
 
-    public StatementResult executeNonQuery(String command, Object... params) throws SQLException {
+    public StatementResult executeNonQuery(String command, Object... params) {
         if (!this.isOpen()) {
-            error = new Exception("The connection to the database is not open");
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, new Exception("The connection to the database is not open."));
             return StatementResult.ERROR;
         }
 
@@ -149,17 +148,9 @@ public class DatabaseConnector {
             }
             return (statement.executeUpdate() == 0 ? StatementResult.NO_ROWS_UPDATED : StatementResult.ROWS_UPDATED);
         } catch (SQLException ex) {
-            error = ex;
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return StatementResult.ERROR;
-    }
-
-    public Exception getLastError() {
-        return error;
-    }
-
-    public String getLastErrorMessage() {
-        return error.getMessage();
     }
 }
