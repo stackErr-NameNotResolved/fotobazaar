@@ -15,6 +15,7 @@ public class AccountTest extends TestCase {
     }
 
     public void testCRUD() throws Exception {
-
+        Account account = Account.fromId(Account.class, 7);
+        account.delete();
     }
 }

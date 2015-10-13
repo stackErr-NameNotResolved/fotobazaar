@@ -10,6 +10,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.*;
 
 public abstract class DataModel {
@@ -65,7 +66,34 @@ public abstract class DataModel {
     }
 
     public StatementResult delete() {
-        throw new NotImplementedException();
+        ORMTable table = getORMTable();
+
+        // Build query.
+        StringBuilder queryBuilder = new StringBuilder();
+
+        queryBuilder.append("DELETE FROM ");
+        queryBuilder.append('`').append(table.getName()).append('`');
+
+        // WHERE.
+        queryBuilder.append(" WHERE ");
+        List<ORMKey> keys = table.getKeys();
+        for (int i = 0; i < keys.size(); i++) {
+            ORMKey key = keys.get(i);
+            queryBuilder.append(keys.get(i).getName());
+            queryBuilder.append(" = ");
+            try {
+                key.getField().setAccessible(true);
+                queryBuilder.append(objectToSQL(key.getField().get(this)));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+            if (i < keys.size() - 1) queryBuilder.append(" AND ");
+        }
+
+        queryBuilder.append(";");
+
+        return DatabaseConnector.getInstance().executeNonQuery(queryBuilder.toString());
     }
 
     public static <T extends DataModel> T fromId(Class<T> clazz, Object... ids) {
@@ -98,7 +126,7 @@ public abstract class DataModel {
         List<ORMKey> keys = table.getKeys();
         for (int i = 0; i < ids.length; i++) {
             Object id = ids[i];
-            queryBuilder.append(keys.get(0).getName());
+            queryBuilder.append(keys.get(i).getName());
             queryBuilder.append(" = ");
             queryBuilder.append(objectToSQL(id));
 
@@ -110,11 +138,17 @@ public abstract class DataModel {
 
         // Store values in model.
         if (!rows.containsData()) return null;
+        Object[] row = rows.getRow(0);
 
         List<ORMColumn> columns = table.getColumns();
         for (int i = 0; i < columns.size(); i++) {
             ORMColumn column = columns.get(i);
-            //column.getField().set(model, rows.getNextRow());
+            try {
+                column.getField().setAccessible(true);
+                column.getField().set(model, sqlObjectToJava(row[i]));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
 
         return model;
@@ -132,7 +166,13 @@ public abstract class DataModel {
         else if (object instanceof Integer) return Integer.toString((Integer) object);
         else if (object instanceof Float) return Float.toString((Float) object);
         else if (object instanceof Double) return Double.toString((Double) object);
-        else throw new UnsupportedOperationException("Cannot convert object to SQL string.");
+        else throw new UnsupportedOperationException(String.format("Cannot convert object '%s' to SQL string.", object));
+    }
+
+    public static Object sqlObjectToJava(Object object) {
+        if (object == null) return null;
+        else if (object instanceof BigDecimal) return ((BigDecimal)object).toBigInteger().intValueExact();
+        else return object;
     }
 
     /**

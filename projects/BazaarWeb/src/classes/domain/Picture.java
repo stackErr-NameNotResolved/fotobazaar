@@ -47,13 +47,14 @@ public class Picture {
      * @param photographerId the id of the photographer
      * @param price price of the image
      * @param thumbnailSize the max width or height of the thumbnail
-     * @return true if the image got placed in the database, false if nothing got updated due part being null or on constraint violation
+     * @return true if the image got placed in the database, false if nothing
+     * got updated due part being null or on constraint violation
      */
     public static boolean uploadPicture(Part imagePart, int photographerId, double price, int thumbnailSize) {
         if (imagePart == null) {
             return false;
         }
-        
+
         try {
             InputStream imageBig = imagePart.getInputStream();
             InputStream imageBigCopy = imagePart.getInputStream();//copy is made because filedescriptor is walked to the end due to the inputStreamToBufferedImage function
@@ -229,7 +230,7 @@ public class Picture {
      * updates the existing price of the picture.
      *
      * @param newPrice the new price of the picture.
-     * @param photoId  the ID of the photo
+     * @param photoId the ID of the photo
      * @return boolean if the price is updated or not.
      */
     public static boolean updatePrice(double newPrice, int photoId) {
@@ -250,6 +251,29 @@ public class Picture {
                 result = false;
             }
         } else {
+            result = false;
+        }
+
+        return result;
+    }
+
+    /**
+     * sets the photo inactive in the database.
+     *
+     * @param photoId The ID of the photo.
+     * @return boolean if the photo is set inactive or not.
+     */
+    public static boolean deletePicture(int photoId) {
+        boolean result;
+
+        try {
+            StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery(String.format("UPDATE fotobazaar.PHOTO SET ACTIVE = 0 WHERE ID = %s", photoId));
+            if (dbResult == null || dbResult == StatementResult.ERROR || dbResult == StatementResult.NO_ROWS_UPDATED) {
+                result = false;
+            } else {
+                result = true;
+            }
+        } catch (Exception ex) {
             result = false;
         }
 
