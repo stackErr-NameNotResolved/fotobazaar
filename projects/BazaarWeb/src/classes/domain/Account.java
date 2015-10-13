@@ -1,5 +1,7 @@
 package classes.domain;
 
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
 import classes.database.orm.annotations.Column;
 import classes.database.orm.DataModel;
 import classes.database.orm.annotations.Id;
@@ -7,6 +9,7 @@ import classes.database.orm.annotations.Table;
 
 @Table(name = "ACCOUNT")
 public class Account extends DataModel {
+
     @Id(name = "ID")
     private int id;
 
@@ -45,5 +48,14 @@ public class Account extends DataModel {
 
     public void setRight(int right) {
         this.right = right;
+    }
+
+    public static boolean validateCredentials(String username, String password) {
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("select * from account where username=? and password=?", username, password);
+        if (dt.containsData()) {
+            return (int) dt.getDataFromRow(0, "access") >= 0;
+        }
+
+        return false;
     }
 }
