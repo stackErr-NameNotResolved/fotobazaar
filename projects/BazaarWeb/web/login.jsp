@@ -10,15 +10,15 @@
                     <form class="form-signin" role="form" action="LoginServlet" method="post" enctype="multipart/form-data">
                         <h2 class="form-signin-heading">sign in now</h2>
                         <div class="login-wrap">
-                            <input type="text" class="form-control" placeholder="User ID" name="username" id="UsernameID" autofocus>
+                            <input type="text" class="form-control" placeholder="User ID" name="Username" autofocus>
                             <input type="password" class="form-control" placeholder="Password" name="Password">
                             <label class="checkbox">
                                 <span class="pull-right">
                                     <a data-toggle="modal" href="#myModal"> Forgot Password?</a>
                                 </span>
                             </label>
-                           
-                            
+
+
                             <button class="btn btn-lg btn-login btn-block">Login</button>
 
                             <div class="registration">

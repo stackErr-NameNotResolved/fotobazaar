@@ -5,29 +5,21 @@
  */
 package classes.servlets;
 
-import classes.domain.Account;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.Enumeration;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 /**
  *
  * @author Bas
  */
-@MultipartConfig
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "LogOutServlet", urlPatterns = {"/LogOutServlet"})
+public class LogOutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,10 +38,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet LogOutServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LogOutServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -81,23 +73,22 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        
-        String username = request.getParameter("Username");
-        String password = request.getParameter("Password");
-        
-        if(Account.validateCredentials(username, password)){
-            Cookie loginCookie = new Cookie("username",username);
-            //setting cookie to expiry in 30 mins
-            loginCookie.setMaxAge(30*60);
-            response.addCookie(loginCookie);
-            response.sendRedirect("index.jsp");
-        }else{
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
-            PrintWriter out= response.getWriter();
-            out.println("<font color=red>Either user name or password is wrong.</font>");
-            rd.include(request, response);
+        response.setContentType("text/html");
+        Cookie loginCookie = null;
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null){
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals("username")){
+                loginCookie = cookie;
+                break;
+            }
         }
+        }
+        if(loginCookie != null){
+            loginCookie.setMaxAge(0);
+            response.addCookie(loginCookie);
+        }
+        response.sendRedirect("index.jsp");
     }
 
     /**
@@ -109,4 +100,5 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

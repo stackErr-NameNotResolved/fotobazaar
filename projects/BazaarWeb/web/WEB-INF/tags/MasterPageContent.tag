@@ -83,7 +83,26 @@
                             <a href="contact.html">???????</a>
                         </li>
                         <li>
+                            <%
+                                boolean account = false;
+                                for(Cookie c : request.getCookies())
+                                    if(c.getName().equals("username"))
+                                    {
+                                        account = true;
+                                        break;
+                                    }
+                                
+                                if(account) {
+                            %>
+                            <form name="submitForm" method="POST" action="LogOutServlet">
+                                <!--<input type="hidden" name="param1" value="param1Value">-->
+                                <A HREF="javascript:document.submitForm.submit()">Uitloggen</A>
+                            </form>
+                            <%
+                            } else {
+                            %>
                             <a for="login" href="login.jsp"><fmt:message key="master.menu.login" /></a>
+                            <% }%>
                         </li>
                         <li>
                             <form>
@@ -118,7 +137,7 @@
             </div>
         </div>
         <!-- End Sub-Container -->
-        
+
         <!--small footer start -->
         <footer class="footer-small">
             <div class="container">
