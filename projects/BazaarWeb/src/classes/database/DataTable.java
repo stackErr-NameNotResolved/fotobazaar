@@ -201,4 +201,9 @@ public class DataTable implements Iterable<DataRow> {
         };
         return it;
     }
+    
+    public ResultSet getResultSet()
+    {
+        return resultSet;
+    }
 }
