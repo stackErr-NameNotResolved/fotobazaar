@@ -89,7 +89,7 @@ public class DatabaseConnector {
         // Set up the connection to the database
         try {
             connection = DriverManager.getConnection("jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.databasename, this.username, this.password);
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
             Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, e);
             return false;
         }
