@@ -6,7 +6,7 @@
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
         <script type="text/javascript">
                 function readURL(input) {
-                    if (input.files && input.files[0]) {
+                    if (input.files && input.files[0]&&input.files[1]==null) {
                         var reader = new FileReader();
 
                         reader.onload = function (e) {

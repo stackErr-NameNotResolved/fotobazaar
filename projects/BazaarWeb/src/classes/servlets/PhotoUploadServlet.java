@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -84,12 +86,20 @@ public class PhotoUploadServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
+
         try {
-            String value = getValueFromPart(request.getPart("PicturePrice"));
-            Double price = Double.parseDouble(value);
-            Part filePart = request.getPart("PictureControl"); // Retrieves <input type="file" name="file">
-            Picture.uploadPicture(filePart, 1, price, 100);
+            if (request.getPart("PicturePrice") != null && request.getParts() != null) {
+                String value = getValueFromPart(request.getPart("PicturePrice"));
+                Double price = Double.parseDouble(value);
+                Collection<Part> filePart = request.getParts(); // Retrieves <input type="file" name="file">
+
+                for (Part part : filePart) {
+                    if (part.getContentType() != null) {
+                        Picture.uploadPicture(part, 1, price, 200);
+                    }
+                }
+            }
+
         } catch (IOException | ServletException | NumberFormatException e) {
             System.out.println(e.getMessage());
         }
