@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.Part;
 import javax.imageio.ImageIO;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -184,5 +183,54 @@ public class PictureTest {
                 fail("The generated id contains lowercase characters");
             }
         }
+    }
+
+    @Test
+    public void testDeletePicture() {
+        //ARRANGE
+        final int expectedValue = 0;
+        final boolean expectedResult = true;
+
+        int photoId1 = 1;
+        int photoId2 = 2;
+        int photoId3 = 3;
+
+        //ACT
+        boolean actualResult1 = Picture.deletePicture(photoId1);
+        boolean actualResult2 = Picture.deletePicture(photoId2);
+        boolean actualResult3 = Picture.deletePicture(photoId3);
+
+        //ASSERT
+        Assert.assertTrue("Actual result should be true!", actualResult1);
+        Assert.assertTrue("Actual result should be true!", actualResult2);
+        Assert.assertTrue("Actual result should be true!", actualResult2);
+
+        try {
+
+            DataTable dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT ACTIVE FROM PHOTO WHERE ID = %s", photoId1));
+
+            if (dt != null || dt.containsData()) {
+                if ((int) dt.getDataFromRow(0, "ACTIVE") != expectedValue) {
+                    Assert.fail("Active on photoId 1 did not update!");
+                }
+            }
+            dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT ACTIVE FROM PHOTO WHERE ID = %s", photoId2));
+
+            if (dt != null || dt.containsData()) {
+                if ((int) dt.getDataFromRow(0, "ACTIVE") != expectedValue) {
+                    Assert.fail("Active on photoId 2 did not update!");
+                }
+            }
+            dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT ACTIVE FROM PHOTO WHERE ID = %s", photoId3));
+
+            if (dt != null || dt.containsData()) {
+                if ((int) dt.getDataFromRow(0, "ACTIVE") != expectedValue) {
+                    Assert.fail("Active on photoId 3 did not update!");
+                }
+            }
+        } catch (Exception ex) {
+            fail("Could not connect to database!");
+        }
+
     }
 }
