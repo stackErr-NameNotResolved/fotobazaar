@@ -187,6 +187,9 @@ public class PictureTest {
 
     @Test
     public void testDeletePicture() {
+        
+        //See the testboard on VersionOne for test explanation.
+        
         //ARRANGE
         final int expectedValue = 0;
         final boolean expectedResult = true;
