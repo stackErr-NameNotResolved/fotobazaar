@@ -11,8 +11,10 @@ import org.junit.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.Part;
 
 import static org.junit.Assert.fail;
 
@@ -111,5 +113,25 @@ public class PictureTest {
         //Assert.assertEquals("P2 should not be updated!", expected2, actual2);
         //Assert.assertEquals("P3 should be updated!", expected3, actual3);
 
+    }
+    /**
+     * Test the uploadPicture method
+     */
+    @Test
+    public void testUploadPicture() {
+        BufferedImage image = null;
+        InputStream imageInputStream = null;
+        Part imagePart = null;
+        try {
+            image = ImageIO.read(getClass().getResource("image2.jpg"));
+        } catch (IOException ex) {
+            Logger.getLogger(PictureTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            imageInputStream = Picture.BufferedImageToInputstream(image);
+        } catch (IOException ex) {
+            Logger.getLogger(PictureTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
