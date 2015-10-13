@@ -79,4 +79,16 @@ public class DataRow {
         
         return output;
     }
+    
+    @Override
+    public String toString()
+    {
+        String returnValue = "";
+        for(Object o : data)
+        {
+            returnValue += o.toString() + ",";
+        } 
+        
+        return returnValue.substring(0, returnValue.length() -1);
+    }
 }

@@ -5,6 +5,9 @@
  */
 package classes.database;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,12 +28,12 @@ public class DatabaseConnector {
     private Connection connection;
 
     private static DatabaseConnector instance;
+
     public static DatabaseConnector getInstance() {
-        if(instance == null)
-        {
+        if (instance == null) {
             Initialize("192.168.27.10", 3306, "fotobazaar", "admin", "Server01!");
         }
-        
+
         return instance;
     }
 
@@ -44,11 +47,11 @@ public class DatabaseConnector {
      * Create a new instance of the database connector. Run this method only
      * once. Connecting to the database can take some time.
      *
-     * @param hostname     The hostname/ip of the database server
-     * @param port         The portnumber of the database server
+     * @param hostname The hostname/ip of the database server
+     * @param port The portnumber of the database server
      * @param databasename The name of the database running on the server
-     * @param username     The username needed to connect to the database
-     * @param password     The password needed to connect to the database
+     * @param username The username needed to connect to the database
+     * @param password The password needed to connect to the database
      * @return Returns true if the connection was successfull; otherwise false
      */
     private static boolean Initialize(String hostname, int port, String databasename, String username, String password) {
@@ -73,7 +76,13 @@ public class DatabaseConnector {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null,  new Exception("Missing MySQL JDBC Driver"));
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, new Exception("Missing MySQL JDBC Driver"));
+            return false;
+        }
+
+        // Check if the server is online
+        if (!checkServerConnection(this.hostname)) {
+            System.out.println("Connection timed out. (Development: Did you turn on AnyConnect?)");
             return false;
         }
 
@@ -81,6 +90,8 @@ public class DatabaseConnector {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.databasename, this.username, this.password);
         } catch (SQLException e) {
+            Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, e);
+            return false;
         }
 
         // Check if the database connection is establisched
@@ -90,6 +101,18 @@ public class DatabaseConnector {
         }
 
         return true;
+    }
+
+    private boolean checkServerConnection(String hostname) {
+        try {
+            InetAddress inet = InetAddress.getByName(hostname);
+
+            return inet.isReachable(2000);
+        } catch (UnknownHostException ex) {
+            return false;
+        } catch (IOException ex) {
+            return false;
+        }
     }
 
     public boolean isOpen() {
@@ -103,7 +126,6 @@ public class DatabaseConnector {
             return true;
         }
     }
-   
 
     /**
      * Execute a query to the database
@@ -133,7 +155,7 @@ public class DatabaseConnector {
         return null;
     }
 
-    public StatementResult executeNonQuery(String command, Object... params) throws SQLException {
+    public StatementResult executeNonQuery(String command, Object... params) {
         if (!this.isOpen()) {
             Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, new Exception("The connection to the database is not open"));
             return StatementResult.ERROR;
