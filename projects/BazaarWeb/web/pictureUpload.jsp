@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <label for="prijs" class="col-sm-2 control-label">Prijs</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" name="PicturePrice"  id="PicturePriceID" min="0" max="1000" step="0.01">
+                            <input type="number" class="form-control" name="PicturePrice"  id="PicturePriceID" min="0" max="1000" step="0.01" value="0">
                         </div>
                     </div>
                     <div class="form-group">

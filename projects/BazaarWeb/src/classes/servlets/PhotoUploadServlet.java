@@ -94,8 +94,8 @@ public class PhotoUploadServlet extends HttpServlet {
                 Collection<Part> filePart = request.getParts(); // Retrieves <input type="file" name="file">
 
                 for (Part part : filePart) {
-                    if (part.getContentType() != null) {
-                        Picture.uploadPicture(part, 1, price, 200);
+                    if (part.getContentType() != null) {//true if is image
+                        Picture.uploadPicture(part, 1, price, 200);//will return false if failed
                     }
                 }
             }
@@ -106,6 +106,13 @@ public class PhotoUploadServlet extends HttpServlet {
 
     }
 
+       /**
+     * Will return the String content of a part.
+     *
+     * @param part servlet response
+     * @throws IOException if an I/O error occurs
+     * @return String value of the text property
+     */
     private static String getValueFromPart(Part part) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(part.getInputStream(), "UTF-8"));
         StringBuilder value = new StringBuilder();

@@ -5,6 +5,7 @@
  */
 package classes.domain;
 
+import classes.database.DataRow;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +63,7 @@ public class Picture {
             InputStream imageBigCopy = imagePart.getInputStream();//copy is made because filedescriptor is walked to the end due to the inputStreamToBufferedImage function
             InputStream imageSmall = BufferedImageToInputstream(getThumbnail(inputStreamToBufferedImage(imageBigCopy), thumbnailSize), imagePart.getSubmittedFileName());
 
-            StatementResult result = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO photo (CODE,PHOTOGRAPHER_ID,PRICE,DATA_BIG,DATA_SMALL,ACTIVE) VALUES (?,?,?,?,?,?)", generateNewID(), photographerId, price, imageBig, imageSmall,1);
+            StatementResult result = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO photo (CODE,PHOTOGRAPHER_ID,PRICE,DATA_BIG,DATA_SMALL,ACTIVE) VALUES (?,?,?,?,?,?)", generateNewID(), photographerId, price, imageBig, imageSmall, 1);
 
             if (result.equals(StatementResult.ERROR) | result.equals(StatementResult.NO_ROWS_UPDATED)) {
                 return false;
@@ -70,6 +73,39 @@ public class Picture {
             Logger.getLogger(Picture.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+    }
+
+    public static byte[] downloadImage(String imageId, String iType) throws SQLException {
+        DataTable result = null;
+        String imageType = "";
+
+        //map input to query
+        if (iType.equals("big")) {
+            imageType = "DATA_BIG";
+            if (false) {//TODO: if the user is not admin
+                imageType = "DATA_SMALL";
+            }
+        } else {
+            imageType = "DATA_SMALL";
+        }
+
+        //check if image actually exists
+        if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM photo WHERE ID = ?", imageId).getRow(0)[0] > 0) {
+            //check if image is published
+            if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM photo WHERE ID = ?", imageId).getRow(0)[0] == 0) {
+                return null;
+            }
+
+            result = DatabaseConnector.getInstance().executeQuery("SELECT " + imageType + " AS IMAGE FROM photo WHERE ID = ?", imageId);
+            if (result != null) {
+                byte[] blobbytes = null;
+                result.getResultSet().next();//get first resultset result
+                blobbytes = result.getResultSet().getBytes("IMAGE");
+                return blobbytes;
+            }
+        } 
+        
+        return null;
     }
 
     /**
