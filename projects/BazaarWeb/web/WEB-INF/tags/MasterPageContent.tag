@@ -83,7 +83,7 @@
                             <a href="contact.html">???????</a>
                         </li>
                         <li>
-                            <a for="login" href="contact.html"><fmt:message key="master.menu.login" /></a>
+                            <a for="login" href="login.jsp"><fmt:message key="master.menu.login" /></a>
                         </li>
                         <li>
                             <form>
