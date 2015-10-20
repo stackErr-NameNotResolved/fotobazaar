@@ -12,17 +12,95 @@
         </script>
     </jsp:attribute>
     <jsp:body>
-
         <div class="col-md-12">
-            <p>
-            <form action="PhotoUploadServlet" method="post" enctype="multipart/form-data">
-                <label for="selectImage"><fmt:message key="index.label.selectImage" /></label>
-                <input type="file" name="PictureControlId" id="imageControlId" multiple accept='image/*'>
-                <c:set var="UploadImageButton"><fmt:message key="index.button.uploadImage" /></c:set>
-                <input type="submit" value="${UploadImageButton}" id="submit" name="submit1">
-            </form>
-            </p>
-        </div>
+            <div class="breadcrumbs" style="height: 300px;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-4">
+                            <h1>Fotobazaar</h1>
+                            <form class="form-horizontal" role="form" action="PhotoUploadServlet" method="POST" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="code" class="col-sm-10 control-label">Voer uw fotocode in:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="fotoCode"  id="fotoCode">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-default btn-lg">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Bekijken
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-lg-8 col-sm-8">
+                            <ol class="breadcrumb pull-right">
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">Features</a></li>
+                                <li class="active">Form</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row mar-b-50">
+                    <div class="col-md-12">
+                        <div class="text-center feature-head wow fadeInDown">
+                            <h1 class="">
+                                Welkom bij de fotobazaar!
+                            </h1>
 
+                        </div>
+
+
+                        <div class="feature-box">
+                            <div class="col-md-4 col-sm-4 text-center wow fadeInUp">
+                                <div class="feature-box-heading">
+                                    <em>
+                                        <img src="img/1.png" alt="" width="100" height="100">
+
+                                    </em>
+                                    <h4>
+                                        <b>Multipurpose Template</b>
+                                    </h4>
+                                </div>
+                                <p class="text-center">
+                                    Lorem ipsum dolor sit amet, dolore eiusmod quis tempor incididunt ut et dolore Ut veniam unde nostrudlaboris.
+                                </p>
+                            </div>
+                            <div class="col-md-4 col-sm-4 text-center wow fadeInUp">
+                                <div class="feature-box-heading">
+                                    <em>
+                                        <img src="img/2.png" alt="" width="100" height="100">
+                                    </em>
+                                    <h4>
+                                        <b>Well Documented</b>
+                                    </h4>
+                                </div>
+                                <p class="text-center">
+                                    Lorem ipsum dolor sit amet, dolore eiusmod quis tempor incididunt ut et dolore Ut veniam unde nostrudlaboris.
+                                </p>
+                            </div>
+                            <div class="col-md-4 col-sm-4 text-center wow fadeInUp">
+                                <div class="feature-box-heading">
+                                    <em>
+                                        <img src="img/3.png" alt="" width="100" height="100">
+                                    </em>
+                                    <h4>
+                                        <b>Responsive Design</b>
+                                    </h4>
+                                </div>
+                                <p class="text-center">
+                                    Lorem ipsum dolor sit amet, dolore eiusmod quis tempor incididunt ut et dolore Ut veniam unde nostrudlaboris.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!--feature end-->
+                    </div>
+                </div>
+            </div>
+            <div class="hr">
+                <span class="hr-inner"></span>
+            </div>
+        </div>
     </jsp:body>
 </t:MasterPageContent> 

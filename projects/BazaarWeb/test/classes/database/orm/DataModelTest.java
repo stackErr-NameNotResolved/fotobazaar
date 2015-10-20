@@ -43,7 +43,7 @@ public class DataModelTest extends TestCase {
     }
 
     public void testORMTableModelTest() throws Exception {
-        DataModel.ORMTable table = model.getORMTable();
+        ORMTable table = model.getORMTable();
         assertEquals("Class in ORMTable is not the same as the model it was from.", model.getClass(), table.getClazz());
         assertEquals("Table name was not properly retrieved.", "ExampleTable", table.getName());
 
@@ -58,21 +58,21 @@ public class DataModelTest extends TestCase {
 
         assertEquals("There should be 2 keys.", 2, table.getKeys().size());
 
-        List<DataModel.ORMKey> keyList = table.getKeys();
+        List<ORMKey> keyList = table.getKeys();
         assertEquals("First key should be id.", "id", keyList.get(0).getName());
         assertEquals("Last key should be Test.", "Test", keyList.get(1).getName());
 
         // Columns.
         assertEquals("There should be 3 columns.", 3, table.getColumns().size());
 
-        List<DataModel.ORMColumn> columnList = table.getColumns();
+        List<ORMColumn> columnList = table.getColumns();
         assertEquals("First column should be age.", "age", columnList.get(0).getName());
         assertEquals("Second column should be percentage.", "percentage", columnList.get(1).getName());
         assertEquals("Last column should be name.", "name", columnList.get(2).getName());
     }
 
     public void testORMTableModelTest2() throws Exception {
-        DataModel.ORMTable table = model2.getORMTable();
+        ORMTable table = model2.getORMTable();
         assertEquals("Class in ORMTable is not the same as the model it was from.", model2.getClass(), table.getClazz());
         assertEquals("Table name was not properly retrieved.", "ModelTest2", table.getName());
 
@@ -82,7 +82,7 @@ public class DataModelTest extends TestCase {
         // Columns.
         assertEquals("There should be 1 column.", 1, table.getColumns().size());
 
-        List<DataModel.ORMColumn> columnList = table.getColumns();
+        List<ORMColumn> columnList = table.getColumns();
         assertEquals("First column should be City_2.", "City_2", columnList.get(0).getName());
     }
 }

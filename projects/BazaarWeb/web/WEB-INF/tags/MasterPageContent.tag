@@ -21,31 +21,31 @@
         </title>
 
         <!-- Bootstrap core CSS -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/theme.css" rel="stylesheet">
-        <link href="css/bootstrap-reset.css" rel="stylesheet">
+        <link href="/BazaarWeb/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/BazaarWeb/css/theme.css" rel="stylesheet">
+        <link href="/BazaarWeb/css/bootstrap-reset.css" rel="stylesheet">
         <!-- <link href="css/bootstrap.min.css" rel="stylesheet">-->
 
         <!--external css-->
-        <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        <link rel="/stylesheet" href="css/flexslider.css"/>
-        <link href="assets/bxslider/jquery.bxslider.css" rel="stylesheet" />
-        <link rel="/stylesheet" href="css/animate.css">
-        <link rel="/stylesheet" href="assets/owlcarousel/owl.carousel.css">
-        <link rel="/stylesheet" href="assets/owlcarousel/owl.theme.css">
+        <link href="/BazaarWeb/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+        <link href="/BazaarWeb/css/flexslider.css" rel="/stylesheet" />
+        <link href="/BazaarWeb/assets/bxslider/jquery.bxslider.css" rel="stylesheet" />
+        <link href="/BazaarWeb/css/animate.css" rel="/stylesheet" >
+        <link href="/BazaarWeb/assets/owlcarousel/owl.carousel.css" rel="/stylesheet" >
+        <link href="/BazaarWeb/assets/owlcarousel/owl.theme.css" rel="/stylesheet" >
 
-        <link href="css/superfish.css" rel="stylesheet" media="screen">
+        <link href="/BazaarWeb/css/superfish.css" rel="stylesheet" media="screen">
         <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'> -->
 
 
         <!-- Custom styles for this template -->
-        <link rel="stylesheet" type="text/css" href="css/component.css">
-        <link href="css/style.css" rel="stylesheet">
-        <link href="css/style-responsive.css" rel="stylesheet" />
+        <link href="/BazaarWeb/css/component.css" rel="stylesheet" type="text/css" >
+        <link href="/BazaarWeb/css/style.css" rel="stylesheet">
+        <link href="/BazaarWeb/css/style-responsive.css" rel="stylesheet" />
 
-        <link rel="stylesheet" type="text/css" href="css/parallax-slider/parallax-slider.css" />
-        <script type="text/javascript" src="js/parallax-slider/modernizr.custom.28468.js">
+        <link href="/BazaarWeb/css/parallax-slider/parallax-slider.css" rel="stylesheet" type="text/css"  />
+        <script src="/BazaarWeb/js/parallax-slider/modernizr.custom.28468.js" type="text/javascript" >
         </script>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
@@ -133,21 +133,9 @@
         <!-- End Sub-Container -->
 
         <!--small footer start -->
-        <footer class="footer-small">
+        <footer class="footer-small" style="height:63px;">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6 col-sm-6 pull-right">
-                        <ul class="social-link-footer list-unstyled">
-                            <li class="wow flipInX" data-wow-duration="2s" data-wow-delay=".1s"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li class="wow flipInX" data-wow-duration="2s" data-wow-delay=".2s"><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                            <li class="wow flipInX" data-wow-duration="2s" data-wow-delay=".3s"><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                            <li class="wow flipInX" data-wow-duration="2s" data-wow-delay=".4s"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                            <li class="wow flipInX" data-wow-duration="2s" data-wow-delay=".5s"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li class="wow flipInX" data-wow-duration="2s" data-wow-delay=".6s"><a href="#"><i class="fa fa-skype"></i></a></li>
-                            <li class="wow flipInX" data-wow-duration="2s" data-wow-delay=".7s"><a href="#"><i class="fa fa-github"></i></a></li>
-                            <li class="wow flipInX" data-wow-duration="2s" data-wow-delay=".8s"><a href="#"><i class="fa fa-youtube"></i></a></li>
-                        </ul>
-                    </div>
                     <div class="col-md-4">
                         <div class="copyright">
                             <p>&copy; Copyright - Fotobazaar</p>
