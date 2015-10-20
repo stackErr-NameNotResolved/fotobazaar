@@ -2,8 +2,6 @@
 <%@ attribute name="title" required="true" description="Header of the page to be shown in the theme." %>
 <%@ attribute name="script" fragment="true" description="All the scripts to be added on the bottom of the page go here." %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-                            <a>
-                            </a>
 
 <t:BaseMasterPage title="${title}">
     <jsp:body>
