@@ -1,14 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@include file="/pages/langInclude.jsp" %>
 
-<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="languages.text" />
-
-<c:set var="hoi"> <fmt:message key="index.title" /></c:set>
-<t:MasterPageContent header="${hoi}">
+<c:set var="title"> <fmt:message key="index.title" /></c:set>
+<t:MasterPageContent title="${title}">
     <jsp:attribute name="script">
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
         <script type="text/javascript">
@@ -23,15 +18,15 @@
                     <div class="row">
                         <div class="col-lg-4 col-sm-4">
                             <h1>Fotobazaar</h1>
-                            <form class="form-horizontal" role="form" action="PhotoUploadServlet" method="POST" enctype="multipart/form-data">
+                            <form class="form-horizontal" role="form" action="ShowPictureServlet" method="POST">
                                 <div class="form-group">
-                                    <label for="code" class="col-sm-10 control-label">Voer uw fotocode in:</label>
+                                    <label for="code" class="col-sm-10 control-label"><fmt:message key="index.label.code" /></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="fotoCode"  id="fotoCode">
+                                        <input type="text" class="form-control" name="imageCode"  id="fotoCode">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-default btn-lg">
-                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Bekijken
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span><fmt:message key="index.label.view" />
                                 </button>
                             </form>
                         </div>

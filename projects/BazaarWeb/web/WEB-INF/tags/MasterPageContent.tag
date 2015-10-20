@@ -1,12 +1,7 @@
 <%@tag description="MasterPageContent" pageEncoding="UTF-8"%>
-<%@ attribute name="header" required="true" %>
+<%@ attribute name="title" required="true" %>
 <%@ attribute name="script" fragment="true" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="languages.text" />
+<%@include file="/pages/langInclude.jsp" %>
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- <%@attribute name="message"%> -->
 
@@ -72,12 +67,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.html">Foto<span>bazaar</span></a>
+                    <a class="navbar-brand" href="/BazaarWeb/index.jsp">Foto<span>bazaar</span></a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a for="cart" href="contact.html"><fmt:message key="master.menu.cart" /></a>
+                            <a href="contact.html"><fmt:message key="master.menu.cart" /></a>
                         </li>
                         <li>
                             <a href="contact.html">???????</a>
@@ -100,14 +95,14 @@
                             <%
                             } else {
                             %>
-                            <a for="login" href="login.jsp"><fmt:message key="master.menu.login" /></a>
+                            <a href="/BazaarWeb/pages/login.jsp"><fmt:message key="master.menu.login" /></a>
                             <% }%>
                         </li>
                         <li>
                             <form>
                                 <select id="language" name="language" onchange="submit()">
-                                    <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
                                     <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
+                                    <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
                                 </select>
                             </form>
                         </li>
@@ -123,7 +118,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-sm-4">
-                        <h1>${header}</h1>
+                        <h1>${title}</h1>
                     </div>
                 </div>
             </div>
@@ -155,31 +150,31 @@
     <script src="js/jquery.js">
     </script>
         -->
-        <script src="js/jquery-1.8.3.min.js">
+        <script src="/BazaarWeb/js/jquery-1.8.3.min.js">
         </script>
-        <script src="js/bootstrap.min.js">
+        <script src="/BazaarWeb/js/bootstrap.min.js">
         </script>
-        <script type="text/javascript" src="js/hover-dropdown.js">
+        <script type="text/javascript" src="/BazaarWeb/js/hover-dropdown.js">
         </script>
-        <script defer src="js/jquery.flexslider.js">
+        <script defer src="/BazaarWeb/js/jquery.flexslider.js">
         </script>
-        <script type="text/javascript" src="assets/bxslider/jquery.bxslider.js">
-        </script>
-
-        <script type="text/javascript" src="js/jquery.parallax-1.1.3.js">
-        </script>
-        <script src="js/wow.min.js">
-        </script>
-        <script src="assets/owlcarousel/owl.carousel.js">
+        <script type="text/javascript" src="/BazaarWeb/assets/bxslider/jquery.bxslider.js">
         </script>
 
-        <script src="js/jquery.easing.min.js">
+        <script type="text/javascript" src="/BazaarWeb/js/jquery.parallax-1.1.3.js">
         </script>
-        <script src="js/link-hover.js">
+        <script src="/BazaarWeb/js/wow.min.js">
         </script>
-        <script src="js/superfish.js">
+        <script src="/BazaarWeb/assets/owlcarousel/owl.carousel.js">
         </script>
-        <script type="text/javascript" src="js/parallax-slider/jquery.cslider.js">
+
+        <script src="/BazaarWeb/js/jquery.easing.min.js">
+        </script>
+        <script src="/BazaarWeb/js/link-hover.js">
+        </script>
+        <script src="/BazaarWeb/js/superfish.js">
+        </script>
+        <script type="text/javascript" src="/BazaarWeb/js/parallax-slider/jquery.cslider.js">
         </script>
         <script type="text/javascript">
             $(function () {
@@ -195,7 +190,7 @@
 
 
         <!--common script for all pages-->
-        <script src="js/common-scripts.js">
+        <script src="/BazaarWeb/js/common-scripts.js">
         </script>
 
         <script type="text/javascript">

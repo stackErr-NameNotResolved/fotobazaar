@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:MasterPageContent header="Foto Uploaden">
+<t:MasterPageContent title="Foto Uploaden">
     <jsp:attribute name="script">
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
         <script type="text/javascript">
@@ -27,7 +27,7 @@
         <div class="col-md-6">
 
             <div class="bs-example">
-                <form class="form-horizontal" role="form" action="PhotoUploadServlet" method="POST" enctype="multipart/form-data">
+                <form class="form-horizontal" role="form" action="../PhotoUploadServlet" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="prijs" class="col-sm-2 control-label">Prijs</label>
                         <div class="col-sm-10">

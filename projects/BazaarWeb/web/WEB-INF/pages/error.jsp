@@ -13,4 +13,4 @@ Message:
     out.println(stringWriter);
     printWriter.close();
     stringWriter.close();
-%>
+%
