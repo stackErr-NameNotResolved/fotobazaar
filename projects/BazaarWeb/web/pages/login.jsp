@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:MasterPageContent title="Inloggen">
+<t:MasterPageContent header="Inloggen">
     <jsp:body>
 
         <div class="login-bg">

@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:MasterPageContent title="tweede Index">
+<t:MasterPageContent header="tweede Index">
     <!-- Sub-Container for ui elements/text -->
     <div class="container">
         <div class="row mar-b-50">

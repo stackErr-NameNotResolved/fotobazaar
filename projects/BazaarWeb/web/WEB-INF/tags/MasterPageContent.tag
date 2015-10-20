@@ -1,5 +1,5 @@
 <%@tag description="MasterPageContent" pageEncoding="UTF-8"%>
-<%@ attribute name="title" required="true" %>
+<%@ attribute name="header" required="true" %>
 <%@ attribute name="script" fragment="true" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -123,7 +123,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-sm-4">
-                        <h1>${title}</h1>
+                        <h1>${header}</h1>
                     </div>
                 </div>
             </div>

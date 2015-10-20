@@ -6,19 +6,13 @@
 package classes.servlets;
 
 import classes.domain.Picture;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  *
@@ -70,11 +64,7 @@ public class ShowPictureServlet extends HttpServlet {
             String imageId = request.getParameter("imageId");
             String imageSize = request.getParameter("imageSize");
 
-            try {
-                response.getOutputStream().write(Picture.downloadImage(imageId, imageSize));
-            } catch (SQLException ex) {
-                Logger.getLogger(ShowPictureServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            response.getOutputStream().write(Picture.downloadImage(imageId, imageSize));
         }
     }
 

@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
-<t:MasterPageContent title="picture editor">
+<t:MasterPageContent header="picture editor">
     <jsp:attribute name="script">
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
         <script type="text/javascript" src="/BazaarWeb/js/CamanJS/caman.full.js"></script>

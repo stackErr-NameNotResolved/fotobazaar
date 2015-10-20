@@ -8,7 +8,7 @@
 <fmt:setBundle basename="languages.text" />
 
 <c:set var="hoi"> <fmt:message key="index.title" /></c:set>
-<t:MasterPageContent title="${hoi}">
+<t:MasterPageContent header="${hoi}">
     <jsp:attribute name="script">
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
         <script type="text/javascript">
