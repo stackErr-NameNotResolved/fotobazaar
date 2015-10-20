@@ -50,12 +50,15 @@ public class Account extends DataModel {
         this.right = right;
     }
 
-    public static boolean validateCredentials(String username, String password) {
+    public static ELoginStatus validateCredentials(String username, String password) {
         DataTable dt = DatabaseConnector.getInstance().executeQuery("select * from account where username=? and password=?", username, AESEncryption.encrypt(password, username));
         if (dt.containsData()) {
-            return (int) dt.getDataFromRow(0, "access") >= 0;
+            if((int) dt.getDataFromRow(0, "access") >= 0)
+                return ELoginStatus.SUCCESS;
+            else 
+                return ELoginStatus.DISABLED;
         }
 
-        return false;
+        return ELoginStatus.FAILED;
     }
 }

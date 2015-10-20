@@ -17,6 +17,7 @@
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="imageCode"  id="fotoCode">
                                     </div>
+                                    <label style="color:red;visibility:hidden${visibility}" class="col-sm-10 control-label"><fmt:message key="index.failCode" /></label>
                                 </div>
                                 <button type="submit" class="btn btn-default btn-lg">
                                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span><fmt:message key="index.label.view" />
@@ -37,13 +38,10 @@
                 <div class="row mar-b-50">
                     <div class="col-md-12">
                         <div class="text-center feature-head wow fadeInDown">
-                            <h1 class="">
+                            <h1  >
                                 Welkom bij de fotobazaar!
                             </h1>
-
                         </div>
-
-
                         <div class="feature-box">
                             <div class="col-md-4 col-sm-4 text-center wow fadeInUp">
                                 <div class="feature-box-heading">

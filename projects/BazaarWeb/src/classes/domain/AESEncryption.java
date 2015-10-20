@@ -46,6 +46,12 @@ public class AESEncryption {
     }
 
     public static String encrypt(String password, String username) {
+        if(password == null || password.equals(""))
+            throw new IllegalArgumentException("Cannot encrypt an empty message");
+        
+        if(username == null || username.equals(""))
+            throw new IllegalArgumentException("Cannot use an empty key as encryption");
+        
         try {
             Key key = new SecretKeySpec(getKey(username).getBytes(), "AES");
 
@@ -62,6 +68,12 @@ public class AESEncryption {
     }
 
     public static String decrypt(String username, String encrypted) {
+        if(encrypted == null || encrypted.equals(""))
+            throw new IllegalArgumentException("Cannot decrypt an empty message");
+        
+        if(username == null || username.equals(""))
+            throw new IllegalArgumentException("Cannot use an empty key for decryption");
+        
         try {
             Key k = new SecretKeySpec(getKey(username).getBytes(), "AES");
             Cipher c = Cipher.getInstance("AES/ECB/PKCS5Padding");
