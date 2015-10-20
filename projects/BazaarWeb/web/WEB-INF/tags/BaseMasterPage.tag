@@ -114,16 +114,6 @@
 </header>
 <!--header end-->
 
-<div class="breadcrumbs">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-sm-4">
-                <h1>${title}</h1>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Sub-Container for ui elements/text -->
 <jsp:doBody/>
 <!-- End Sub-Container -->
