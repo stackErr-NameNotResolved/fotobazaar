@@ -4,10 +4,13 @@
 <t:MasterPageContent title="picture editor">
     <jsp:attribute name="script">
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
-        <script type="text/javascript" src="/BazaarWeb/js/CamanJS/caman.full.js"></script>        
+        <script type="text/javascript" src="/BazaarWeb/js/CamanJS/caman.full.4.2.1.js"></script>        
         <script type="text/javascript" src="/BazaarWeb/js/JQueryUI/jquery-ui.js"></script>
         <script type="text/javascript">
             $(function () {
+                var brightness;
+                var sepia = 0;
+
                 $("#slider-vertical").slider({
                     orientation: "vertical",
                     range: "min",
@@ -16,23 +19,24 @@
                     value: 0,
                     slide: function (event, ui) {
                         $("#amount").val(ui.value);
-                        
                     },
                     stop: function (event, ui) {
+                        
                         var curVal = ui.value;
-                        Caman("#editor", function () {
-                          this.revert();
-                        this.brightness(ui.value);
-                        this.contrast(0);
-                        this.render();
-                });    
+                        Caman("#editor", "../ShowPictureServlet?imageId=6&imageSize=big", function () {
+                            this.revert(false);
+                            this.brightness(curVal);
+                            this.sepia(sepia);
+                            this.render();
+                        });
                     }
                 });
                 $("#amount").val();
-                
+
             });
 
             Caman("#editor", "../ShowPictureServlet?imageId=6&imageSize=big", function () {
+               
                 this.render();
             });
 
@@ -45,14 +49,15 @@
 
             $("#brightness").click(function () {
                 Caman("#editor", function () {
-                    this.brightness(40);
-                    this.contrast(0);
+                    this.brightness(10);
                     this.render();
                 });
             });
 
             $("#sepia").click(function () {
                 Caman("#editor", function () {
+                    sepia = sepia + 20;
+                    alert(sepia);
                     this.sepia(20);
                     this.render();
                 });
