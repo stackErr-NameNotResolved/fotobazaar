@@ -99,12 +99,14 @@
                             <% }%>
                         </li>
                         <li>
+                            <a>
                             <form>
                                 <select id="language" name="language" onchange="submit()">
                                     <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
                                     <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
                                 </select>
                             </form>
+                            </a>
                         </li>
                         <!-- Search input
                                         <li><input class="form-control search" placeholder=" Search" type="text"></li> -->
