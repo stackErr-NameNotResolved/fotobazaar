@@ -94,9 +94,8 @@
                                 
                                 if(account) {
                             %>
-                            <form name="submitForm" method="POST" action="LogOutServlet">
-                                <!--<input type="hidden" name="param1" value="param1Value">-->
-                                <A HREF="javascript:document.submitForm.submit()">Uitloggen</A>
+                            <A HREF="javascript:document.submitForm.submit()">Uitloggen</A>
+                            <form name="submitForm" method="POST" action="LogOutServlet">                            
                             </form>
                             <%
                             } else {
