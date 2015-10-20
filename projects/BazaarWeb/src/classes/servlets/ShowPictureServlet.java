@@ -71,7 +71,6 @@ public class ShowPictureServlet extends HttpServlet {
             String imageCode = request.getParameter("imageCode");
 
             //if imagecode exists
-            response.sendRedirect("a");
             response.sendRedirect(request.getContextPath() + "/pages/pictureView.jsp");
             return;
         }
