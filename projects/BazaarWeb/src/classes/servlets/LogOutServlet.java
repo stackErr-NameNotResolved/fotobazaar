@@ -13,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,7 +39,7 @@ public class LogOutServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LogOutServlet</title>");            
+            out.println("<title>Servlet LogOutServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet LogOutServlet at " + request.getContextPath() + "</h1>");
@@ -74,20 +75,28 @@ public class LogOutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-        Cookie loginCookie = null;
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null){
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals("username")){
-                loginCookie = cookie;
-                break;
-            }
-        }
-        }
-        if(loginCookie != null){
-            loginCookie.setMaxAge(0);
-            response.addCookie(loginCookie);
-        }
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("username");
+        session.removeAttribute("username-encryption");
+        
+
+//        Cookie loginCookie = null;
+//        Cookie[] cookies = request.getCookies();
+//        if (cookies != null) {
+//            for (Cookie cookie : cookies) {
+//                if (cookie.getName().equals("username")) {
+//                    loginCookie = cookie;
+//                    loginCookie.setValue("~deleted");
+//                    break;
+//                }
+//            }
+//        }
+//        if (loginCookie != null) {
+//            loginCookie.setMaxAge(0);
+//            //response.addCookie(loginCookie);
+//        }
+
         response.sendRedirect("index.jsp");
     }
 

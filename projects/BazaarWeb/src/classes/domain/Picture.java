@@ -5,13 +5,13 @@
  */
 package classes.domain;
 
-import classes.database.DataRow;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.Part;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,16 +19,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.servlet.http.Part;
 
 /**
- *
  * @author Jip
  */
 public class Picture {
@@ -46,10 +42,10 @@ public class Picture {
      * uploads the picture to the database and places a thumbnail in the
      * database
      *
-     * @param imagePart part that containt the image
+     * @param imagePart      part that containt the image
      * @param photographerId the id of the photographer
-     * @param price price of the image
-     * @param thumbnailSize the max width or height of the thumbnail
+     * @param price          price of the image
+     * @param thumbnailSize  the max width or height of the thumbnail
      * @return true if the image got placed in the database, false if nothing
      * got updated due part being null or on constraint violation
      */
@@ -75,7 +71,7 @@ public class Picture {
         }
     }
 
-    public static byte[] downloadImage(String imageId, String iType) throws SQLException {
+    public static byte[] downloadImage(String imageId, String iType) {
         DataTable result = null;
         String imageType = "";
 
@@ -99,12 +95,16 @@ public class Picture {
             result = DatabaseConnector.getInstance().executeQuery("SELECT " + imageType + " AS IMAGE FROM photo WHERE ID = ?", imageId);
             if (result != null) {
                 byte[] blobbytes = null;
-                result.getResultSet().next();//get first resultset result
-                blobbytes = result.getResultSet().getBytes("IMAGE");
+                try {
+                    result.getResultSet().next(); // Get first resultset result.
+                    blobbytes = result.getResultSet().getBytes("IMAGE");
+                } catch (SQLException ex) {
+                    throw new IllegalStateException("Cannot download image.", ex);
+                }
                 return blobbytes;
             }
-        } 
-        
+        }
+
         return null;
     }
 
@@ -128,9 +128,9 @@ public class Picture {
     /**
      * Converts the bufferedimage to an inputstream
      *
-     * @param input the bufferedimage to convert
+     * @param input     the bufferedimage to convert
      * @param imagename the name of the image to convert with the .png or .jpg
-     * postfix
+     *                  postfix
      * @return the converted image as inputstream
      */
     public static InputStream BufferedImageToInputstream(BufferedImage input, String imagename) {
@@ -266,7 +266,7 @@ public class Picture {
      * updates the existing price of the picture.
      *
      * @param newPrice the new price of the picture.
-     * @param photoId the ID of the photo
+     * @param photoId  the ID of the photo
      * @return boolean if the price is updated or not.
      */
     public static boolean updatePrice(double newPrice, int photoId) {

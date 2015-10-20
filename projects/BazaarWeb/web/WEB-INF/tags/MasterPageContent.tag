@@ -1,10 +1,9 @@
-<%@tag description="MasterPageContent" pageEncoding="UTF-8"%>
-<%@ attribute name="title" required="true" %>
-<%@ attribute name="script" fragment="true" %>
-<%@include file="/jsp/langInclude.jsp" %>
-<%-- The list of normal or fragment attributes can be specified here: --%>
-<%-- <%@attribute name="message"%> -->
+<%@tag description="MasterPageContent" pageEncoding="UTF-8" %>
+<%@ attribute name="title" required="true" description="Header of the page to be shown in the theme." %>
+<%@ attribute name="script" fragment="true" description="All the scripts to be added on the bottom of the page go here." %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
+<<<<<<< HEAD
 <%-- any content can be specified here e.g.: --%>
 <!DOCTYPE html>
 <html lang="en">
@@ -125,129 +124,16 @@
         </div>
 
         <!-- Sub-Container for ui elements/text -->
+=======
+<t:BaseMasterPage title="${title}">
+    <jsp:body>
+>>>>>>> 4bc190e33cd08bc7eba7103c0dd710681ba73235
         <div class="container">
             <div class="row mar-b-50">
                 <jsp:doBody/>
             </div>
         </div>
-        <!-- End Sub-Container -->
-
-        <!--small footer start -->
-        <footer class="footer-small" style="height:63px;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="copyright">
-                            <p>&copy; Copyright - Fotobazaar</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!--small footer end-->
-
-        <!-- js placed at the end of the document so the pages load faster
-    <script src="js/jquery.js">
-    </script>
-        -->
-        <script src="/BazaarWeb/js/jquery-1.8.3.min.js">
-        </script>
-        <script src="/BazaarWeb/js/bootstrap.min.js">
-        </script>
-        <script type="text/javascript" src="/BazaarWeb/js/hover-dropdown.js">
-        </script>
-        <script defer src="/BazaarWeb/js/jquery.flexslider.js">
-        </script>
-        <script type="text/javascript" src="/BazaarWeb/assets/bxslider/jquery.bxslider.js">
-        </script>
-
-        <script type="text/javascript" src="/BazaarWeb/js/jquery.parallax-1.1.3.js">
-        </script>
-        <script src="/BazaarWeb/js/wow.min.js">
-        </script>
-        <script src="/BazaarWeb/assets/owlcarousel/owl.carousel.js">
-        </script>
-
-        <script src="/BazaarWeb/js/jquery.easing.min.js">
-        </script>
-        <script src="/BazaarWeb/js/link-hover.js">
-        </script>
-        <script src="/BazaarWeb/js/superfish.js">
-        </script>
-        <script type="text/javascript" src="/BazaarWeb/js/parallax-slider/jquery.cslider.js">
-        </script>
-        <script type="text/javascript">
-            $(function () {
-
-                $('#da-slider').cslider({
-                    autoplay: true,
-                    bgincrement: 100
-                });
-
-            });
-        </script>
-
-
-
-        <!--common script for all pages-->
-        <script src="/BazaarWeb/js/common-scripts.js">
-        </script>
-
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-
-
-                $('.bxslider1').bxSlider({
-                    minSlides: 5,
-                    maxSlides: 6,
-                    slideWidth: 360,
-                    slideMargin: 2,
-                    moveSlides: 1,
-                    responsive: true,
-                    nextSelector: '#slider-next',
-                    prevSelector: '#slider-prev',
-                    nextText: 'Onward →',
-                    prevText: '← Go back'
-                });
-
-            });
-
-
-        </script>
-
-
-        <script>
-            $('a.info').tooltip();
-
-            $(window).load(function () {
-                $('.flexslider').flexslider({
-                    animation: "slide",
-                    start: function (slider) {
-                        $('body').removeClass('loading');
-                    }
-                });
-            });
-
-            $(document).ready(function () {
-
-                $("#owl-demo").owlCarousel({
-                    items: 4
-
-                });
-
-            });
-
-            jQuery(document).ready(function () {
-                jQuery('ul.superfish').superfish();
-            });
-
-            new WOW().init();
-
-
-        </script>
-
-        <%-- Javascript from each view are loaded after whole page building is done. --%>
         <jsp:invoke fragment="script"/>
+    </jsp:body>
+</t:BaseMasterPage>
 
-    </body>
-</html>

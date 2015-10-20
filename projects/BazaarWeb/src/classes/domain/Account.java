@@ -51,7 +51,7 @@ public class Account extends DataModel {
     }
 
     public static boolean validateCredentials(String username, String password) {
-        DataTable dt = DatabaseConnector.getInstance().executeQuery("select * from account where username=? and password=?", username, password);
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("select * from account where username=? and password=?", username, AESEncryption.encrypt(password, username));
         if (dt.containsData()) {
             return (int) dt.getDataFromRow(0, "access") >= 0;
         }
