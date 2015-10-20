@@ -4,13 +4,6 @@
 
 <c:set var="title"> <fmt:message key="index.title" /></c:set>
 <t:MasterPageContent title="${title}">
-    <jsp:attribute name="script">
-        <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
-        <script type="text/javascript">
-
-
-        </script>
-    </jsp:attribute>
     <jsp:body>
         <div class="col-md-12">
             <div class="breadcrumbs" style="height: 300px;">
@@ -103,4 +96,4 @@
             </div>
         </div>
     </jsp:body>
-</t:MasterPageContent> 
+</t:MasterPageContent>
