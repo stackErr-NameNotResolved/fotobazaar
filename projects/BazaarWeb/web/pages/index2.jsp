@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row mar-b-50">
             <div class="col-md-12">
-                <img src="ShowPicture?imageId=2&imageSize=small"/>
+                <img src="../ShowPicture?imageId=2&imageSize=small"/>
             </div>
         </div>
     </div>
