@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@include file="/jsp/langInclude.jsp" %>
+<%@include file="/pages/langInclude.jsp" %>
 
 <c:set var="title"> <fmt:message key="index.title" /></c:set>
 <t:MasterPageContent title="${title}">
@@ -20,13 +20,13 @@
                             <h1>Fotobazaar</h1>
                             <form class="form-horizontal" role="form" action="ShowPictureServlet" method="POST">
                                 <div class="form-group">
-                                    <label for="code" class="col-sm-10 control-label">Voer uw fotocode in:</label>
+                                    <label for="code" class="col-sm-10 control-label"><fmt:message key="index.label.code" /></label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="imageCode"  id="fotoCode">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-default btn-lg">
-                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Bekijken
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span><fmt:message key="index.label.view" />
                                 </button>
                             </form>
                         </div>

@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@include file="/jsp/langInclude.jsp" %>
+<%@include file="/pages/langInclude.jsp" %>
 
 <c:set var="title"> <fmt:message key="login.title" /></c:set>
 <t:MasterPageContent title="${title}">
@@ -12,21 +12,23 @@
                     <form class="form-signin" role="form" action="LoginServlet" method="post" enctype="multipart/form-data">
                         <h2 class="form-signin-heading"><fmt:message key="login.label.signIn" /></h2>
                         <div class="login-wrap">
-                            <input type="text" class="form-control" placeholder="User ID" name="Username" autofocus>
-                            <input type="password" class="form-control" placeholder="Password" name="Password">
+                            <c:set var="username"><fmt:message key="login.placeholder.username" /></c:set>
+                            <input type="text" class="form-control" placeholder="${username}" name="Username" autofocus>
+                            <c:set var="password"><fmt:message key="login.placeholder.password" /></c:set>
+                            <input type="password" class="form-control" placeholder="${password}" name="Password">
                             <label class="checkbox">
                                 <span class="pull-right">
-                                    <a data-toggle="modal" href="#myModal"> Forgot Password?</a>
+                                    <a data-toggle="modal" href="#myModal"><fmt:message key="login.link.forgotten" /></a>
                                 </span>
                             </label>
 
 
-                            <button class="btn btn-lg btn-login btn-block">Login</button>
+                            <button class="btn btn-lg btn-login btn-block"><fmt:message key="login.button.login" /></button>
 
                             <div class="registration">
-                                Don't have an account yet?
+                                <fmt:message key="login.text.registration" />
                                 <a class="" href="registration.html">
-                                    Create an account
+                                    <fmt:message key="login.link.registration" />
                                 </a>
                             </div>
 

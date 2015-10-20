@@ -1,7 +1,7 @@
 <%@tag description="MasterPageContent" pageEncoding="UTF-8"%>
 <%@ attribute name="title" required="true" %>
 <%@ attribute name="script" fragment="true" %>
-<%@include file="/jsp/langInclude.jsp" %>
+<%@include file="/pages/langInclude.jsp" %>
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- <%@attribute name="message"%> -->
 
@@ -95,7 +95,7 @@
                             <%
                             } else {
                             %>
-                            <a href="/BazaarWeb/jsp/login.jsp"><fmt:message key="master.menu.login" /></a>
+                            <a href="/BazaarWeb/pages/login.jsp"><fmt:message key="master.menu.login" /></a>
                             <% }%>
                         </li>
                         <li>
