@@ -1,8 +1,8 @@
 package classes.domain;
 
 import classes.database.DatabaseConnector;
+import classes.database.orm.DataModel;
 import junit.framework.TestCase;
-import org.junit.Test;
 
 public class AccountTest extends TestCase {
 
@@ -17,7 +17,7 @@ public class AccountTest extends TestCase {
     }
 
     public void testCRUD() throws Exception {
-        Account account = Account.fromId(Account.class, 7);
+        Account account = DataModel.fromId(Account.class, 7);
         account.delete();
     }
     
