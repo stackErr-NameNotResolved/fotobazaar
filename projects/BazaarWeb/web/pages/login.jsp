@@ -9,7 +9,7 @@
         <div class="login-bg">
             <div class="container">
                 <div class="form-wrapper">
-                    <form class="form-signin" role="form" action="LoginServlet" method="post" enctype="multipart/form-data">
+                    <form class="form-signin" role="form" action="../LoginServlet" method="post" enctype="multipart/form-data">
                         <h2 class="form-signin-heading"><fmt:message key="login.label.signIn" /></h2>
                         <div class="login-wrap">
                             <c:set var="username"><fmt:message key="login.placeholder.username" /></c:set>
