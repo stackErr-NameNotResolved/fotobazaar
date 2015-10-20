@@ -29,11 +29,11 @@
         <!--external css-->
         <link href="/BazaarWeb/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
         <link href="/BazaarWeb/css/flexslider.css" rel="/stylesheet" />
+        <link href="/BazaarWeb/css/jquery-ui.css" rel="stylesheet" type="text/css"/>
         <link href="/BazaarWeb/assets/bxslider/jquery.bxslider.css" rel="stylesheet" />
         <link href="/BazaarWeb/css/animate.css" rel="/stylesheet" >
         <link href="/BazaarWeb/assets/owlcarousel/owl.carousel.css" rel="/stylesheet" >
         <link href="/BazaarWeb/assets/owlcarousel/owl.theme.css" rel="/stylesheet" >
-
         <link href="/BazaarWeb/css/superfish.css" rel="stylesheet" media="screen">
         <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
         <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'> -->
