@@ -1,14 +1,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@include file="/jsp/langInclude.jsp" %>
 
-<t:MasterPageContent title="Inloggen">
+<c:set var="title"> <fmt:message key="login.title" /></c:set>
+<t:MasterPageContent title="${title}">
     <jsp:body>
 
         <div class="login-bg">
             <div class="container">
                 <div class="form-wrapper">
                     <form class="form-signin" role="form" action="LoginServlet" method="post" enctype="multipart/form-data">
-                        <h2 class="form-signin-heading">sign in now</h2>
+                        <h2 class="form-signin-heading"><fmt:message key="login.label.signIn" /></h2>
                         <div class="login-wrap">
                             <input type="text" class="form-control" placeholder="User ID" name="Username" autofocus>
                             <input type="password" class="form-control" placeholder="Password" name="Password">
