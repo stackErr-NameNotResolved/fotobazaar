@@ -4,7 +4,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@page isErrorPage="true" %>
 
-<%=exception.getMessage()%>
+<h1><%=exception.getMessage()%></h1>
 <%
     StringWriter stringWriter = new StringWriter();
     PrintWriter printWriter = new PrintWriter(stringWriter);
