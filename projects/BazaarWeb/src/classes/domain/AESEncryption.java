@@ -5,7 +5,6 @@
  */
 package classes.domain;
 
-import org.junit.Test;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -57,7 +56,7 @@ public class AESEncryption {
             System.out.println("encrypted string:" + Base64.getEncoder().encodeToString(encrypted));
             return new String(Base64.getEncoder().encodeToString(encrypted).getBytes("ISO-8859-1"), "ISO-8859-1");
         } catch (NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | NoSuchPaddingException | UnsupportedEncodingException ex) {
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AESEncryption.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -74,7 +73,7 @@ public class AESEncryption {
             System.out.println("decoded string: " + decryptedValue);
             return decryptedValue;
         } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | UnsupportedEncodingException ex) {
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AESEncryption.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
