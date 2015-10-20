@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Jip
  */
-@WebServlet(name = "ShowPicture", urlPatterns = {"/ShowPicture"})
+@WebServlet(name = "ShowPicture", urlPatterns = {"/ShowPictureServlet"})
 public class ShowPictureServlet extends HttpServlet {
 
     /**
@@ -90,6 +90,11 @@ public class ShowPictureServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        if (request.getParameter("imageCode") != null) {
+            String imageCode = request.getParameter("imageCode");
+
+            response.sendRedirect("/pages/pictureView.jsp");
+        }
     }
 
     /**

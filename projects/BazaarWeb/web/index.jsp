@@ -23,11 +23,11 @@
                     <div class="row">
                         <div class="col-lg-4 col-sm-4">
                             <h1>Fotobazaar</h1>
-                            <form class="form-horizontal" role="form" action="PhotoUploadServlet" method="POST" enctype="multipart/form-data">
+                            <form class="form-horizontal" role="form" action="ShowPictureServlet" method="POST">
                                 <div class="form-group">
                                     <label for="code" class="col-sm-10 control-label">Voer uw fotocode in:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="fotoCode"  id="fotoCode">
+                                        <input type="text" class="form-control" name="imageCode"  id="fotoCode">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-default btn-lg">
