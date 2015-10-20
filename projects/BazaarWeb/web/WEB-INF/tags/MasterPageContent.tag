@@ -1,12 +1,7 @@
 <%@tag description="MasterPageContent" pageEncoding="UTF-8"%>
 <%@ attribute name="title" required="true" %>
 <%@ attribute name="script" fragment="true" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="languages.text" />
+<%@include file="/jsp/langInclude.jsp" %>
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- <%@attribute name="message"%> -->
 
@@ -72,12 +67,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.html">Foto<span>bazaar</span></a>
+                    <a class="navbar-brand" href="/BazaarWeb/index.jsp">Foto<span>bazaar</span></a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a for="cart" href="contact.html"><fmt:message key="master.menu.cart" /></a>
+                            <a href="contact.html"><fmt:message key="master.menu.cart" /></a>
                         </li>
                         <li>
                             <a href="contact.html">???????</a>
@@ -100,14 +95,14 @@
                             <%
                             } else {
                             %>
-                            <a for="login" href="login.jsp"><fmt:message key="master.menu.login" /></a>
+                            <a href="/BazaarWeb/jsp/login.jsp"><fmt:message key="master.menu.login" /></a>
                             <% }%>
                         </li>
                         <li>
                             <form>
                                 <select id="language" name="language" onchange="submit()">
-                                    <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
                                     <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
+                                    <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
                                 </select>
                             </form>
                         </li>
