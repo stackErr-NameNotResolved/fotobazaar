@@ -4,7 +4,7 @@
 <t:MasterPageContent title="picture editor">
     <jsp:attribute name="script">
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
-        <script type="text/javascript" src="js/CamanJS/caman.full.js"></script>
+        <script type="text/javascript" src="/js/CamanJS/caman.full.js"></script>
         <script type="text/javascript">
             Caman("#editor", "ShowPicture?imageId=1&imageSize=small", function () {
 
