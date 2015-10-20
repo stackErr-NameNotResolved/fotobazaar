@@ -49,6 +49,7 @@
                             <a href="contact.html">???????</a>
                         </li>
                         <li>
+                            <!-- TODO: Fix this -->
                             <A href="${login-href}"><fmt:message key="${login-text}"/></A>
 
                             <form name="submitForm" method="POST" action="LogOutServlet">
