@@ -5,7 +5,25 @@
 <%@ attribute name="script" fragment="true"
               description="All the scripts to be added on the bottom of the page go here." %>
 
+<%
+    // TODO: FIX DIS SHIT SO THAT VARIABLES CAN BE SET JUST-IN-TIME! They are now 0 by default and aren't set.
+    String username = (String) session.getAttribute("username");
+    String encrypted = (String) session.getAttribute("username-encrypted");
+
+    if (Session.checkSessionData(username, encrypted, request.getRemoteAddr())) {
+        request.setAttribute("login-href", "javascript:document.submitForm.submit()");
+        request.setAttribute("login-text", "master.menu.logout");
+    } else {
+        session.removeAttribute("username");
+        session.removeAttribute("username-encrypted");
+
+        request.setAttribute("login-href", "/BazaarWeb/pages/login.jsp");
+        request.setAttribute("login-text", "master.menu.login");
+    }
+%>
+
 <t:EmptyMasterPage title="${title}">
+
     <jsp:attribute name="script">
         <jsp:invoke fragment="script"/>
     </jsp:attribute>
@@ -31,23 +49,10 @@
                             <a href="contact.html">???????</a>
                         </li>
                         <li>
-                            <%--<%--%>
-                                <%--String username = (String) session.getAttribute("username");--%>
-                                <%--String encrypted = (String) session.getAttribute("username-encrypted");--%>
+                            <A href="${login-href}"><fmt:message key="${login-text}"/></A>
 
-                                <%--if (Session.checkSessionData(username, encrypted, request.getRemoteAddr())) {--%>
-                            <%--%>--%>
-                            <%--<A HREF="javascript:document.submitForm.submit()">Uitloggen</A>--%>
-
-                            <%--<form name="submitForm" method="POST" action="LogOutServlet">--%>
-                            <%--</form>--%>
-                            <%--<%--%>
-                            <%--} else {--%>
-                                <%--session.removeAttribute("username");--%>
-                                <%--session.removeAttribute("username-encrypted");--%>
-                            <%--%>--%>
-                            <%--<a href="/BazaarWeb/pages/login.jsp"><fmt:message key="master.menu.login"/></a>--%>
-                            <%--<% }%>--%>
+                            <form name="submitForm" method="POST" action="LogOutServlet">
+                            </form>
                         </li>
                         <li><a>
                             <form>
