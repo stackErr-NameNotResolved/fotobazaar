@@ -40,16 +40,16 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title">Forgot Password ?</h4>
+                                        <h4 class="modal-title"><fmt:message key="login.link.forgotten" /></h4>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Enter your e-mail address below to reset your password.</p>
+                                        <p><fmt:message key="login.text.forgotten" /></p>
                                         <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
 
                                     </div>
                                     <div class="modal-footer">
-                                        <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-                                        <button class="btn btn-success" type="button">Submit</button>
+                                        <button data-dismiss="modal" class="btn btn-default" type="button"><fmt:message key="login.button.cancel" /></button>
+                                        <button class="btn btn-success" type="button"><fmt:message key="login.button.submit" /></button>
                                     </div>
                                 </div>
                             </div>

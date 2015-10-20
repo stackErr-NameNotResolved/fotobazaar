@@ -5,8 +5,10 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@include file="/pages/langInclude.jsp" %>
 
-<t:MasterPageContent title="Picture view">
+<c:set var="title"><fmt:message key="pictureManage.title" /></c:set>
+<t:MasterPageContent title="${title}">
     <jsp:attribute name="script">
         <script>
             (function ($) {
@@ -37,20 +39,20 @@
             <div class="row">
                 <div class="col-lg-9 ">
                     <div class="title">
-                        <h3>Preview</h3>
+                        <h3><fmt:message key="pictureManage.header.preview" /></h3>
                         <hr>
                     </div>
                     <p>
                     <form action="../DeletePictureServlet" method="post" enctype="multipart/form-data">
                         <input type="hidden" value="${param.imageId}" name="photoId"/>
-                        <button class="btn bg-maroon margin"><i class="fa fa-trash-o pr-5"></i>Delete</button> 
+                        <button class="btn bg-maroon margin"><i class="fa fa-trash-o pr-5"></i><fmt:message key="pictureManage.button.delete" /></button> 
                     </form>
                     </p>
                     
                 </div>
                 <div class="col-lg-3">
                     <div class="title">
-                        <h3>Price</h3>
+                        <h3><fmt:message key="pictureManage.header.price" /></h3>
                         <hr>
                     </div>
                     <p>
@@ -58,7 +60,7 @@
                         <input type="hidden" name="photoId" value="${param.imageId}"/>
                         <input type="number" class="form-control" name="photoPrice"  id="photoPrice" min="0" max="99999" step="0.01">
                         <br>
-                        <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i>Save</button>
+                        <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i><fmt:message key="pictureManage.button.save" /></button>
                     </form>
                     </p>
                 </div>
