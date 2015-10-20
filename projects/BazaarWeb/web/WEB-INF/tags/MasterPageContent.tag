@@ -8,20 +8,7 @@
         <jsp:invoke fragment="script"/>
     </jsp:attribute>
     <jsp:body>
-        <div class="breadcrumbs">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-sm-4">
-                        <h1>${title}</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row mar-b-50">
-                <jsp:doBody/>
-            </div>
-        </div>
+        <jsp:doBody/>
     </jsp:body>
 </t:BaseMasterPage>
 
