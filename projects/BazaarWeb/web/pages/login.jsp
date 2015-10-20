@@ -3,6 +3,18 @@
 <%@include file="/pages/langInclude.jsp" %>
 
 <c:set var="title"> <fmt:message key="login.title" /></c:set>
+<c:set var="login_message">
+    <%
+        String message = (String) session.getAttribute("login_message"); 
+        if(message == "1")
+        { %>
+        <fmt:message key="login.response.invalid"/>
+    <% } else if(message == "2")
+    { %>
+    <fmt:message key="login.response.disabled"/>
+    <% } %>
+</c:set>
+
 <t:MasterPageContent title="${title}">
     <jsp:body>
 
@@ -12,6 +24,8 @@
                     <form class="form-signin" role="form" action="../LoginServlet" method="post" enctype="multipart/form-data">
                         <h2 class="form-signin-heading"><fmt:message key="login.label.signIn" /></h2>
                         <div class="login-wrap">
+                            <font style="color: red;">${login_message}</font>
+
                             <c:set var="username"><fmt:message key="login.placeholder.username" /></c:set>
                             <input type="text" class="form-control" placeholder="${username}" name="Username" autofocus>
                             <c:set var="password"><fmt:message key="login.placeholder.password" /></c:set>

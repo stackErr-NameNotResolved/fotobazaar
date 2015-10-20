@@ -6,6 +6,7 @@
 package classes.servlets;
 
 import classes.domain.Account;
+import classes.domain.ELoginStatus;
 import classes.domain.Session;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -84,32 +85,27 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        
+
         String username = request.getParameter("Username");
         String password = request.getParameter("Password");
-        
-        if(Account.validateCredentials(username, password)){
-//            Cookie loginCookie = new Cookie("username", username);
-//            //setting cookie to expiry in 30 mins
-//            loginCookie.setMaxAge(30*60);
-//            response.addCookie(loginCookie);
-//            
-//            loginCookie = new Cookie("username-encrypted", Session.generateSessionData(username, request.getRemoteAddr()));
-//            //setting cookie to expiry in 30 mins
-//            loginCookie.setMaxAge(30*60);
-//            response.addCookie(loginCookie);
-            
+
+        if (Account.validateCredentials(username, password) == ELoginStatus.SUCCESS) {
+
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
             session.setAttribute("username-encrypted", Session.generateSessionData(username, request.getRemoteAddr()));
             
+            session.removeAttribute("login_message");
+
             response.sendRedirect("index.jsp");
-        }else{
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
-            PrintWriter out= response.getWriter();
-            out.println("<font color=red>Either user name or password is wrong.</font>");
-            rd.include(request, response);
+            return;
+        } else if (Account.validateCredentials(username, password) == ELoginStatus.FAILED) {
+            request.getSession().setAttribute("login_message", "1");
+        } else if (Account.validateCredentials(username, password) == ELoginStatus.DISABLED) {
+            request.getSession().setAttribute("login_message", "2");
         }
+
+        response.sendRedirect("pages/login.jsp");
     }
 
     /**
