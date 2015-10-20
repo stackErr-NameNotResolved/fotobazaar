@@ -6,13 +6,13 @@
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
         <script type="text/javascript" src="/BazaarWeb/js/CamanJS/caman.full.js"></script>
         <script type="text/javascript">
-            Caman("#editor", "../ShowPicture?imageId=1&imageSize=small", function () {
+            Caman("#editor", "../ShowPictureServlet?imageId=1&imageSize=small", function () {
 
                 this.render();
             });
 
             $("#reset").click(function () {
-                Caman("#editor", "../ShowPicture?imageId=1&imageSize=small", function () {
+                Caman("#editor", "../ShowPictureServlet?imageId=1&imageSize=small", function () {
                     this.revert(false);
                     this.render();
                 });
@@ -39,10 +39,21 @@
     </jsp:attribute>
     <jsp:body>
         <!-- Sub-Container for ui elements/text -->
+        
         <div class="container">
+           
+        </div>
+        <div class="container">
+             <div class="row">
+                <div class="col-md-12">
+                    <div class="pf-img">
+                        <canvas id="editor"></canvas>
+                    </div>
+                </div>
+            </div>
             <div class="row mar-b-50">
                 <div class="col-md-12">
-                    <canvas id="editor"></canvas>
+                    
                     <button id="reset">Reset</button>                    
                     <button id="crop">crop</button>
                     <button id="sepia">sepia</button>
