@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div style="text-align: center; background-color: #f8f8f8;">
-                        <img src="../ShowPicture?imageId=1&imageSize=big" alt="" style="height: 500px; max-width: 100%; ">
+                        <img src="../ShowPictureServlet?imageId=${param.imageId}&imageSize=big" alt="" style="height: 500px; max-width: 100%; ">
                     </div>
                 </div>
             </div>
@@ -41,8 +41,8 @@
                         <hr>
                     </div>
                     <p>
-                    <form action="DeletePictureServlet" method="post" enctype="multipart/form-data">
-                        <input type="hidden" value="1" name="photoId"/>
+                    <form action="../DeletePictureServlet" method="post" enctype="multipart/form-data">
+                        <input type="hidden" value="${param.imageId}" name="photoId"/>
                         <button class="btn bg-maroon margin"><i class="fa fa-trash-o pr-5"></i>Delete</button> 
                     </form>
                     </p>
@@ -54,8 +54,8 @@
                         <hr>
                     </div>
                     <p>
-                    <form action="PhotoChangePriceServlet" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="photoId" value="1"/>
+                    <form action="../PhotoChangePriceServlet" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="photoId" value="${param.imageId}"/>
                         <input type="number" class="form-control" name="photoPrice"  id="photoPrice" min="0" max="99999" step="0.01">
                         <br>
                         <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i>Save</button>
