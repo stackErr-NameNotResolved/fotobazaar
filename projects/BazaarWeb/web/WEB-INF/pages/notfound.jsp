@@ -1,9 +1,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@page isErrorPage="true"%>
+<%@include file="/pages/langInclude.jsp" %>
 
-<t:MasterPageContent title="Pagina niet gevonden">
+<c:set var="title"><fmt:message key="notfound.title" /></c:set>
+<t:MasterPageContent title="${title}">
     <jsp:body>
-        Wij kunnen de pagina helaas niet vinden.
+        <fmt:message key="notfound.message" /><br/>
+        <a href="/BazaarWeb/index.jsp"><fmt:message key="notfound.link.home" /></a>
     </jsp:body>
 </t:MasterPageContent>
