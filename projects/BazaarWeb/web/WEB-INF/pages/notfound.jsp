@@ -7,6 +7,6 @@
 <t:MasterPageContent title="${title}">
     <jsp:body>
         <fmt:message key="notfound.message" /><br/>
-        <a href="/BazaarWeb/index.jsp"><fmt:message key="notfound.link.home" /></a>
+        <a href="/BazaarWeb/"><fmt:message key="notfound.link.home" /></a>
     </jsp:body>
 </t:MasterPageContent>
