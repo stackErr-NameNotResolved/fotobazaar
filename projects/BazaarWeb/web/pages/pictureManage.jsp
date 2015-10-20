@@ -26,8 +26,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="pf-img">
-                        <img src="http://digitalhint.net/wp-content/uploads/2015/01/earth-from-space-wallpaper.jpg" alt="" height="500">
+                    <div style="text-align: center; background-color: #f8f8f8;">
+                        <img src="../ShowPicture?imageId=1&imageSize=big" alt="" style="height: 500px; max-width: 100%; ">
                     </div>
                 </div>
             </div>
