@@ -19,6 +19,10 @@ public abstract class DataModel {
     public DataModel() {
     }
 
+    public StatementResult select() {
+        throw new NotImplementedException();
+    }
+
     public StatementResult insert() {
         ORMTable table = getORMTable();
 
@@ -140,6 +144,7 @@ public abstract class DataModel {
         if (!rows.containsData()) return null;
         Object[] row = rows.getRow(0);
 
+        // Store data from database into model fields.
         List<ORMColumn> columns = table.getColumns();
         for (int i = 0; i < columns.size(); i++) {
             ORMColumn column = columns.get(i);
