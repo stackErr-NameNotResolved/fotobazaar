@@ -1,3 +1,4 @@
+<%@tag import="classes.domain.Session"%>
 <%@tag description="MasterPageContent" pageEncoding="UTF-8"%>
 <%@ attribute name="title" required="true" %>
 <%@ attribute name="script" fragment="true" %>
@@ -79,21 +80,18 @@
                         </li>
                         <li>
                             <%
-                                boolean account = false;
-                                for(Cookie c : request.getCookies())
-                                    if(c.getName().equals("username"))
-                                    {
-                                        account = true;
-                                        break;
-                                    }
+                                String username = (String) session.getAttribute("username");
+                                String encrypted = (String) session.getAttribute("username-encrypted");
                                 
-                                if(account) {
+                                if(Session.checkSessionData(username, encrypted, request.getRemoteAddr())) {
                             %>
                             <A HREF="javascript:document.submitForm.submit()">Uitloggen</A>
                             <form name="submitForm" method="POST" action="LogOutServlet">                            
                             </form>
                             <%
                             } else {
+                                    session.removeAttribute("username"); 
+                                    session.removeAttribute("username-encrypted");
                             %>
                             <a href="/BazaarWeb/pages/login.jsp"><fmt:message key="master.menu.login" /></a>
                             <% }%>
