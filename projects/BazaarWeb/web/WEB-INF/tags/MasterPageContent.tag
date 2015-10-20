@@ -4,6 +4,9 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:BaseMasterPage title="${title}">
+    <jsp:attribute name="script">
+        <jsp:invoke fragment="script"/>
+    </jsp:attribute>
     <jsp:body>
         <div class="breadcrumbs">
             <div class="container">
@@ -19,7 +22,6 @@
                 <jsp:doBody/>
             </div>
         </div>
-        <jsp:invoke fragment="script"/>
     </jsp:body>
 </t:BaseMasterPage>
 
