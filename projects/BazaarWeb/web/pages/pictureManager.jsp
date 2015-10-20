@@ -58,7 +58,7 @@
                     <p>
                     <form action="../PhotoChangePriceServlet" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="photoId" value="${param.imageId}"/>
-                        <input type="number" class="form-control" name="photoPrice"  id="photoPrice" min="0" max="99999" step="0.01">
+                        <input type="number" class="form-control" name="photoPrice"  id="photoPrice" min="0" max="99999" step="0.01" value="${imagePrice}">
                         <br>
                         <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i><fmt:message key="pictureManage.button.save" /></button>
                     </form>

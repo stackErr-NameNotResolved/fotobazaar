@@ -6,7 +6,7 @@
 package classes.servlets;
 
 import classes.domain.Picture;
-
+import java.io.ByteArrayOutputStream;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -54,6 +54,7 @@ public class ShowPictureServlet extends HttpServlet {
 
             response.getOutputStream().write(Picture.downloadImage(imageId, imageSize));
         }
+
     }
 
     /**

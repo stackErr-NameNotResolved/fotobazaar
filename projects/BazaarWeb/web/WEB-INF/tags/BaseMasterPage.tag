@@ -1,3 +1,4 @@
+<%@ tag import="classes.domain.Session" %>
 <%@tag description="BaseMasterPage" pageEncoding="UTF-8"%>
 <%@ attribute name="title" required="true" description="Header of the page to be shown in the theme." %>
 <%@ attribute name="script" fragment="true" description="All the scripts to be added on the bottom of the page go here." %>
@@ -79,21 +80,18 @@
                         </li>
                         <li>
                             <%
-                                boolean account = false;
-                                for(Cookie c : request.getCookies())
-                                    if(c.getName().equals("username"))
-                                    {
-                                        account = true;
-                                        break;
-                                    }
-                                
-                                if(account) {
+                                String username = (String) session.getAttribute("username");
+                                String encrypted = (String) session.getAttribute("username-encrypted");
+
+                                if(Session.checkSessionData(username, encrypted, request.getRemoteAddr())) {
                             %>
                             <A HREF="javascript:document.submitForm.submit()">Uitloggen</A>
-                            <form name="submitForm" method="POST" action="LogOutServlet">                            
+                            <form name="submitForm" method="POST" action="LogOutServlet">
                             </form>
                             <%
                             } else {
+                                session.removeAttribute("username");
+                                session.removeAttribute("username-encrypted");
                             %>
                             <a href="/BazaarWeb/pages/login.jsp"><fmt:message key="master.menu.login" /></a>
                             <% }%>
