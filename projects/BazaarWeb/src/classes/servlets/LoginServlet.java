@@ -6,6 +6,7 @@
 package classes.servlets;
 
 import classes.domain.Account;
+import classes.domain.Session;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 /**
@@ -87,10 +89,20 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("Password");
         
         if(Account.validateCredentials(username, password)){
-            Cookie loginCookie = new Cookie("username",username);
-            //setting cookie to expiry in 30 mins
-            loginCookie.setMaxAge(30*60);
-            response.addCookie(loginCookie);
+//            Cookie loginCookie = new Cookie("username", username);
+//            //setting cookie to expiry in 30 mins
+//            loginCookie.setMaxAge(30*60);
+//            response.addCookie(loginCookie);
+//            
+//            loginCookie = new Cookie("username-encrypted", Session.generateSessionData(username, request.getRemoteAddr()));
+//            //setting cookie to expiry in 30 mins
+//            loginCookie.setMaxAge(30*60);
+//            response.addCookie(loginCookie);
+            
+            HttpSession session = request.getSession();
+            session.setAttribute("username", username);
+            session.setAttribute("username-encrypted", Session.generateSessionData(username, request.getRemoteAddr()));
+            
             response.sendRedirect("index.jsp");
         }else{
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");

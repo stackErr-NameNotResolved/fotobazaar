@@ -1,12 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@include file="/jsp/langInclude.jsp" %>
+<%@include file="/pages/langInclude.jsp" %>
 
 <c:set var="title"> <fmt:message key="index.title" /></c:set>
 <t:MasterPageContent title="${title}">
-    <jsp:attribute name="script">
-        <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
-    </jsp:attribute>
     <jsp:body>
         <div class="col-md-12">
             <div class="breadcrumbs" style="height: 300px;">
@@ -16,14 +13,14 @@
                             <h1>Fotobazaar</h1>
                             <form class="form-horizontal" role="form" action="ShowPictureServlet" method="POST">
                                 <div class="form-group">
-                                    <label for="code" class="col-sm-10 control-label">Voer uw fotocode in:</label>
+                                    <label for="code" class="col-sm-10 control-label"><fmt:message key="index.label.code" /></label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="imageCode"  id="fotoCode">
                                     </div>
                                     <label style="color:red;visibility:hidden${visibility}" class="col-sm-10 control-label"><fmt:message key="index.failCode" /></label>
                                 </div>
                                 <button type="submit" class="btn btn-default btn-lg">
-                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Bekijken
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span><fmt:message key="index.label.view" />
                                 </button>
                             </form>
                         </div>
@@ -97,4 +94,4 @@
             </div>
         </div>
     </jsp:body>
-</t:MasterPageContent> 
+</t:MasterPageContent>

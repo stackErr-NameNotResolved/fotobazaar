@@ -4,33 +4,70 @@
 <t:MasterPageContent title="picture editor">
     <jsp:attribute name="script">
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
-        <script type="text/javascript" src="/BazaarWeb/js/CamanJS/caman.full.js"></script>
+        <script type="text/javascript" src="/BazaarWeb/js/CamanJS/caman.full.js"></script>        
+        <script type="text/javascript" src="/BazaarWeb/js/JQueryUI/jquery-ui.js"></script>
         <script type="text/javascript">
-            Caman("#editor", "../ShowPicture?imageId=1&imageSize=small", function () {
+            $(function () {
+                $("#slider-vertical").slider({
+                    orientation: "vertical",
+                    range: "min",
+                    min: -100,
+                    max: 100,
+                    value: 0,
+                    slide: function (event, ui) {
+                        $("#amount").val(ui.value);
+                        
+                    },
+                    stop: function (event, ui) {
+                        var curVal = ui.value;
+                        Caman("#editor", function () {
+                          this.revert();
+                        this.brightness(ui.value);
+                        this.contrast(0);
+                        this.render();
+                });    
+                    }
+                });
+                $("#amount").val();
+                
+            });
 
+            Caman("#editor", "../ShowPictureServlet?imageId=6&imageSize=big", function () {
                 this.render();
             });
 
             $("#reset").click(function () {
-                Caman("#editor", "../ShowPicture?imageId=1&imageSize=small", function () {
+                Caman("#editor", "../ShowPictureServlet?imageId=6&imageSize=big", function () {
                     this.revert(false);
                     this.render();
                 });
             });
 
-            $("#crop").click(function () {
+            $("#brightness").click(function () {
                 Caman("#editor", function () {
-                    this.crop(200, 200);
+                    this.brightness(40);
+                    this.contrast(0);
                     this.render();
                 });
             });
 
             $("#sepia").click(function () {
                 Caman("#editor", function () {
-                    this.resize({
-                        width: 500,
-                        height: 300
-                    });
+                    this.sepia(20);
+                    this.render();
+                });
+            });
+
+            $("#contrast").click(function () {
+                Caman("#editor", function () {
+                    this.contrast(10);
+                    this.render();
+                });
+            });
+
+            $("#noise").click(function () {
+                Caman("#editor", function () {
+                    this.noise(10);
                     this.render();
                 });
             });
@@ -39,17 +76,30 @@
     </jsp:attribute>
     <jsp:body>
         <!-- Sub-Container for ui elements/text -->
+        <div class="row">
+            <div class="col-md-12">
+                <button id="reset">Reset</button>   
+                <button id="sepia">sepia</button>
+                <button id="brightness">Brightness</button>                    
+                <button id="contrast">contrast</button>
+                <button id="noise">noise</button>    
+                <p>
+                    <label for="amount">Volume:</label>
+                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                </p>
+                <div id="slider-vertical" style="height:200px;"></div>
+            </div>
+        </div>
         <div class="container">
-            <div class="row mar-b-50">
+            <div class="row">
                 <div class="col-md-12">
-                    <canvas id="editor"></canvas>
-                    <button id="reset">Reset</button>                    
-                    <button id="crop">crop</button>
-                    <button id="sepia">sepia</button>
-                    <button id="Reser">Reset</button>
-
+                    <div style="text-align: center; background-color: #f8f8f8;">
+                        <canvas id="editor" style="height:500px; max-width: 100%;"></canvas>
+                    </div>
                 </div>
             </div>
+
+
         </div>
     </jsp:body>
 </t:MasterPageContent>
