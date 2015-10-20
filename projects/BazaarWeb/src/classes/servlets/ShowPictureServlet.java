@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Jip
  */
 @WebServlet(name = "ShowPicture", urlPatterns = {"/ShowPicture"})
-public class ShowPicture extends HttpServlet {
+public class ShowPictureServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -73,7 +73,7 @@ public class ShowPicture extends HttpServlet {
             try {
                 response.getOutputStream().write(Picture.downloadImage(imageId, imageSize));
             } catch (SQLException ex) {
-                Logger.getLogger(ShowPicture.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ShowPictureServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
