@@ -5,13 +5,20 @@
  */
 package classes.domain;
 
-import java.io.UnsupportedEncodingException;
-import java.security.*;
-import java.util.Base64;
-import java.util.logging.*;
-import javax.crypto.*;
+import org.junit.Test;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-import junit.framework.Test;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
