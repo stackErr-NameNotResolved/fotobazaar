@@ -6,12 +6,18 @@
 package classes.servlets;
 
 import classes.domain.Picture;
+import com.sun.tools.xjc.Language;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.Locale;
+import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -39,18 +45,6 @@ public class ShowPictureServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet ShowPicture</title>");
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet ShowPicture at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -93,8 +87,15 @@ public class ShowPictureServlet extends HttpServlet {
         if (request.getParameter("imageCode") != null) {
             String imageCode = request.getParameter("imageCode");
 
-            response.sendRedirect("/pages/pictureView.jsp");
+            if (imageCode.equals("go")) {
+                response.sendRedirect("pages/pictureView.jsp");
+                return;
+            }
         }
+
+
+        request.setAttribute("visibility", "visible");
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
     /**
