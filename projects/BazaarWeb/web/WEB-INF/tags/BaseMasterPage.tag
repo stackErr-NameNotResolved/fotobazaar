@@ -28,31 +28,8 @@
                     </button>
                     <a class="navbar-brand" href="/BazaarWeb/index.jsp">Foto<span>bazaar</span></a>
                 </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>
-                            <a href="/BazaarWeb/index.jsp">Home</a>
-                        </li>
-                        <li>
-                        
-                        <a href="/BazaarWeb/pages/login.jsp">Login</a>
-                        </li>
-                        <li>
-                            <jsp:include page="/LoginServletFragment" />
-                        </li>
-                        <li><a>
-                                <form>
-                                    <select id="language" name="language" onchange="submit()">
-                                        <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-                                    	<option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
-                                    </select>
-                                </form>
-                            </a>
-                        </li>
-                        <!-- Search input
-                                        <li><input class="form-control search" placeholder=" Search" type="text"></li> -->
-                    </ul>
-                </div>
+
+                <jsp:include page="/NavbarServletFragment" />
             </div>
         </header>
         <!--header end-->

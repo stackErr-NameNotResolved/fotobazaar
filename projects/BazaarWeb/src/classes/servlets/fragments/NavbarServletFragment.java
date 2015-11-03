@@ -11,17 +11,42 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "LoginServletFragment", urlPatterns = {"/LoginServletFragment"})
-public class LoginServletFragment extends BaseHttpServlet {
+@WebServlet(name = "NavbarServletFragment", urlPatterns = {"/NavbarServletFragment"})
+public class NavbarServletFragment extends BaseHttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter writer = response.getWriter();
+
+        writer.write("<div class=\"navbar-collapse collapse\">");
+        writer.write("<ul class=\"nav navbar-nav\">");
+        doHome(request, response);
+        doNavLogin(request, response);
+        doLanguage(request, response);
+        writer.write("</ul>");
+        writer.write("</div>");
+    }
+
+    protected void doHome(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter writer = response.getWriter();
+
+        writer.write("<li>");
+        writer.write("<a href=\"");
+        writer.write(getServletContext().getContextPath() + "/index.jsp");
+        writer.write(">Home</a>");
+        writer.write("</li>");
+    }
+
+    protected void doNavLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter writer = response.getWriter();
+        writer.write("<li>");
+
         String username = (String) request.getSession().getAttribute("username");
         String encrypted = (String) request.getSession().getAttribute("username-encrypted");
 
-        PrintWriter writer = response.getWriter();
         if (Session.checkSessionData(username, encrypted, request.getRemoteAddr())) {
             request.getSession().setAttribute("login-href", "");
             request.getSession().setAttribute("login-text", "master.menu.logout");
@@ -46,5 +71,24 @@ public class LoginServletFragment extends BaseHttpServlet {
 
             writer.write("<form name=\"submitForm\" method=\"POST\" action=\"" + getServletContext().getContextPath() + "/pages/login.jsp\"></form>");
         }
+        writer.write("</li>");
+    }
+
+    protected void doLanguage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter writer = response.getWriter();
+
+        writer.write("<li><a>");
+        writer.write("<form>");
+        writer.write("<select id=\"language\" name=\"language\" onchange=\"submit()\">");
+
+        // Write options.
+        writer.write(getHtmlOption("English", "en", getLanguage(request).getLanguage().equals("en")));
+        writer.write(getHtmlOption("Nederlands", "nl", getLanguage(request).getLanguage().equals("nl")));
+
+        writer.write("</select>");
+    }
+
+    private String getHtmlOption(String name, String value, boolean selected) {
+        return String.format("<option value=\"%s\" %s>%s</option>", value, selected ? "selected" : "", name);
     }
 }

@@ -10,6 +10,11 @@ import java.util.ResourceBundle;
 public abstract class BaseHttpServlet extends HttpServlet {
 
     protected String getLocal(HttpServletRequest request, String key) {
-        return ResourceBundle.getBundle("languages.text", Locale.forLanguageTag(request.getSession().getAttribute("language").toString())).getString(key);
+        return ResourceBundle.getBundle("languages.text", getLanguage(request)).getString(key);
+    }
+
+    protected Locale getLanguage(HttpServletRequest request) {
+        Object attribute = request.getSession().getAttribute("language");
+        return attribute instanceof String ? Locale.forLanguageTag((String) attribute) : (Locale) attribute;
     }
 }
