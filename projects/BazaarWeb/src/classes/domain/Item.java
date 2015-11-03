@@ -12,6 +12,13 @@ package classes.domain;
 public class Item {
     private int id;
     private double price;
+    private String description;
+    
+    public Item()
+    {
+        this.description = "Witte mok";
+        this.price = 2.5;
+    }
     
     public Item getItemFromId()
     {
@@ -22,5 +29,9 @@ public class Item {
         return price;
     }
     
-    
+    @Override
+    public String toString()
+    {
+        return this.description;
+    }
 }

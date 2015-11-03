@@ -14,7 +14,7 @@ import org.junit.Test;
  * @author Bas
  */
 public class AESEncryptionTest {
-
+    
     @Test
     public void testEncryption() {
         

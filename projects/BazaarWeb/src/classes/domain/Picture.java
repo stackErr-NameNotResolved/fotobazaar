@@ -49,7 +49,7 @@ public class Picture {
      *
      */
     public Picture() {
-
+        this.price = 1.0;
     }
 
     public int getStartX() {
