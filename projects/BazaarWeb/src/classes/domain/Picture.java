@@ -42,10 +42,10 @@ public class Picture {
      * uploads the picture to the database and places a thumbnail in the
      * database
      *
-     * @param imagePart      part that containt the image
+     * @param imagePart part that containt the image
      * @param photographerId the id of the photographer
-     * @param price          price of the image
-     * @param thumbnailSize  the max width or height of the thumbnail
+     * @param price price of the image
+     * @param thumbnailSize the max width or height of the thumbnail
      * @return true if the image got placed in the database, false if nothing
      * got updated due part being null or on constraint violation
      */
@@ -85,13 +85,7 @@ public class Picture {
             imageType = "DATA_SMALL";
         }
 
-        //check if image actually exists
-        if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM photo WHERE ID = ?", imageId).getRow(0)[0] > 0) {
-            //check if image is published
-            if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM photo WHERE ID = ?", imageId).getRow(0)[0] == 0) {
-                return null;
-            }
-
+        if (isPicturePublished(imageId, null)) {
             result = DatabaseConnector.getInstance().executeQuery("SELECT " + imageType + " AS IMAGE FROM photo WHERE ID = ?", imageId);
             if (result != null) {
                 byte[] blobbytes = null;
@@ -103,9 +97,74 @@ public class Picture {
                 }
                 return blobbytes;
             }
+
         }
 
         return null;
+    }
+
+    /**
+     * gets id from code
+     *
+     * @param pictureCode the code of the image
+     * @return -1 if image not found
+     */
+    public static int getIdFromCode(String pictureCode) {
+        if (isPictureAvailable(null, pictureCode)) {
+            return (int)DatabaseConnector.getInstance().executeQuery("SELECT ID FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0];
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * returns true if a picture exists and is made public else false
+     *
+     * @param pictureId id of the picture, can be null
+     * @param pictureCode code if the picture, can be null
+     * @return returns true if a picture exists and is made public else false
+     */
+    public static boolean isPicturePublished(String pictureId, String pictureCode) {
+        if (pictureId != null) {
+            //check if image actually exists
+            if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM photo WHERE ID = ?", pictureId).getRow(0)[0] > 0) {
+                //check if image is published
+                if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM photo WHERE ID = ?", pictureId).getRow(0)[0] == 1) {
+                    return true;
+                }
+            }
+        } else if (pictureCode != null) {
+            //check if image actually exists
+            if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0] > 0) {
+                //check if image is published
+                if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0] == 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * returns true if a picture exists else false
+     *
+     * @param pictureId id of the picture, can be null
+     * @param pictureCode code if the picture, can be null
+     * @return returns true if a picture exists else false
+     */
+    public static boolean isPictureAvailable(String pictureId, String pictureCode) {
+        if (pictureId != null) {
+            //check if image actually exists
+            if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM photo WHERE ID = ?", pictureId).getRow(0)[0] > 0) {
+                return true;
+            }
+        } else if (pictureCode != null) {
+            //check if image actually exists
+            if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0] > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -128,9 +187,9 @@ public class Picture {
     /**
      * Converts the bufferedimage to an inputstream
      *
-     * @param input     the bufferedimage to convert
+     * @param input the bufferedimage to convert
      * @param imagename the name of the image to convert with the .png or .jpg
-     *                  postfix
+     * postfix
      * @return the converted image as inputstream
      */
     public static InputStream BufferedImageToInputstream(BufferedImage input, String imagename) {
@@ -266,7 +325,7 @@ public class Picture {
      * updates the existing price of the picture.
      *
      * @param newPrice the new price of the picture.
-     * @param photoId  the ID of the photo
+     * @param photoId the ID of the photo
      * @return boolean if the price is updated or not.
      */
     public static boolean updatePrice(double newPrice, int photoId) {

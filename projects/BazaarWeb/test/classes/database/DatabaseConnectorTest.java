@@ -15,16 +15,14 @@ import org.junit.Before;
  * @author Bas
  */
 public class DatabaseConnectorTest {
-    
+
     @Before
-    public void setupTest()
-    {
+    public void setupTest() {
         DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?,?)", "testKlant", "testWachtwoord", 4);
     }
-    
+
     @After
-    public void endTest()
-    {
+    public void endTest() {
         DatabaseConnector.getInstance().executeNonQuery("delete from account where username=?", "testKlant");
     }
 
@@ -35,14 +33,19 @@ public class DatabaseConnectorTest {
         assertTrue("No rows were inserted", sr.toString().equals(StatementResult.ROWS_UPDATED.toString()));
 
         // Try to break the system by inserting the same username
-        sr = DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?,?)", "testKlant1", "testWachtwoord", 4);
-        assertTrue("Usernames are supposed to be unique", !sr.toString().equals(StatementResult.ROWS_UPDATED.toString()));
+        try {
+            sr = DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?,?)", "testKlant1", "testWachtwoord", 4);
+            fail("Usernames are supposed to be unique from others");
+        } catch (IllegalStateException ex) {
+        }
 
         // Try to break the system by inserting a row with a missing value
-        sr = DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?)", "testKlant2", "testWachtwoord");
-        assertTrue("Missing value not detected", !sr.toString().equals(StatementResult.ROWS_UPDATED.toString()));
-        
-        
+        try {
+            sr = DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?)", "testKlant2", "testWachtwoord");
+            fail("Missing value is not detected");
+        } catch (IllegalStateException ex) {
+        }
+
         // Delete all
         DatabaseConnector.getInstance().executeNonQuery("delete from account where username=?", "testKlant1");
         DatabaseConnector.getInstance().executeNonQuery("delete from account where username=?", "testKlant2");
@@ -51,7 +54,7 @@ public class DatabaseConnectorTest {
     @Test
     public void testSelect() {
         // Test selecting all accounts
-        DataTable dt = DatabaseConnector.getInstance().executeQuery("select * from account where access=?", 1);
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("select * from account where access=? or access=?", 1, -1);
         assertTrue("There should be 6 admin accounts", dt.getRowCount() == 6);
 
         // Read selective data from the database
@@ -81,11 +84,11 @@ public class DatabaseConnectorTest {
         // Insert some data
         DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?,?)", "testKlant1", "testWachtwoord1", 4);
         DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?,?)", "testKlant2", "testWachtwoord2", 4);
-        
+
         // Delete the test account 
         StatementResult sr = DatabaseConnector.getInstance().executeNonQuery("delete from account where username=?", "testKlant1");
         assertTrue("The specified row was not deleted", sr == StatementResult.ROWS_UPDATED);
-        
+
         // Delete the test account 
         sr = DatabaseConnector.getInstance().executeNonQuery("delete from account where username=?", "testKlant2");
         assertTrue("The second row was not deleted", sr == StatementResult.ROWS_UPDATED);

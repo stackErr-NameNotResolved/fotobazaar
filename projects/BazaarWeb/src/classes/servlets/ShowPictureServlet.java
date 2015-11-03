@@ -70,14 +70,14 @@ public class ShowPictureServlet extends HttpServlet {
         if (request.getParameter("imageCode") != null) {
             String imageCode = request.getParameter("imageCode");
 
-            //if imagecode exists
-            response.sendRedirect(request.getContextPath() + "/pages/pictureView.jsp");
-            return;
+            if (Picture.isPicturePublished(null,imageCode)) {
+                //TODO register photo to current logged in user
+                response.sendRedirect(request.getContextPath() + "/pages/pictureView.jsp?imageId="+Picture.getIdFromCode(imageCode));
+            } else {
+                request.setAttribute("visibility", "visible");
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            }
         }
-
-        //else
-        request.setAttribute("visibility", "visible");
-        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
     /**
