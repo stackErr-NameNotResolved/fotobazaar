@@ -10,23 +10,30 @@
 
 <c:set var="title"> <fmt:message key="registration.title" /></c:set>
 <t:MasterPageContent title="${title}">
-    
+    <c:set var="head"><fmt:message key="registration.head" /></c:set>
+    <c:set var="details"><fmt:message key="registration.details" /></c:set>
+    <c:set var="username"><fmt:message key="registration.username" /></c:set>
+    <c:set var="password"><fmt:message key="registration.password" /></c:set>
+    <c:set var="retypepassword"><fmt:message key="registration.retypepassword" /></c:set>
+    <c:set var="submit"><fmt:message key="registration.submit" /></c:set>
+    <c:set var="alreadyregistered"><fmt:message key="registration.alreadyregistered" /></c:set>
+    <c:set var="login"><fmt:message key="registration.login" /></c:set>
     <div class="registration-bg">
         <div class="container">
 
             <form class="form-signin wow fadeInUp" role="form" action="../RegisterAccountServlet" method="post" enctype="multipart/form-data">
-                <h2 class="form-signin-heading">Register now</h2>
+                <h2 class="form-signin-heading">${head}</h2>
                 <div class="login-wrap">
-                    <p> Enter account details below</p>
-                    <input type="text" name="username" class="form-control" placeholder="User Name" autofocus="">
-                    <input type="password" name="password1" class="form-control" placeholder="Password">
-                    <input type="password" name="password2" class="form-control" placeholder="Re-type Password">
-                    <button class="btn btn-lg btn-login btn-block" type="submit">Submit</button>
+                    <p> ${details}</p>
+                    <input type="text" name="username" class="form-control" placeholder="${username}" autofocus="">
+                    <input type="password" name="password1" class="form-control" placeholder="${password}">
+                    <input type="password" name="password2" class="form-control" placeholder="${retypepassword}">
+                    <button class="btn btn-lg btn-login btn-block" type="submit">${submit}</button>
 
                     <div class="registration">
-                        Already Registered ?
+                        ${alreadyregistered} 
                         <a class="" href="login.jsp">
-                            Login
+                            ${login}
                         </a>
                     </div>
                 </div>
