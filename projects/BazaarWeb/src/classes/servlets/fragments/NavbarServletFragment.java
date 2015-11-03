@@ -25,7 +25,7 @@ public class NavbarServletFragment extends BaseHttpServlet {
         writer.write("<ul class=\"nav navbar-nav\">");
         doNavHome(request, response);
         doNavLogin(request, response);
-        //doNavAdmin(request, response);
+        doNavAdmin(request, response);
         doNavLanguage(request, response);
         writer.write("</ul>");
         writer.write("</div>");
@@ -35,9 +35,7 @@ public class NavbarServletFragment extends BaseHttpServlet {
         PrintWriter writer = response.getWriter();
 
         writer.write("<li>");
-        writer.write("<a href=\"");
-        writer.write(getServletContext().getContextPath() + "/admin.jsp");
-        writer.write(">Home</a>");
+        writer.write(String.format("<a href=\"%s\">%s</a>", getServletContext().getContextPath() + "/pages/admin.jsp", getLocal(request, "master.menu.admin")));
         writer.write("</li>");
     }
 
