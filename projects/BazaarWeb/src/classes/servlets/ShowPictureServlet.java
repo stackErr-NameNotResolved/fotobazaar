@@ -46,11 +46,11 @@ public class ShowPictureServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        if (request.getParameter("imageId") != null && request.getParameter("imageSize") != null) {
-            String imageId = request.getParameter("imageId");
+        if (request.getParameter("imageCode") != null && request.getParameter("imageSize") != null) {
+            String imageCode = request.getParameter("imageCode");
             String imageSize = request.getParameter("imageSize");
 
-            response.getOutputStream().write(Picture.downloadImage(imageId, imageSize));
+            response.getOutputStream().write(Picture.downloadImage(Picture.getIdFromCode(imageCode)+"", imageSize));
         }
 
     }
@@ -71,8 +71,7 @@ public class ShowPictureServlet extends HttpServlet {
             String imageCode = request.getParameter("imageCode");
 
             if (Picture.isPicturePublished(null,imageCode)) {
-                //TODO register photo to current logged in user
-                response.sendRedirect(request.getContextPath() + "/pages/pictureView.jsp?imageId="+Picture.getIdFromCode(imageCode));
+                response.sendRedirect(request.getContextPath() + "/pages/pictureView.jsp?imageCode="+imageCode);
             } else {
                 request.setAttribute("visibility", "visible");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
