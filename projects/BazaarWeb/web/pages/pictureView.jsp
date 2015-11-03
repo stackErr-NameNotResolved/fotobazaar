@@ -1,17 +1,44 @@
 <%-- 
-    Document   : pictureViewer
-    Created on : Oct 20, 2015, 9:36:34 AM
-    Author     : Jip
+    Document   : pictureView
+    Created on : 13-okt-2015, 11:40:16
+    Author     : sjorsvanmierlo
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@include file="/pages/langInclude.jsp" %>
+
+<c:set var="title"><fmt:message key="pictureManage.title" /></c:set>
+<t:MasterPageContent title="${title}">
+    <jsp:body>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div style="text-align: center; background-color: #f8f8f8;">
+                        <img src="../ShowPictureServlet?imageId=${id}&imageSize=big" alt="" style="height: 500px; max-width: 100%; ">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 ">
+                    <div class="title">
+                        <h3><fmt:message key="pictureView.title" /></h3>
+                        <hr>
+                    </div> 
+                        <p>
+                    <form action="../" method="post" enctype="multipart/form-data">
+                        <input type="hidden" value="${param.imageId}" name="photoId"/>
+                        <button class="btn bg-blue margin"><i class="fa fa-gift pr-5"></i><fmt:message key="pictureManage.button.order" /></button> 
+                    </form>
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+
+    </jsp:body>
+
+</t:MasterPageContent>

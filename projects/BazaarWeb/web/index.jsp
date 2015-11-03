@@ -3,37 +3,25 @@
 <%@include file="/pages/langInclude.jsp" %>
 
 <c:set var="title"> <fmt:message key="index.title" /></c:set>
-<t:MasterPageContent title="${title}">
+<t:BaseMasterPage title="${title}">
     <jsp:body>
-        <div class="col-md-12">
-            <div class="breadcrumbs" style="height: 300px;">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4 col-sm-4">
-                            <h1>Fotobazaar</h1>
-                            <form class="form-horizontal" role="form" action="ShowPictureServlet" method="POST">
-                                <div class="form-group">
-                                    <label for="code" class="col-sm-10 control-label"><fmt:message key="index.label.code" /></label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="imageCode"  id="fotoCode">
-                                    </div>
-                                    <label style="color:red;visibility:hidden${visibility}" class="col-sm-10 control-label"><fmt:message key="index.failCode" /></label>
-                                </div>
-                                <button type="submit" class="btn btn-default btn-lg">
-                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span><fmt:message key="index.label.view" />
-                                </button>
-                            </form>
-                        </div>
-                        <div class="col-lg-8 col-sm-8">
-                            <ol class="breadcrumb pull-right">
-                                <li><a href="#">Home</a></li>
-                                <li><a href="#">Features</a></li>
-                                <li class="active">Form</li>
-                            </ol>
-                        </div>
+            <div class="breadcrumbs" style="height: 250px;">
+                <div class="row">
+                    <div class="col-lg-10 col-lg-offset-1" style="margin-top:37px;">
+                        
+                        <h1><fmt:message key="index.label.code" /></h1>
+                        </br>
+                        <form class="form-horizontal" role="form" action="ShowPictureServlet" method="POST">
+                            <div class="input-group margin">
+                                <input type="text" class="form-control input-lg" name="imageCode"  id="fotoCode">
+                                <span class="input-group-btn"><button class="btn btn-info btn-lg" type="submit" style="padding-top: 12px;"><fmt:message key="index.label.view" /></button></span>
+                            </div>
+                        </form>
+                        <label style="color:red;visibility:hidden${visibility}" class="col-sm-10 control-label"><fmt:message key="index.failCode" /></label>
                     </div>
-                </div>
+                </div>  
             </div>
+
             <div class="container">
                 <div class="row mar-b-50">
                     <div class="col-md-12">
@@ -92,6 +80,5 @@
             <div class="hr">
                 <span class="hr-inner"></span>
             </div>
-        </div>
     </jsp:body>
-</t:MasterPageContent>
+</t:BaseMasterPage>

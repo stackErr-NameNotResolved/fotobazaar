@@ -8,7 +8,8 @@
         <jsp:invoke fragment="script"/>
     </jsp:attribute>
     <jsp:body>
-        <div class="breadcrumbs">
+        
+         <div class="breadcrumbs">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-sm-4">
@@ -17,6 +18,7 @@
                 </div>
             </div>
         </div>
+
         <div class="container">
             <div class="row mar-b-50">
                 <jsp:doBody/>
