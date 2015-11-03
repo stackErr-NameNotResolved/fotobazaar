@@ -44,7 +44,7 @@
 
                             <div class="registration">
                                 <fmt:message key="login.text.registration" />
-                                <a class="" href="registration.html">
+                                <a class="" href="registration.jsp">
                                     <fmt:message key="login.link.registration" />
                                 </a>
                             </div>

@@ -1,7 +1,7 @@
 package classes.domain;
 
 import classes.database.DatabaseConnector;
-import classes.database.orm.DataModel;
+import classes.domain.models.Account;
 import junit.framework.TestCase;
 
 public class AccountTest extends TestCase {
@@ -14,11 +14,6 @@ public class AccountTest extends TestCase {
         account.setUsername("Unit test account");
         account.setPassword("Secretpass of unittest");
         account.setRight(0);
-    }
-
-    public void testCRUD() throws Exception {
-        Account account = DataModel.fromId(Account.class, 7);
-        account.delete();
     }
     
     public void testValidateCredentials()
