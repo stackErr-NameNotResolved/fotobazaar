@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div style="text-align: center; background-color: #f8f8f8;">
-                        <img src="../ShowPictureServlet?imageId=${id}&imageSize=big" alt="" style="height: 500px; max-width: 100%; ">
+                        <img src="../ShowPictureServlet?imageCode=${param.imageCode}&imageSize=small" alt="" style="height: 500px; max-width: 100%; ">
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     </div> 
                         <p>
                     <form action="../" method="post" enctype="multipart/form-data">
-                        <input type="hidden" value="${param.imageId}" name="photoId"/>
+                        <input type="hidden" value="${param.imageCode}" name="photoId"/>
                         <button class="btn bg-blue margin"><i class="fa fa-gift pr-5"></i><fmt:message key="pictureManage.button.order" /></button> 
                     </form>
                     </p>
