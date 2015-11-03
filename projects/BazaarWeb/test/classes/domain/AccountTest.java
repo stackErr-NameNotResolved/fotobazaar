@@ -2,12 +2,16 @@ package classes.domain;
 
 import classes.database.DatabaseConnector;
 import classes.domain.models.Account;
+import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 public class AccountTest extends TestCase {
 
     private Account account;
 
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         account = new Account();
@@ -16,6 +20,7 @@ public class AccountTest extends TestCase {
         account.setRight(0);
     }
     
+    @Test
     public void testValidateCredentials()
     {
         // Try to log in an user on the normal way
@@ -36,4 +41,52 @@ public class AccountTest extends TestCase {
         // Just for the fun of it, test it again
         assertEquals("User cannot log in (2)", Account.validateCredentials("corpelijn", "Welkom01"), ELoginStatus.SUCCESS);
     }
+    
+    @Test
+    public void testRegisterNewAccount(){
+        //Arrange
+        final boolean expected1 = true;
+        final boolean expected2 = true;
+        final boolean expected3 = false;
+        final boolean expected4 = false;
+        
+        boolean actual1;
+        final String username1 = "test1";
+        final String password1 = "test1";
+        final int right1 = 4;
+        
+        boolean actual2;
+        final String username2 = "test2";
+        final String password2 = "test2";
+        final int right2 = -4;
+        
+        boolean actual3;
+        final String username3 = "";
+        final String password3 = "test3";
+        final int right3 = 4;
+        
+        boolean actual4;
+        final String username4 = "test4";
+        final String password4 = "";
+        final int right4 = 4;
+        //Act
+        
+        actual1 = Account.registerNewAccount(username1, password1, right1);
+        
+        actual2 = Account.registerNewAccount(username2, password2, right2);
+        
+        actual3 = Account.registerNewAccount(username3, password3, right3);
+        
+        actual4 = Account.registerNewAccount(username4, password4, right4);
+                
+        //Assert
+        Assert.assertEquals("Should return true", expected1, actual1);
+        Assert.assertEquals("Should return true", expected2, actual2);
+        Assert.assertEquals("Should return false", expected3, actual3);
+        Assert.assertEquals("Should return false", expected4, actual4);       
+        
+    }
+    
+    
+    
 }
