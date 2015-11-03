@@ -1,5 +1,7 @@
 <%@tag description="EmptyMasterPage" pageEncoding="UTF-8" %>
 <%@ attribute name="title" required="true" description="Header of the page to be shown in the theme." %>
+<%@ attribute name="style" fragment="true"
+              description="All styles for the page." %>
 <%@ attribute name="script" fragment="true"
               description="All the scripts to be added on the bottom of the page go here." %>
 <%@include file="/pages/langInclude.jsp" %>
@@ -46,6 +48,9 @@
     <link href="/BazaarWeb/css/style-responsive.css" rel="stylesheet"/>
 
     <link href="/BazaarWeb/css/parallax-slider/parallax-slider.css" rel="stylesheet" type="text/css"/>
+
+    <jsp:invoke fragment="style"/>
+
     <script src="/BazaarWeb/js/parallax-slider/modernizr.custom.28468.js" type="text/javascript">
     </script>
 

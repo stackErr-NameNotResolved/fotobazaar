@@ -1,4 +1,4 @@
-package classes.domain;
+package classes.domain.models;
 
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
@@ -6,6 +6,8 @@ import classes.database.orm.annotations.Column;
 import classes.database.orm.DataModel;
 import classes.database.orm.annotations.Id;
 import classes.database.orm.annotations.Table;
+import classes.domain.AESEncryption;
+import classes.domain.ELoginStatus;
 
 @Table(name = "ACCOUNT")
 public class Account extends DataModel {

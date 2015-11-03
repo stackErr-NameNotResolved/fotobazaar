@@ -1,28 +1,16 @@
-<%@ tag import="classes.domain.Session" %>
 <%@tag description="BaseMasterPage" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="title" required="true" description="Header of the page to be shown in the theme." %>
+<%@ attribute name="style" fragment="true"
+              description="All styles for the page." %>
 <%@ attribute name="script" fragment="true"
               description="All the scripts to be added on the bottom of the page go here." %>
 
-<%
-    // TODO: FIX DIS SHIT SO THAT VARIABLES CAN BE SET JUST-IN-TIME! They are now 0 by default and aren't set.
-    String username = (String) session.getAttribute("username");
-    String encrypted = (String) session.getAttribute("username-encrypted");
-
-    if (Session.checkSessionData(username, encrypted, request.getRemoteAddr())) {
-        request.setAttribute("login-href", "javascript:document.submitForm.submit()");
-        request.setAttribute("login-text", "master.menu.logout");
-    } else {
-        session.removeAttribute("username");
-        session.removeAttribute("username-encrypted");
-
-        request.setAttribute("login-href", "/BazaarWeb/pages/login.jsp");
-        request.setAttribute("login-text", "master.menu.login");
-    }
-%>
-
 <t:EmptyMasterPage title="${title}">
+
+    <jsp:attribute name="style">
+        <jsp:invoke fragment="style"/>
+    </jsp:attribute>
 
     <jsp:attribute name="script">
         <jsp:invoke fragment="script"/>
@@ -49,7 +37,7 @@
                             <a href="contact.html">???????</a>
                         </li>
                         <li>
-                            <!-- TODO: Fix this -->
+                            <jsp:include page="/LoginServletFragment?loginText=" />
                             <A href="${login-href}"><fmt:message key="${login-text}"/></A>
 
                             <form name="submitForm" method="POST" action="LogOutServlet">
