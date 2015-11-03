@@ -8,7 +8,6 @@ package classes.servlets;
 import classes.domain.ELoginStatus;
 import classes.domain.Session;
 import classes.domain.models.Account;
-import java.io.BufferedReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;

@@ -37,17 +37,13 @@
                             <a href="contact.html">???????</a>
                         </li>
                         <li>
-                            <jsp:include page="/LoginServletFragment?loginText=" />
-                            <A href="${login-href}"><fmt:message key="${login-text}"/></A>
-
-                            <form name="submitForm" method="POST" action="LogOutServlet">
-                            </form>
+                            <jsp:include page="/LoginServletFragment" />
                         </li>
                         <li><a>
                             <form>
                                 <select id="language" name="language" onchange="submit()">
-                                    <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
                                     <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+                                    <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
                                 </select>
                             </form>
                         </a>

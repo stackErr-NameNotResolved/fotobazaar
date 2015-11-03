@@ -67,25 +67,15 @@ public class Account extends DataModel {
     }
 
     public static boolean registerNewAccount(String username, String password, int right) {
+        if (username == null || password == null || username.isEmpty() || password.isEmpty()) return false;
 
-        boolean result = false;
+        String encryptedPassword = AESEncryption.encrypt(password, username);
+        StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO account (USERNAME, PASSWORD, ACCESS) VALUES (?,?,?) ", username, encryptedPassword, right);
 
-        if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
-            
-                String encryptedPassword  = AESEncryption.encrypt(password, username);
-                
-                StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO account (USERNAME, PASSWORD, ACCESS) VALUES (?,?,?) ", username, encryptedPassword, right);
-
-                if (dbResult.equals(StatementResult.ERROR) || dbResult.equals(StatementResult.NO_ROWS_UPDATED)) {
-                    result = false;
-                }
-                
-                result = true;
-
-        } else {
-            result = false;
+        if (dbResult.equals(StatementResult.ERROR) || dbResult.equals(StatementResult.NO_ROWS_UPDATED)) {
+            return false;
         }
 
-        return result;
+        return true;
     }
 }
