@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div style="text-align: center; background-color: #f8f8f8;">
-                        <img src="../ShowPictureServlet?imageId=${id}&imageSize=big" alt="" style="height: 500px; max-width: 100%; ">
+                        <img src="../ShowPictureServlet?imageId=${param.imageId}&imageSize=small" alt="" style="height: 500px; max-width: 100%; ">
                     </div>
                 </div>
             </div>

@@ -12,6 +12,9 @@
     <% } else if(message == "2")
     { %>
     <fmt:message key="login.response.disabled"/>
+    <% } else if(message == "3")
+    { %>
+    <fmt:message key="login.response.empty"/>
     <% } %>
 </c:set>
 
@@ -41,7 +44,7 @@
 
                             <div class="registration">
                                 <fmt:message key="login.text.registration" />
-                                <a class="" href="registration.html">
+                                <a class="" href="registration.jsp">
                                     <fmt:message key="login.link.registration" />
                                 </a>
                             </div>
