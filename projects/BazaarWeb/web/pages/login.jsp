@@ -12,6 +12,9 @@
     <% } else if(message == "2")
     { %>
     <fmt:message key="login.response.disabled"/>
+    <% } else if(message == "3")
+    { %>
+    <fmt:message key="login.response.empty"/>
     <% } %>
 </c:set>
 
