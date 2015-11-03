@@ -8,6 +8,7 @@ package classes.servlets;
 import classes.domain.ELoginStatus;
 import classes.domain.Session;
 import classes.domain.models.Account;
+import java.io.BufferedReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -82,6 +83,13 @@ public class LoginServlet extends HttpServlet {
 
         String username = request.getParameter("Username");
         String password = request.getParameter("Password");
+        
+        if(username.equals("") || password.equals(""))
+        {
+            request.getSession().setAttribute("login_message", "3");
+            response.sendRedirect("pages/login.jsp");
+            return;
+        }
 
         if (Account.validateCredentials(username, password) == ELoginStatus.SUCCESS) {
 
