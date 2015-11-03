@@ -23,20 +23,31 @@ public class NavbarServletFragment extends BaseHttpServlet {
 
         writer.write("<div class=\"navbar-collapse collapse\">");
         writer.write("<ul class=\"nav navbar-nav\">");
-        doHome(request, response);
+        doNavHome(request, response);
         doNavLogin(request, response);
-        doLanguage(request, response);
+        //doNavAdmin(request, response);
+        doNavLanguage(request, response);
         writer.write("</ul>");
         writer.write("</div>");
     }
 
-    protected void doHome(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void doNavAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        PrintWriter writer = response.getWriter();
+
+        writer.write("<li>");
+        writer.write("<a href=\"");
+        writer.write(getServletContext().getContextPath() + "/admin.jsp");
+        writer.write(">Home</a>");
+        writer.write("</li>");
+    }
+
+    protected void doNavHome(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter writer = response.getWriter();
 
         writer.write("<li>");
         writer.write("<a href=\"");
         writer.write(getServletContext().getContextPath() + "/index.jsp");
-        writer.write(">Home</a>");
+        writer.write("\">Home</a>");
         writer.write("</li>");
     }
 
@@ -63,18 +74,14 @@ public class NavbarServletFragment extends BaseHttpServlet {
             request.getSession().removeAttribute("username");
             request.getSession().removeAttribute("username-encrypted");
 
-            writer.write("<A href=\"");
-            writer.write(getServletContext().getContextPath() + "/pages/login.jsp");
-            writer.write("\">");
-            writer.write(getLocal(request, "master.menu.login"));
-            writer.write("</A>");
+            writer.write(String.format("<a href=\"%s\">%s</a>", getServletContext().getContextPath() + "/pages/login.jsp", getLocal(request, "master.menu.login")));
 
             writer.write("<form name=\"submitForm\" method=\"POST\" action=\"" + getServletContext().getContextPath() + "/pages/login.jsp\"></form>");
         }
         writer.write("</li>");
     }
 
-    protected void doLanguage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doNavLanguage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter writer = response.getWriter();
 
         writer.write("<li><a>");
