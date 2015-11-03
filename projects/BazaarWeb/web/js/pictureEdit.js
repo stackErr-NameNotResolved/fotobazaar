@@ -8,7 +8,7 @@ $(function () {
     var Hue = 0;
 
 
-    Caman("#editor", "../ShowPictureServlet?imageId=1&imageSize=small", function () {
+    Caman("#editor", "../ShowPictureServlet?imageCode=LSBG0SPBSBG07G7&imageSize=small", function () {
         this.render();
     });
 
