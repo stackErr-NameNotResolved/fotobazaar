@@ -31,11 +31,88 @@ public class Picture {
 
     private BufferedImage photo;
 
+    private double price;
+    
+    private int startX;
+    private int startY;
+    private int endX;
+    private int endY;
+    private int brightness;
+    private int sepia;
+    private int noise;
+    private int blur;
+    private int saturation;
+    private int hue;
+    private int clip;
+
     /**
      *
      */
     public Picture() {
 
+    }
+
+    public int getStartX() {
+        return startX;
+    }
+
+    public int getStartY() {
+        return startY;
+    }
+
+    public int getEndX() {
+        return endX;
+    }
+
+    public int getEndY() {
+        return endY;
+    }
+
+    public int getBrightness() {
+        return brightness;
+    }
+
+    public int getSepia() {
+        return sepia;
+    }
+
+    public int getNoise() {
+        return noise;
+    }
+
+    public int getBlur() {
+        return blur;
+    }
+
+    public int getSaturation() {
+        return saturation;
+    }
+
+    public int getHue() {
+        return hue;
+    }
+
+    public int getClip() {
+        return clip;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+    
+
+    public void addEffects(int startX, int startY, int endX, int endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip) {
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+        this.brightness = brightness;
+        this.sepia = sepia;
+        this.noise = noise;
+        this.blur = blur;
+        this.saturation = saturation;
+        this.hue = hue;
+        this.clip = clip;
     }
 
     /**
@@ -373,5 +450,10 @@ public class Picture {
         }
 
         return result;
+    }
+    
+    public Picture getPictureFromId(int id)
+    {
+        return null;
     }
 }
