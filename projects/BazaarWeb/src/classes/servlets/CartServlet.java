@@ -5,27 +5,20 @@
  */
 package classes.servlets;
 
-import classes.domain.ELoginStatus;
-import classes.domain.Session;
-import classes.domain.models.Account;
-
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  *
  * @author Bas
  */
-@MultipartConfig
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "CartServlet", urlPatterns = {"/CartServlet"})
+public class CartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,16 +37,15 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet CartServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CartServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -79,34 +71,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String username = request.getParameter("Username");
-        String password = request.getParameter("Password");
-        
-        if(username.equals("") || password.equals(""))
-        {
-            request.getSession().setAttribute("login_message", "3");
-            response.sendRedirect("pages/login.jsp");
-            return;
-        }
-
-        if (Account.validateCredentials(username, password) == ELoginStatus.SUCCESS) {
-
-            HttpSession session = request.getSession();
-            session.setAttribute("username", username);
-            session.setAttribute("username-encrypted", Session.generateSessionData(username, request.getRemoteAddr()));
-            
-            session.removeAttribute("login_message");
-
-            response.sendRedirect("index.jsp");
-            return;
-        } else if (Account.validateCredentials(username, password) == ELoginStatus.FAILED) {
-            request.getSession().setAttribute("login_message", "1");
-        } else if (Account.validateCredentials(username, password) == ELoginStatus.DISABLED) {
-            request.getSession().setAttribute("login_message", "2");
-        }
-
-        response.sendRedirect("pages/login.jsp");
+        processRequest(request, response);
     }
 
     /**
@@ -117,5 +82,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
+
 }

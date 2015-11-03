@@ -28,34 +28,8 @@
                     </button>
                     <a class="navbar-brand" href="/BazaarWeb/index.jsp">Foto<span>bazaar</span></a>
                 </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>
-                            <a href="contact.html"><fmt:message key="master.menu.cart"/></a>
-                        </li>
-                        <li>
-                            <a href="contact.html">???????</a>
-                        </li>
-                        <li>
-                            <jsp:include page="/LoginServletFragment?loginText=" />
-                            <A href="${login-href}"><fmt:message key="${login-text}"/></A>
 
-                            <form name="submitForm" method="POST" action="LogOutServlet">
-                            </form>
-                        </li>
-                        <li><a>
-                            <form>
-                                <select id="language" name="language" onchange="submit()">
-                                    <option value="nl" ${language == 'nl' ? 'selected' : ''}>Nederlands</option>
-                                    <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-                                </select>
-                            </form>
-                        </a>
-                        </li>
-                        <!-- Search input
-                                        <li><input class="form-control search" placeholder=" Search" type="text"></li> -->
-                    </ul>
-                </div>
+                <jsp:include page="/NavbarServletFragment" />
             </div>
         </header>
         <!--header end-->
