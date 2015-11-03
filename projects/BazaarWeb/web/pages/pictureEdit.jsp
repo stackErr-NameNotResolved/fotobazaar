@@ -69,7 +69,6 @@
                 right:-5px;
                 top:50%;
             }
-            }
 
         </style>
 
