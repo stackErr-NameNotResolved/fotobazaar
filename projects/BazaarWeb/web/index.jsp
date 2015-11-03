@@ -13,7 +13,7 @@
                         </br>
                         <form class="form-horizontal" role="form" action="ShowPictureServlet" method="POST">
                             <div class="input-group margin">
-                                <input type="text" class="form-control input-lg" name="imageCode"  id="fotoCode">
+                                <input type="text" class="form-control input-lg" name="imageCode" placeholder="code"  id="fotoCode">
                                 <span class="input-group-btn"><button class="btn btn-info btn-lg" type="submit" style="padding-top: 12px;"><fmt:message key="index.label.view" /></button></span>
                             </div>
                         </form>
