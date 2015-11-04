@@ -36,7 +36,7 @@ h6 {
     /*font-family: 'Open Sans', sans-serif;*/
 }
 a { color: #444e67 }
-a:hover { color: #48cfad }
+a:hover { color: #34495E }   /* Was #48cfad but made the look horrible, Bas, 4-11-2015 */
 p { line-height: 22px }
 /*header*/
 .head-section { border-bottom: 1px solid #eee }
