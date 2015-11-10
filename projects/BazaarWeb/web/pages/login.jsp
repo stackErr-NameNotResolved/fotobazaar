@@ -18,9 +18,10 @@
     <% } %>
 </c:set>
 
-<t:EmptyMasterPage title="${title}">
-    <jsp:body>
 
+<t:EmptyMasterPage title="${title}">
+    
+    <jsp:body>
         <div class="login-bg">
             <div class="container">
                 <div class="form-wrapper">
@@ -77,6 +78,5 @@
                 </div>
             </div>
         </div>
-
     </jsp:body>
 </t:EmptyMasterPage>
