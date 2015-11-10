@@ -9,7 +9,7 @@
 <%@include file="/pages/langInclude.jsp" %>
 
 <c:set var="title"> <fmt:message key="registration.title" /></c:set>
-<t:MasterPageContent title="${title}">
+<t:EmptyMasterPage title="${title}">
     <c:set var="head"><fmt:message key="registration.head" /></c:set>
     <c:set var="details"><fmt:message key="registration.details" /></c:set>
     <c:set var="username"><fmt:message key="registration.username" /></c:set>
@@ -42,4 +42,4 @@
         </div>
      </div>
     
-</t:MasterPageContent> 
+</t:EmptyMasterPage> 
