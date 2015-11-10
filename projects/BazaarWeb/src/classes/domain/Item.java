@@ -5,11 +5,16 @@
  */
 package classes.domain;
 
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
+import java.io.Serializable;
+import java.math.BigDecimal;
+
 /**
  *
  * @author Bas
  */
-public class Item {
+public class Item implements Serializable {
     private int id;
     private double price;
     private String description;
@@ -18,15 +23,31 @@ public class Item {
     {
         this.description = "Witte mok";
         this.price = 2.5;
+        this.id =1;
     }
     
-    public Item getItemFromId()
+    public static Item getItemFromId(int id)
     {
+        Item i = new Item();
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("select description, price from item where id=?", id);
+        if(dt.getRowCount() == 1)
+        {
+            i.id = id;
+            i.description = (String)dt.getDataFromRow(0, "description");
+            i.price = ((BigDecimal)dt.getDataFromRow(0, "price")).doubleValue();
+            
+            return i;
+        }
+        
         return null;
     }
 
     public double getPrice() {
         return price;
+    }
+
+    public int getId() {
+        return id;
     }
     
     @Override

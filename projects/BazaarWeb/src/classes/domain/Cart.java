@@ -5,15 +5,21 @@
  */
 package classes.domain;
 
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -22,13 +28,16 @@ import java.util.List;
 public class Cart implements Serializable {
 
     private List<Order> orders;
+    private int orderId;
 
     public Cart() {
         orders = new ArrayList();
+        orderId = 0;
     }
 
     public void addOrder(Item item, Picture picture, int aantal) {
-        orders.add(new Order(picture, item, aantal));
+        orders.add(new Order(orderId, picture, item, aantal));
+        orderId++;
     }
 
     public void removeOrder(int id) {
@@ -61,21 +70,130 @@ public class Cart implements Serializable {
         return total;
     }
 
-    public static Cart fromString(String s) throws IOException,
-            ClassNotFoundException {
-        byte[] data = Base64.getDecoder().decode(s);
-        ObjectInputStream ois = new ObjectInputStream(
-                new ByteArrayInputStream(data));
-        Cart o = (Cart)ois.readObject();
-        ois.close();
-        return o;
+    public double getBTW(double percentage) {
+        return getTotalPrice() * (percentage / 100);
     }
 
-    public static String toString(Cart o) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(o);
-        oos.close();
-        return Base64.getEncoder().encodeToString(baos.toByteArray());
+    public double getTotalPriceAndBTW(double percentage) {
+        return getTotalPrice() + getBTW(percentage);
+    }
+
+    public static Cart readCartFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        List<Cookie> usable = new ArrayList();
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if (c.getName().startsWith("order")) {
+                    usable.add(c);
+                }
+            }
+        }
+
+        if (!usable.isEmpty()) {
+            Cart cart = new Cart();
+
+            // Recreate the orders
+            for (Cookie u : usable) {
+                String data = u.getValue();
+
+                String[] parameters = data.split("/");
+                Item item = null;
+                int amount = 0;
+                Picture pic = new Picture();
+                for (int i = 0; i < parameters.length; i++) {
+                    String[] values = parameters[i].split("=");
+
+                    switch (values[0]) {
+                        case "i":
+                            item = Item.getItemFromId(Integer.parseInt(values[1]));
+                            break;
+                        case "a":
+                            amount = Integer.parseInt(values[1]);
+                            break;
+                        case "id":
+                            pic.setId(Integer.parseInt(values[1]));
+                            break;
+                        case "sx":
+                            pic.setStartX(Float.parseFloat(values[1]));
+                            break;
+                        case "sy":
+                            pic.setStartY(Float.parseFloat(values[1]));
+                            break;
+                        case "ex":
+                            pic.setEndX(Float.parseFloat(values[1]));
+                            break;
+                        case "ey":
+                            pic.setEndY(Float.parseFloat(values[1]));
+                            break;
+                        case "b":
+                            pic.setBrightness(Integer.parseInt(values[1]));
+                            break;
+                        case "s":
+                            pic.setSepia(Integer.parseInt(values[1]));
+                            break;
+                        case "n":
+                            pic.setNoise(Integer.parseInt(values[1]));
+                            break;
+                        case "l":
+                            pic.setBlur(Integer.parseInt(values[1]));
+                            break;
+                        case "t":
+                            pic.setSaturation(Integer.parseInt(values[1]));
+                            break;
+                        case "h":
+                            pic.setHue(Integer.parseInt(values[1]));
+                            break;
+                        case "c":
+                            pic.setClip(Integer.parseInt(values[1]));
+                            break;
+                    }
+                }
+                
+                if(pic.getId() != 0)
+                {
+                    DataTable dt = DatabaseConnector.getInstance().executeQuery("select price from photo where id=?", pic.getId());
+                    if(dt.getRowCount() != 0)
+                    {
+                        pic.setPrice(((BigDecimal)dt.getDataFromRow(0, "price")).doubleValue()); 
+                    }
+                }
+
+                cart.addOrder(item, pic, amount);
+            }
+
+            return cart;
+        }
+
+        return null;
+    }
+
+    public HttpServletResponse saveCart(HttpServletResponse response) {
+        // Write the orders
+        for (int i = 0; i < orders.size(); i++) {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("i=").append(orders.get(i).getItem().getId()).append("/");
+            sb.append(orders.get(i).getPicture().getCookieData());
+            sb.append("a=").append(orders.get(i).getAmount());
+
+            Cookie cookie = new Cookie("order" + i, sb.toString());
+            cookie.setMaxAge(60 * 60 * 24 * 365 * 10);
+            //cookie.setPath("/BazaarWeb");
+
+            response.addCookie(cookie);
+        }
+        return response;
+    }
+    
+    public static HttpServletResponse addItemToCart(Item item, Picture picture, HttpServletRequest request, HttpServletResponse response)
+    {
+        Cart cart = Cart.readCartFromCookies(request);
+        cart.addOrder(item, picture, 1);
+        return cart.saveCart(response);
+    }
+    
+    public static HttpServletResponse addItemToCart(int itemId, Picture picture, HttpServletRequest request, HttpServletResponse response)
+    {
+        return addItemToCart(Item.getItemFromId(itemId), picture, request, response);
     }
 }
