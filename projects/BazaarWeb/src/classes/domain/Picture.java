@@ -17,6 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.sql.SQLException;
@@ -27,16 +28,16 @@ import java.util.logging.Logger;
 /**
  * @author Jip
  */
-public class Picture {
-
-    private BufferedImage photo;
+public class Picture implements Serializable {
 
     private double price;
+
+    private int id;
     
-    private int startX;
-    private int startY;
-    private int endX;
-    private int endY;
+    private float startX;
+    private float startY;
+    private float endX;
+    private float endY;
     private int brightness;
     private int sepia;
     private int noise;
@@ -51,20 +52,41 @@ public class Picture {
     public Picture() {
         this.price = 1.0;
     }
+    
+    public Picture(int databaseId, float startX, float startY, float endX, float endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip)
+    {
+        this.id = databaseId;
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+        this.brightness = brightness;
+        this.sepia = sepia;
+        this.noise = noise;
+        this.saturation = saturation;
+        this.hue = hue;
+        this.clip = clip;
+        
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("select price from photo where id=?", databaseId);
+        if(dt.getRowCount() > 0)
+        {
+            price = ((BigDecimal)dt.getDataFromRow(0, "price")).doubleValue();
+        }
+    }
 
-    public int getStartX() {
+    public float getStartX() {
         return startX;
     }
 
-    public int getStartY() {
+    public float getStartY() {
         return startY;
     }
 
-    public int getEndX() {
+    public float getEndX() {
         return endX;
     }
 
-    public int getEndY() {
+    public float getEndY() {
         return endY;
     }
 
@@ -99,8 +121,63 @@ public class Picture {
     public double getPrice() {
         return price;
     }
-    
 
+    public int getId() {
+        return id;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setStartX(float startX) {
+        this.startX = startX;
+    }
+
+    public void setStartY(float startY) {
+        this.startY = startY;
+    }
+
+    public void setEndX(float endX) {
+        this.endX = endX;
+    }
+
+    public void setEndY(float endY) {
+        this.endY = endY;
+    }
+
+    public void setBrightness(int brightness) {
+        this.brightness = brightness;
+    }
+
+    public void setSepia(int sepia) {
+        this.sepia = sepia;
+    }
+
+    public void setNoise(int noise) {
+        this.noise = noise;
+    }
+
+    public void setBlur(int blur) {
+        this.blur = blur;
+    }
+
+    public void setSaturation(int saturation) {
+        this.saturation = saturation;
+    }
+
+    public void setHue(int hue) {
+        this.hue = hue;
+    }
+
+    public void setClip(int clip) {
+        this.clip = clip;
+    }
+    
     public void addEffects(int startX, int startY, int endX, int endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip) {
         this.startX = startX;
         this.startY = startY;
@@ -148,8 +225,9 @@ public class Picture {
         }
     }
 
-    public static byte[] downloadImage(String imageId, String iType) {
+    public static byte[] downloadImage(String imageCode, String iType) {
         DataTable result = null;
+        byte[] blobbytes = null;
         String imageType = "";
 
         //map input to query
@@ -162,59 +240,44 @@ public class Picture {
             imageType = "DATA_SMALL";
         }
 
-        if (isPicturePublished(imageId, null)) {
-            result = DatabaseConnector.getInstance().executeQuery("SELECT " + imageType + " AS IMAGE FROM photo WHERE ID = ?", imageId);
-            if (result != null) {
-                byte[] blobbytes = null;
-                try {
-                    result.getResultSet().next(); // Get first resultset result.
-                    blobbytes = result.getResultSet().getBytes("IMAGE");
-                } catch (SQLException ex) {
-                    throw new IllegalStateException("Cannot download image.", ex);
+        if (isPicturePublished(imageCode)) {
+            result = DatabaseConnector.getInstance().executeQuery("SELECT " + imageType + " AS IMAGE FROM photo WHERE CODE = ?", imageCode);
+            if (result == null) {
+                result = DatabaseConnector.getInstance().executeQuery("SELECT IMAGE FROM item WHERE CODE = ?", imageCode);
+                if (result != null) {
+                    try {
+                        result.getResultSet().next(); // Get first resultset result.
+                        blobbytes = result.getResultSet().getBytes("IMAGE");
+                    } catch (SQLException ex) {
+                        throw new IllegalStateException("Cannot download image.", ex);
+                    }
+                    return blobbytes;
                 }
-                return blobbytes;
             }
-
         }
-
         return null;
-    }
-
-    /**
-     * gets id from code
-     *
-     * @param pictureCode the code of the image
-     * @return -1 if image not found
-     */
-    public static int getIdFromCode(String pictureCode) {
-        if (isPictureAvailable(null, pictureCode)) {
-            return (int)DatabaseConnector.getInstance().executeQuery("SELECT ID FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0];
-        } else {
-            return -1;
-        }
     }
 
     /**
      * returns true if a picture exists and is made public else false
      *
-     * @param pictureId id of the picture, can be null
-     * @param pictureCode code if the picture, can be null
+     * @param pictureCode code if the picture
      * @return returns true if a picture exists and is made public else false
      */
-    public static boolean isPicturePublished(String pictureId, String pictureCode) {
-        if (pictureId != null) {
-            //check if image actually exists
-            if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM photo WHERE ID = ?", pictureId).getRow(0)[0] > 0) {
-                //check if image is published
-                if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM photo WHERE ID = ?", pictureId).getRow(0)[0] == 1) {
-                    return true;
-                }
-            }
-        } else if (pictureCode != null) {
-            //check if image actually exists
+    public static boolean isPicturePublished(String pictureCode) {
+        if (pictureCode != null) {
+            //check if image actually exists in photo table
             if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0] > 0) {
                 //check if image is published
                 if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0] == 1) {
+                    return true;
+                }
+            }
+
+            //check if image actually exists in items table
+            if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM item WHERE CODE = ?", pictureCode).getRow(0)[0] > 0) {
+                //check if image is published
+                if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM item WHERE CODE = ?", pictureCode).getRow(0)[0] == 1) {
                     return true;
                 }
             }
@@ -451,9 +514,32 @@ public class Picture {
 
         return result;
     }
-    
-    public Picture getPictureFromId(int id)
-    {
+
+    public Picture getPictureFromId(int id) {
         return null;
+    }
+    
+    public String getCookieData()
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        String splitChar = "/";
+        
+        sb.append("id=").append(this.id).append(splitChar);
+        
+        sb.append("sx=").append(this.startX).append(splitChar);
+        sb.append("sy=").append(this.startY).append(splitChar);
+        sb.append("ex=").append(this.endX).append(splitChar);
+        sb.append("ey=").append(this.endY).append(splitChar);
+        
+        sb.append("b=").append(this.brightness).append(splitChar);
+        sb.append("s=").append(this.sepia).append(splitChar);
+        sb.append("n=").append(this.noise).append(splitChar);
+        sb.append("l=").append(this.blur).append(splitChar);
+        sb.append("t=").append(this.saturation).append(splitChar);
+        sb.append("h=").append(this.hue).append(splitChar);
+        sb.append("c=").append(this.clip).append(splitChar);
+
+        return sb.toString();
     }
 }
