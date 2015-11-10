@@ -12,9 +12,39 @@
         <script>
             $(function () {
                 $("#overlay").draggable({
-                    containment: "#container"
+                    containment: "#container",
+                    drag: function (event, ui) {
+                         var parentX = $("#container").offset().left;
+                        var parentY = $("#container").offset().top;
+                        var parentW = $("#container").width();
+                        var parentH = $("#container").height();
+
+                        var childX = $("#overlay").offset().left;
+                        var childY = $("#overlay").offset().top;
+                        var childW = $("#overlay").width();
+                        var childH = $("#overlay").height();
+
+                        childX = childX - parentX;
+                        childY = childY - parentY;
+
+                        var procentX = childX / parentW * 100;
+                        var procentY = childY / parentH * 100;
+
+                        var procentWidth = childW / parentW * 100;
+                        var procentHeight = childH / parentH * 100;
+
+                        $("#pictureX").val(procentX);                  
+                        $("#pictureY").val(procentY);
+                        $("#pictureWidth").val(procentWidth);
+                        $("#pictureHeight").val(procentHeight);
+                        
+                        
+		$("#info").text("X:"+childX+" Y:"+childY +" | width:"+childW+"/"+parentW+" height:"+childH+"/"+parentH);
+                    }
                 });
                 $("#overlay").resizable({
+                    minHeight: 50,
+                    minWidth: 50,
                     containment: "#container",
                     handles: {
                         'nw': '#nwgrip',
@@ -25,6 +55,33 @@
                         'e': '#egrip',
                         's': '#sgrip',
                         'w': '#wgrip'
+                    },
+                    resize: function (event, ui) {
+                        var parentX = $("#container").offset().left;
+                        var parentY = $("#container").offset().top;
+                        var parentW = $("#container").width();
+                        var parentH = $("#container").height();
+
+                        var childX = $("#overlay").offset().left;
+                        var childY = $("#overlay").offset().top;
+                        var childW = $("#overlay").width();
+                        var childH = $("#overlay").height();
+
+                        childX = childX - parentX;
+                        childY = childY - parentY;
+
+                        var procentX = childX / parentW * 100;
+                        var procentY = childY / parentH * 100;
+
+                        var procentWidth = childW / parentW * 100;
+                        var procentHeight = childH / parentH * 100;
+
+                        $("#pictureX").val(procentX);                  
+                        $("#pictureY").val(procentY);
+                        $("#pictureWidth").val(procentWidth);
+                        $("#pictureHeight").val(procentHeight);
+                        
+		$("#info").text("X:"+childX+" Y:"+childY +" | width:"+childW+"/"+parentW+" height:"+childH+"/"+parentH);
                     }
                 });
             });
@@ -41,14 +98,14 @@
                 {
                     var canvas = document.getElementById("editor");
                     var dataURL = canvas.toDataURL();
-                    var height = $("#editor").height();                   
+                    var height = $("#editor").height();
                     var width = $("#editor").width();
-                    
-                    $("#container").css("height",height);                    
-                    $("#container").css("width",width);        
 
-                    document.getElementById('container').style.background='url('+dataURL+') no-repeat';
-                    $("#container").css("background-size","100% 100%");
+                    $("#container").css("height", height);
+                    $("#container").css("width", width);
+
+                    document.getElementById('container').style.background = 'url(' + dataURL + ') no-repeat';
+                    $("#container").css("background-size", "100% 100%");
                     return true;
                 },
                 onFinished: function (event, currentIndex)
@@ -58,8 +115,8 @@
                     form.submit();
                 }
             });
-            
-   
+
+
         </script>
     </jsp:attribute>
     <jsp:attribute name="style">
@@ -68,6 +125,22 @@
     <jsp:body>
         <!-- Sub-Container for ui elements/text -->
         <style>
+            .picture {
+                overflow:hidden;
+                width:500px;
+                height:500px;
+                background-repeat:no-repeat;
+            }
+            #overlay {
+                opacity: 1; 
+                width:100%;
+                height:100%;
+                position: relative; 
+                left: 0px; 
+                top: 0px; 
+                box-shadow: rgba(0, 0, 0, 0.498039) 0px 0px 0px 10000px; 
+                background: rgba(255, 0, 0, 0);
+            }
             #elementResizable {
                 border: 1px solid #000000;
                 width: 300px;
@@ -192,9 +265,9 @@
                 <section>
                     <div class="row" style="text-align:center; ;">
 
-                        <div id="container" style="background:blue;overflow:hidden;width:500px;height:500px;background-repeat:no-repeat;">
-                                            
-                            <div id="overlay" style="opacity: 1; width:100px;height:100px;position: relative; left: 249px; top: 105px; box-shadow: rgba(0, 0, 0, 0.498039) 0px 0px 0px 10000px; background: rgba(255, 0, 0, 0);">
+                        <div id="container" class="picture">
+
+                            <div id="overlay">
                                 <div class="ui-resizable-handle ui-resizable-nw" id="nwgrip"></div>
                                 <div class="ui-resizable-handle ui-resizable-ne" id="negrip"></div>
                                 <div class="ui-resizable-handle ui-resizable-sw" id="swgrip"></div>
@@ -205,13 +278,12 @@
                                 <div class="ui-resizable-handle ui-resizable-w" id="wgrip"></div>
                             </div>    
                         </div>
-
-                            <img id="CropImage" src="" style="height:500px;"/>   
-
-
-
-
-
+                        
+                        <p id="info" style="visibility: hidden">ratio</p>
+                        <input type="hidden" id="pictureX" value="0"/>
+                        <input type="hidden" id="pictureY" value="0"/>
+                        <input type="hidden" id="pictureWidth" value="100"/>
+                        <input type="hidden" id="pictureHeight" value="100"/>
 
                     </div>
                 </section>
