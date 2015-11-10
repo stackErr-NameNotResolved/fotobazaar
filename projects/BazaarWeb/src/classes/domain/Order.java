@@ -5,21 +5,24 @@
  */
 package classes.domain;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Bas
  */
-public class Order {
+public class Order implements Serializable {
     private int id;
     private Picture picture;
     private Item item;
     private int amount;
-    
-    public Order(Picture picture, Item item, int amount)
+   
+    public Order(int id, Picture picture, Item item, int amount)
     {
         this.picture = picture;
         this.item = item;
         this.amount = amount;
+        this.id = id;
     }
 
     public int getId() {
