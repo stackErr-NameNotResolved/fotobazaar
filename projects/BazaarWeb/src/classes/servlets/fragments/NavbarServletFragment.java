@@ -34,8 +34,19 @@ public class NavbarServletFragment extends BaseHttpServlet {
     private void doNavAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter writer = response.getWriter();
 
-        writer.write("<li>");
-        writer.write(String.format("<a href=\"%s\">%s</a>", createPath("pages", "admin.jsp"), getLocal(request, "master.menu.admin")));
+        // Create header.
+        writer.write("<li class=\"dropdown\">");
+        writer.write("<a class=\"dropdown-toggle\" data-close-others=\"false\" data-delay=\"0\" data-hover=\"dropdown\" data-toggle=\"dropdown\" href=\"#\">" +  getLocal(request, "master.menu.admin"));
+        writer.write("<i class=\"fa fa-angle-down\"></i>");
+        writer.write("</a>");
+
+        // Create sub-items for header.
+        writer.write("<ul class=\"dropdown-menu\">");
+        writer.write("<li><a href=\"" + createPath("pages", "admin", "createAccount") + "\">");
+        writer.write(getLocal(request, "master."));
+        writer.write("</a></li>");
+        writer.write("</ul>");
+
         writer.write("</li>");
     }
 
