@@ -45,11 +45,11 @@ public class DatabaseConnector {
      * Create a new instance of the database connector. Run this method only
      * once. Connecting to the database can take some time.
      *
-     * @param hostname The hostname/ip of the database server
-     * @param port The portnumber of the database server
+     * @param hostname     The hostname/ip of the database server
+     * @param port         The portnumber of the database server
      * @param databasename The name of the database running on the server
-     * @param username The username needed to connect to the database
-     * @param password The password needed to connect to the database
+     * @param username     The username needed to connect to the database
+     * @param password     The password needed to connect to the database
      * @return Returns true if the connection was successful, otherwise false
      */
     private static boolean initialize(String hostname, int port, String databasename, String username, String password) {
@@ -70,7 +70,7 @@ public class DatabaseConnector {
      * Methods
      */
     private boolean openConnection() {
-        // Check if the database connection driver is availible
+        // Check if the database connection driver is available
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -90,7 +90,7 @@ public class DatabaseConnector {
             throw new IllegalStateException("Couldn't connect to mysql database.", e);
         }
 
-        // Check if the database connection is establisched
+        // Check if the database connection is established
         if (connection == null) {
             throw new IllegalStateException("Failed to make the database connection.");
         }

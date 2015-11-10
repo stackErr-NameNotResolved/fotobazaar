@@ -35,7 +35,7 @@ public class NavbarServletFragment extends BaseHttpServlet {
         PrintWriter writer = response.getWriter();
 
         writer.write("<li>");
-        writer.write(String.format("<a href=\"%s\">%s</a>", getServletContext().getContextPath() + "/pages/admin.jsp", getLocal(request, "master.menu.admin")));
+        writer.write(String.format("<a href=\"%s\">%s</a>", createPath("pages", "admin.jsp"), getLocal(request, "master.menu.admin")));
         writer.write("</li>");
     }
 
@@ -44,7 +44,7 @@ public class NavbarServletFragment extends BaseHttpServlet {
 
         writer.write("<li>");
         writer.write("<a href=\"");
-        writer.write(getServletContext().getContextPath() + "/index.jsp");
+        writer.write(createPath("index.jsp"));
         writer.write("\">Home</a>");
         writer.write("</li>");
     }
@@ -66,15 +66,15 @@ public class NavbarServletFragment extends BaseHttpServlet {
             writer.write(getLocal(request, "master.menu.logout"));
             writer.write("</A>");
 
-            writer.write("<form name=\"submitForm\" method=\"POST\" action=\"" + LogOutServlet.class.getSimpleName() + "\">");
+            writer.write("<form name=\"submitForm\" method=\"POST\" action=\"" + createPath(LogOutServlet.class.getSimpleName()) + "\">");
             writer.write("</form>");
         } else {
             request.getSession().removeAttribute("username");
             request.getSession().removeAttribute("username-encrypted");
 
-            writer.write(String.format("<a href=\"%s\">%s</a>", getServletContext().getContextPath() + "/pages/login.jsp", getLocal(request, "master.menu.login")));
+            writer.write(String.format("<a href=\"%s\">%s</a>", createPath("pages", "login.jsp"), getLocal(request, "master.menu.login")));
 
-            writer.write("<form name=\"submitForm\" method=\"POST\" action=\"" + getServletContext().getContextPath() + "/pages/login.jsp\"></form>");
+            writer.write("<form name=\"submitForm\" method=\"POST\" action=\"" + createPath("pages", "login.jsp") + "\"></form>");
         }
         writer.write("</li>");
     }

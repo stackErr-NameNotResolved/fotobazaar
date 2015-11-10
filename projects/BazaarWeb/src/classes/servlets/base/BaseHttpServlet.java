@@ -3,11 +3,22 @@ package classes.servlets.base;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 @WebServlet(name = "BaseHttpServlet")
 public abstract class BaseHttpServlet extends HttpServlet {
+
+    /**
+     * Creates a new path to the relative directory of the file on the server.
+     *
+     * @param parts Additional parts of the path to append.
+     * @return Relative path to the file on the server.
+     */
+    protected String createPath(String... parts) {
+        return Paths.get(getServletContext().getContextPath(), parts).toString();
+    }
 
     /**
      * Gets the language-centered text based on the given {@link Locale} and key.

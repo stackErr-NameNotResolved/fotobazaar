@@ -5,6 +5,6 @@
 
 <t:MasterPageContent title="${title}">
     <jsp:body>
-
+        
     </jsp:body>
 </t:MasterPageContent>
