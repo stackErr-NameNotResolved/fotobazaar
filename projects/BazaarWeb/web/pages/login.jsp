@@ -5,7 +5,7 @@
 <c:set var="title"> <fmt:message key="login.title" /></c:set>
 <c:set var="login_message">
     <%
-        String message = (String) session.getAttribute("login_message"); 
+        String message = (String) session.getAttribute("login_message");
         if(message == "1")
         { %>
         <fmt:message key="login.response.invalid"/>
@@ -18,9 +18,10 @@
     <% } %>
 </c:set>
 
-<t:MasterPageContent title="${title}">
-    <jsp:body>
 
+<t:MasterPageContent title="${title}">
+    
+    <jsp:body>
         <div class="login-bg">
             <div class="container">
                 <div class="form-wrapper">
@@ -77,6 +78,5 @@
                 </div>
             </div>
         </div>
-
     </jsp:body>
 </t:MasterPageContent>

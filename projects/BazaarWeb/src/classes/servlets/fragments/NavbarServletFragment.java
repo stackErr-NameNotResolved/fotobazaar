@@ -82,15 +82,24 @@ public class NavbarServletFragment extends BaseHttpServlet {
     protected void doNavLanguage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter writer = response.getWriter();
 
-        writer.write("<li><a>");
+        writer.write("<li>");
+        writer.write("<a>");
         writer.write("<form>");
+
+        // Create select field.
         writer.write("<select id=\"language\" name=\"language\" onchange=\"submit()\">");
 
         // Write options.
         writer.write(getHtmlOption("English", "en", getLanguage(request).getLanguage().equals("en")));
         writer.write(getHtmlOption("Nederlands", "nl", getLanguage(request).getLanguage().equals("nl")));
 
+        // Close select.
         writer.write("</select>");
+
+        // Close form and link.
+        writer.write("</form>");
+        writer.write("</a>");
+        writer.write("</li>");
     }
 
     private String getHtmlOption(String name, String value, boolean selected) {
