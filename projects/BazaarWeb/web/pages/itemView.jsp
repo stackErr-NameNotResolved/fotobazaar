@@ -13,10 +13,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <jsp:include page="/ItemServletFragment" />
-                    <div style="text-align: center; background-color: #f8f8f8;">
-                        <img src="../ShowPictureServlet?imageCode=${param.imageCode}" alt="" style="height: 500px; max-width: 100%; ">
-                    </div>
+                    <jsp:include page="/ItemServletFragment" />          
+                    <c:forEach items="${list}" var="item">
+                        ${item}<br>
+                    </c:forEach>
                 </div>
             </div>
         </div>

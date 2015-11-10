@@ -31,6 +31,10 @@ public class Item {
     public double getPrice() {
         return price;
     }
+
+    public String getPictureCode() {
+        return pictureCode;
+    }
     
     @Override
     public String toString()

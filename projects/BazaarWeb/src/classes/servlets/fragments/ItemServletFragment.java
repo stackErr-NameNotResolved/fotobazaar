@@ -9,6 +9,7 @@ import classes.database.DataRow;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.domain.Item;
+import classes.servlets.base.BaseHttpServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Jip
  */
 @WebServlet(name = "ItemServletFragment", urlPatterns = {"/ItemServletFragment"})
-public class ItemServletFragment extends HttpServlet {
+public class ItemServletFragment extends BaseHttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -36,20 +37,25 @@ public class ItemServletFragment extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Item> items = new ArrayList<Item>();
-        
+        ArrayList<Item> items = new ArrayList<>();
+
         DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT ID FROM item WHERE ACTIVE = 1");
-        while (true) {            
+        while (true) {
             Object[] itemRow = result.getNextRow();
-            if (itemRow.length==0) {
+            if (itemRow.length == 0) {
                 break;
             }
-            items.add(new Item((Integer)itemRow[0]));
+            items.add(new Item((Integer) itemRow[0]));
         }
-        
+
         PrintWriter writer = response.getWriter();
         for (Item item : items) {
-            writer.write(item.toString());
+            writer.write("<form action=\"../PhotoChangePriceServlet\" method=\"post\">");
+            writer.write("<input type=\"number\" class=\"form-control\" name=\"photoPrice\"  id=\"photoPrice\" min=\"0\" max=\"99999\" step=\"0.01\" value=\"" + item.getPrice() + "\"><br><br>");
+            writer.write(item.toString()+"<br><br>");
+            writer.write("<button class=\"btn bg-blue margin\"><i class=\"fa fa-save pr-5\"></i>"+getLocal(request, "pictureManage.button.save")+"</button>");
+            writer.write("<div style=\"text-align: center; background-color: #f8f8f8;\"><img src=\"../ShowPictureServlet?imageCode=" + item.getPictureCode() + "\" alt=\"\" style=\"height: 500px; max-width: 100%; \"></div>");
+            writer.write("</form>");
         }
     }
 
