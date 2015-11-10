@@ -19,7 +19,7 @@
 </c:set>
 
 
-<t:EmptyMasterPage title="${title}">
+<t:MasterPageContent title="${title}">
     
     <jsp:body>
         <div class="login-bg">
@@ -79,4 +79,4 @@
             </div>
         </div>
     </jsp:body>
-</t:EmptyMasterPage>
+</t:MasterPageContent>

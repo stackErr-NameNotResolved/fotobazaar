@@ -20,7 +20,7 @@ public abstract class BaseHttpServlet extends HttpServlet {
         if (locale == null) throw new IllegalArgumentException("Parameter locale must not be null.");
         if (key == null || key.isEmpty())
             throw new IllegalArgumentException("Parameter key must not be null or empty.");
-        
+
         return ResourceBundle.getBundle("languages.text", locale).getString(key);
     }
 
