@@ -45,8 +45,8 @@ public class CartServletFragment extends HttpServlet {
 
         // Test data
         crt = new Cart();
-        crt.addOrder(new Item(), new Picture(), 2);
-        crt.addOrder(new Item(), new Picture(), 1);
+        crt.addOrder(new Item(1), new Picture(), 2);
+        crt.addOrder(new Item(1), new Picture(), 1);
 
         int ROW_WIDTH = 7;
 

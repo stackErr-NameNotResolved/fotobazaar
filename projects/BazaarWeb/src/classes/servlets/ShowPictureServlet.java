@@ -46,11 +46,14 @@ public class ShowPictureServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        if (request.getParameter("imageCode") != null && request.getParameter("imageSize") != null) {
+        if (request.getParameter("imageCode") != null) {
             String imageCode = request.getParameter("imageCode");
             String imageSize = request.getParameter("imageSize");
+            if (imageSize == null) {
+                imageSize = "small";
+            }
 
-            response.getOutputStream().write(Picture.downloadImage(Picture.getIdFromCode(imageCode)+"", imageSize));
+            response.getOutputStream().write(Picture.downloadImage(imageCode, imageSize));
         }
 
     }
@@ -70,7 +73,7 @@ public class ShowPictureServlet extends HttpServlet {
         if (request.getParameter("imageCode") != null) {
             String imageCode = request.getParameter("imageCode");
 
-            if (Picture.isPicturePublished(null,imageCode)) {
+            if (Picture.isPicturePublished(imageCode)) {
                 response.sendRedirect(request.getContextPath() + "/pages/pictureView.jsp?imageCode="+imageCode);
             } else {
                 request.setAttribute("visibility", "visible");

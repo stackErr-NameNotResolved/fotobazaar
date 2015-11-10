@@ -29,10 +29,8 @@ import java.util.logging.Logger;
  */
 public class Picture {
 
-    private BufferedImage photo;
-
     private double price;
-    
+
     private int startX;
     private int startY;
     private int endX;
@@ -99,7 +97,6 @@ public class Picture {
     public double getPrice() {
         return price;
     }
-    
 
     public void addEffects(int startX, int startY, int endX, int endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip) {
         this.startX = startX;
@@ -148,8 +145,9 @@ public class Picture {
         }
     }
 
-    public static byte[] downloadImage(String imageId, String iType) {
+    public static byte[] downloadImage(String imageCode, String iType) {
         DataTable result = null;
+        byte[] blobbytes = null;
         String imageType = "";
 
         //map input to query
@@ -162,59 +160,44 @@ public class Picture {
             imageType = "DATA_SMALL";
         }
 
-        if (isPicturePublished(imageId, null)) {
-            result = DatabaseConnector.getInstance().executeQuery("SELECT " + imageType + " AS IMAGE FROM photo WHERE ID = ?", imageId);
-            if (result != null) {
-                byte[] blobbytes = null;
-                try {
-                    result.getResultSet().next(); // Get first resultset result.
-                    blobbytes = result.getResultSet().getBytes("IMAGE");
-                } catch (SQLException ex) {
-                    throw new IllegalStateException("Cannot download image.", ex);
+        if (isPicturePublished(imageCode)) {
+            result = DatabaseConnector.getInstance().executeQuery("SELECT " + imageType + " AS IMAGE FROM photo WHERE CODE = ?", imageCode);
+            if (result == null) {
+                result = DatabaseConnector.getInstance().executeQuery("SELECT IMAGE FROM item WHERE CODE = ?", imageCode);
+                if (result != null) {
+                    try {
+                        result.getResultSet().next(); // Get first resultset result.
+                        blobbytes = result.getResultSet().getBytes("IMAGE");
+                    } catch (SQLException ex) {
+                        throw new IllegalStateException("Cannot download image.", ex);
+                    }
+                    return blobbytes;
                 }
-                return blobbytes;
             }
-
         }
-
         return null;
-    }
-
-    /**
-     * gets id from code
-     *
-     * @param pictureCode the code of the image
-     * @return -1 if image not found
-     */
-    public static int getIdFromCode(String pictureCode) {
-        if (isPictureAvailable(null, pictureCode)) {
-            return (int)DatabaseConnector.getInstance().executeQuery("SELECT ID FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0];
-        } else {
-            return -1;
-        }
     }
 
     /**
      * returns true if a picture exists and is made public else false
      *
-     * @param pictureId id of the picture, can be null
-     * @param pictureCode code if the picture, can be null
+     * @param pictureCode code if the picture
      * @return returns true if a picture exists and is made public else false
      */
-    public static boolean isPicturePublished(String pictureId, String pictureCode) {
-        if (pictureId != null) {
-            //check if image actually exists
-            if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM photo WHERE ID = ?", pictureId).getRow(0)[0] > 0) {
-                //check if image is published
-                if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM photo WHERE ID = ?", pictureId).getRow(0)[0] == 1) {
-                    return true;
-                }
-            }
-        } else if (pictureCode != null) {
-            //check if image actually exists
+    public static boolean isPicturePublished(String pictureCode) {
+        if (pictureCode != null) {
+            //check if image actually exists in photo table
             if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0] > 0) {
                 //check if image is published
                 if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0] == 1) {
+                    return true;
+                }
+            }
+
+            //check if image actually exists in items table
+            if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM item WHERE CODE = ?", pictureCode).getRow(0)[0] > 0) {
+                //check if image is published
+                if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM item WHERE CODE = ?", pictureCode).getRow(0)[0] == 1) {
                     return true;
                 }
             }
@@ -451,9 +434,8 @@ public class Picture {
 
         return result;
     }
-    
-    public Picture getPictureFromId(int id)
-    {
+
+    public Picture getPictureFromId(int id) {
         return null;
     }
 }
