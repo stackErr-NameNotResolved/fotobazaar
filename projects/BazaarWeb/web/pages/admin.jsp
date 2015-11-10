@@ -5,6 +5,6 @@
 
 <t:MasterPageContent title="${title}">
     <jsp:body>
-        Dit is een test
+
     </jsp:body>
 </t:MasterPageContent>
