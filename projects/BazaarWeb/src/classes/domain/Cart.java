@@ -7,19 +7,14 @@ package classes.domain;
 
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -188,6 +183,7 @@ public class Cart implements Serializable {
     public static HttpServletResponse addItemToCart(Item item, Picture picture, HttpServletRequest request, HttpServletResponse response)
     {
         Cart cart = Cart.readCartFromCookies(request);
+        if (cart == null) cart = new Cart();
         cart.addOrder(item, picture, 1);
         return cart.saveCart(response);
     }

@@ -1,11 +1,11 @@
 package classes.servlets.fragments;
 
-import classes.domain.*;
+import classes.domain.Cart;
+import classes.domain.Order;
 import classes.servlets.base.BaseHttpServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
