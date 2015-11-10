@@ -3,11 +3,22 @@ package classes.servlets.base;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 @WebServlet(name = "BaseHttpServlet")
 public abstract class BaseHttpServlet extends HttpServlet {
+
+    /**
+     * Creates a new path to the relative directory of the file on the server.
+     *
+     * @param parts Additional parts of the path to append.
+     * @return Relative path to the file on the server.
+     */
+    protected String createPath(String... parts) {
+        return Paths.get(getServletContext().getContextPath(), parts).toString();
+    }
 
     /**
      * Gets the language-centered text based on the given {@link Locale} and key.
@@ -16,7 +27,7 @@ public abstract class BaseHttpServlet extends HttpServlet {
      * @param key    Name of the key used to lookup the text in the resource file.
      * @return Text that was read from the language resource file.
      */
-    protected String getLocal(Locale locale, String key) {
+    protected static String getLocal(Locale locale, String key) {
         if (locale == null) throw new IllegalArgumentException("Parameter locale must not be null.");
         if (key == null || key.isEmpty())
             throw new IllegalArgumentException("Parameter key must not be null or empty.");
@@ -31,7 +42,7 @@ public abstract class BaseHttpServlet extends HttpServlet {
      * @param key     Name of the language text to look up on.
      * @return Text that was read from the language resource file.
      */
-    protected String getLocal(HttpServletRequest request, String key) {
+    protected static String getLocal(HttpServletRequest request, String key) {
         return getLocal(getLanguage(request), key);
     }
 
@@ -41,7 +52,7 @@ public abstract class BaseHttpServlet extends HttpServlet {
      * @param request Request that has the language variable set.
      * @return {@link Locale} that the {@link HttpServletRequest request} is set on.
      */
-    protected Locale getLanguage(HttpServletRequest request) {
+    protected static Locale getLanguage(HttpServletRequest request) {
         if (request == null) throw new IllegalArgumentException("Parameter request must not be null.");
 
         Object attribute = request.getSession().getAttribute("language");
