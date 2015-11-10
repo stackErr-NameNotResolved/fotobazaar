@@ -27,7 +27,7 @@ public abstract class BaseHttpServlet extends HttpServlet {
      * @param key    Name of the key used to lookup the text in the resource file.
      * @return Text that was read from the language resource file.
      */
-    protected String getLocal(Locale locale, String key) {
+    protected static String getLocal(Locale locale, String key) {
         if (locale == null) throw new IllegalArgumentException("Parameter locale must not be null.");
         if (key == null || key.isEmpty())
             throw new IllegalArgumentException("Parameter key must not be null or empty.");
@@ -42,7 +42,7 @@ public abstract class BaseHttpServlet extends HttpServlet {
      * @param key     Name of the language text to look up on.
      * @return Text that was read from the language resource file.
      */
-    protected String getLocal(HttpServletRequest request, String key) {
+    protected static String getLocal(HttpServletRequest request, String key) {
         return getLocal(getLanguage(request), key);
     }
 
@@ -52,7 +52,7 @@ public abstract class BaseHttpServlet extends HttpServlet {
      * @param request Request that has the language variable set.
      * @return {@link Locale} that the {@link HttpServletRequest request} is set on.
      */
-    protected Locale getLanguage(HttpServletRequest request) {
+    protected static Locale getLanguage(HttpServletRequest request) {
         if (request == null) throw new IllegalArgumentException("Parameter request must not be null.");
 
         Object attribute = request.getSession().getAttribute("language");
