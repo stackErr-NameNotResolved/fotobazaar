@@ -25,7 +25,7 @@ public class Cart implements Serializable {
 
     private List<Order> orders;
     private int orderId;
-    
+
     private DecimalFormat df;
 
     public Cart() {
@@ -67,27 +67,24 @@ public class Cart implements Serializable {
 
         return total;
     }
-    
-    public String getTotalPriceFormat()
-    {
+
+    public String getTotalPriceFormat() {
         return formatDouble(getTotalPrice());
     }
 
     public double getBTW(double percentage) {
         return getTotalPrice() * (percentage / 100);
     }
-    
-    public String getBTWFormat(double percentage)
-    {
+
+    public String getBTWFormat(double percentage) {
         return formatDouble(getBTW(percentage));
     }
 
     public double getTotalPriceAndBTW(double percentage) {
         return getTotalPrice() + getBTW(percentage);
     }
-    
-    public String getTotalPriceAndBTWFormat(double percentage)
-    {
+
+    public String getTotalPriceAndBTWFormat(double percentage) {
         return formatDouble(getTotalPriceAndBTW(percentage));
     }
 
@@ -96,7 +93,7 @@ public class Cart implements Serializable {
         List<Cookie> usable = new ArrayList();
         if (cookies != null) {
             for (Cookie c : cookies) {
-                if (c.getName().startsWith("order")) {
+                if (c.getName().startsWith("order") && !c.getValue().equals("")) {
                     usable.add(c);
                 }
             }
@@ -161,13 +158,11 @@ public class Cart implements Serializable {
                             break;
                     }
                 }
-                
-                if(pic.getId() != 0)
-                {
+
+                if (pic.getId() != 0) {
                     DataTable dt = DatabaseConnector.getInstance().executeQuery("select price from photo where id=?", pic.getId());
-                    if(dt.getRowCount() != 0)
-                    {
-                        pic.setPrice(((BigDecimal)dt.getDataFromRow(0, "price")).doubleValue()); 
+                    if (dt.getRowCount() != 0) {
+                        pic.setPrice(((BigDecimal) dt.getDataFromRow(0, "price")).doubleValue());
                     }
                 }
 
@@ -179,7 +174,7 @@ public class Cart implements Serializable {
 
         return null;
     }
-    
+
     private String formatDouble(double value) {
         if (df == null) {
             df = new DecimalFormat();
@@ -191,7 +186,8 @@ public class Cart implements Serializable {
         return df.format(value);
     }
 
-    public HttpServletResponse saveCart(HttpServletResponse response) {
+    public HttpServletResponse saveCart(HttpServletRequest request, HttpServletResponse response) {
+
         // Write the orders
         for (int i = 0; i < orders.size(); i++) {
             StringBuilder sb = new StringBuilder();
@@ -200,25 +196,51 @@ public class Cart implements Serializable {
             sb.append(orders.get(i).getPicture().getCookieData());
             sb.append("a=").append(orders.get(i).getAmount());
 
-            Cookie cookie = new Cookie("order" + i, sb.toString());
+            Cookie cookie = getCookie("order" + i, request);
+            if (cookie == null) {
+                cookie = new Cookie("order" + i, "");
+            }
+            cookie.setValue(sb.toString());
             cookie.setMaxAge(60 * 60 * 24 * 365 * 10);
-            //cookie.setPath("/BazaarWeb");
+            cookie.setPath("");
 
             response.addCookie(cookie);
         }
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies.length > orders.size()) {
+            for (int i = orders.size(); i < cookies.length; i++) {
+                if (cookies[i].getName().startsWith("order")) {
+                    cookies[i].setValue("");
+                    response.addCookie(cookies[i]);
+                }
+            }
+        }
+
         return response;
     }
-    
-    public static HttpServletResponse addItemToCart(Item item, Picture picture, HttpServletRequest request, HttpServletResponse response)
-    {
-        Cart cart = Cart.readCartFromCookies(request);
-        if (cart == null) cart = new Cart();
-        cart.addOrder(item, picture, 1);
-        return cart.saveCart(response);
+
+    private Cookie getCookie(String name, HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        for (int i = 0; i < cookies.length; i++) {
+            if (cookies[i].getName().toLowerCase().startsWith("order")) {
+                return cookies[i];
+            }
+        }
+
+        return null;
     }
-    
-    public static HttpServletResponse addItemToCart(int itemId, Picture picture, HttpServletRequest request, HttpServletResponse response)
-    {
+
+    public static HttpServletResponse addItemToCart(Item item, Picture picture, HttpServletRequest request, HttpServletResponse response) {
+        Cart cart = Cart.readCartFromCookies(request);
+        if (cart == null) {
+            cart = new Cart();
+        }
+        cart.addOrder(item, picture, 1);
+        return cart.saveCart(request, response);
+    }
+
+    public static HttpServletResponse addItemToCart(int itemId, Picture picture, HttpServletRequest request, HttpServletResponse response) {
         return addItemToCart(Item.getItemFromId(itemId), picture, request, response);
     }
 }

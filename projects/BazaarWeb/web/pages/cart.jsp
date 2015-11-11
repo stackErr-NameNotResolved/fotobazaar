@@ -48,13 +48,13 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th width="46%"><fmt:message key="cart.product"/></th>
+                        <th width="44%"><fmt:message key="cart.product"/></th>
                         <th width="9%"><fmt:message key="cart.productp"/></th>
                         <th width="9%"><fmt:message key="cart.fotop"/></th>
                         <th width="9%"><fmt:message key="cart.amount"/></th>
                         <th width="9%"><fmt:message key="cart.total"/></th>
-                        <th width="9%"></th>
-                        <th width="9%"></th>
+                        <th width="10%"></th>
+                        <th width="10%"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,14 +80,17 @@
                                 € ${order.getTotalPriceFormat()}
                             </td>
                             <td>
-                                <a class="btn btn-primary col-md-12" style="font-size:8pt; vertical-align: middle">
+                                <button type="submit" class="btn btn-primary col-md-12" style="font-size:8pt; vertical-align: middle">
                                     <i class="glyphicon glyphicon-edit" style="color: white;"></i>&nbsp;&nbsp;&nbsp;<fmt:message key="cart.edit"/>
-                                </a>
+                                </button>
                             </td>
                             <td>
-                                <a class="btn btn-danger col-md-12" style="font-size:8pt; vertical-align: middle">
-                                    <i class="glyphicon glyphicon-remove" style="color: white;"></i>&nbsp;&nbsp;&nbsp;<fmt:message key="cart.delete"/>
-                                </a>
+                                <form action="/BazaarWeb/CartServletFragment" method="POST">
+                                    <input type="hidden" value="${order.getId()}" name="id" id="id"></input>
+                                    <button type="submit" class="btn btn-danger col-md-12" style="font-size:8pt; vertical-align: middle">
+                                        <i class="glyphicon glyphicon-remove" style="color: white;"></i>&nbsp;&nbsp;&nbsp;<fmt:message key="cart.delete"/>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     </c:forEach>
