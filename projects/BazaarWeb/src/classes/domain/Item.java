@@ -8,12 +8,10 @@ package classes.domain;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import java.io.Serializable;
-import java.math.BigDecimal;
-
-import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import javax.servlet.http.Part;
 
 /**
@@ -154,5 +152,30 @@ public class Item implements Serializable {
         }
 
         return df.format(value);
+    }
+    /**
+     * Changes the price of an item in the database
+     * @param itemId The item ID
+     * @param newPrice The new price of the item
+     * @return If it has succes
+     */
+    public static boolean changePrice(int itemId, double newPrice){
+        
+        boolean result = false;
+        
+        if(itemId > 0 && newPrice >= 0.00){
+            
+            try{
+                StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE item SET PRICE = ? WHERE ID = ?", newPrice, itemId);
+                
+                if(!dbResult.equals(StatementResult.ERROR) || !dbResult.equals(StatementResult.NO_ROWS_UPDATED)){
+                    result = true;
+                }                
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }            
+        }       
+        
+        return result;        
     }
 }
