@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +46,8 @@ public class Picture implements Serializable {
     private int saturation;
     private int hue;
     private int clip;
+    
+    private DecimalFormat df;
 
     /**
      *
@@ -120,6 +123,11 @@ public class Picture implements Serializable {
 
     public double getPrice() {
         return price;
+    }
+    
+    public String getPriceFormat()
+    {
+        return formatDouble(price);
     }
 
     public int getId() {
@@ -541,5 +549,16 @@ public class Picture implements Serializable {
         sb.append("c=").append(this.clip).append(splitChar);
 
         return sb.toString();
+    }
+    
+    private String formatDouble(double value) {
+        if (df == null) {
+            df = new DecimalFormat();
+            df.applyPattern("0.00");
+            df.setGroupingUsed(true);
+            df.setGroupingSize(3);
+        }
+
+        return df.format(value);
     }
 }

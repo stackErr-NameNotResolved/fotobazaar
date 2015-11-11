@@ -23,7 +23,11 @@ public class CartServletFragment extends BaseHttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        Cart cart = Cart.readCartFromCookies(request);
+        
+        request.setAttribute("orders", cart.getOverview());
+        
+        response.sendRedirect("pages/cart.jsp");
     }
 
     public static String generateCart(HttpServletRequest request, HttpServletResponse response) throws IOException {

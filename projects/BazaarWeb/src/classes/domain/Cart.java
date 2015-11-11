@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class Cart implements Serializable {
 
     private List<Order> orders;
     private int orderId;
+    
+    private DecimalFormat df;
 
     public Cart() {
         orders = new ArrayList();
@@ -64,13 +67,28 @@ public class Cart implements Serializable {
 
         return total;
     }
+    
+    public String getTotalPriceFormat()
+    {
+        return formatDouble(getTotalPrice());
+    }
 
     public double getBTW(double percentage) {
         return getTotalPrice() * (percentage / 100);
     }
+    
+    public String getBTWFormat(double percentage)
+    {
+        return formatDouble(getBTW(percentage));
+    }
 
     public double getTotalPriceAndBTW(double percentage) {
         return getTotalPrice() + getBTW(percentage);
+    }
+    
+    public String getTotalPriceAndBTWFormat(double percentage)
+    {
+        return formatDouble(getTotalPriceAndBTW(percentage));
     }
 
     public static Cart readCartFromCookies(HttpServletRequest request) {
@@ -160,6 +178,17 @@ public class Cart implements Serializable {
         }
 
         return null;
+    }
+    
+    private String formatDouble(double value) {
+        if (df == null) {
+            df = new DecimalFormat();
+            df.applyPattern("0.00");
+            df.setGroupingUsed(true);
+            df.setGroupingSize(3);
+        }
+
+        return df.format(value);
     }
 
     public HttpServletResponse saveCart(HttpServletResponse response) {

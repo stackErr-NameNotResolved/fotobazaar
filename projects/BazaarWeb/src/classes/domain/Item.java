@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import javax.servlet.http.Part;
 
 /**
@@ -25,6 +26,8 @@ public class Item implements Serializable {
     private String pictureCode;
     private double price;
     private String description;
+    
+    private DecimalFormat df;
 
     public Item(int id) {
         this.id = id;
@@ -54,6 +57,11 @@ public class Item implements Serializable {
 
     public double getPrice() {
         return price;
+    }
+    
+    public String getPriceFormat()
+    {
+        return formatDouble(price);
     }
 
     public int getId() {
@@ -137,4 +145,14 @@ public class Item implements Serializable {
         return result;
     }
 
+    private String formatDouble(double value) {
+        if (df == null) {
+            df = new DecimalFormat();
+            df.applyPattern("0.00");
+            df.setGroupingUsed(true);
+            df.setGroupingSize(3);
+        }
+
+        return df.format(value);
+    }
 }

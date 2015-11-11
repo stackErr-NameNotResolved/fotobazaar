@@ -6,6 +6,7 @@
 package classes.domain;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 /**
  *
@@ -16,6 +17,8 @@ public class Order implements Serializable {
     private Picture picture;
     private Item item;
     private int amount;
+    
+    private DecimalFormat df;
    
     public Order(int id, Picture picture, Item item, int amount)
     {
@@ -56,5 +59,21 @@ public class Order implements Serializable {
     public double getTotalPrice()
     {
         return (this.picture.getPrice() + this.item.getPrice()) * this.amount;
+    }
+    
+    public String getTotalPriceFormat()
+    {
+        return formatDouble(getTotalPrice());
+    }
+    
+    private String formatDouble(double value) {
+        if (df == null) {
+            df = new DecimalFormat();
+            df.applyPattern("0.00");
+            df.setGroupingUsed(true);
+            df.setGroupingSize(3);
+        }
+
+        return df.format(value);
     }
 }
