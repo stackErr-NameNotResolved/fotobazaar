@@ -27,6 +27,30 @@
     <jsp:attribute name="style">
         <link href="/BazaarWeb/css/custom.css" rel="stylesheet">
     </jsp:attribute>
+        
+        <jsp:attribute name="script">
+        <script>
+            $(function () {
+                $('input[id^="amount"]').change(function (event) {
+                    var newAantal = this.value;
+                    var id = this.id;
+                    $.ajax({
+                        type: 'POST',
+                        url: '../CartServlet',
+                        data: {
+                            p_newAantal: newAantal,
+                            p_id: id
+                        },
+                        success: function (data) {
+                            var dat = $.parseJSON(data);
+                            alert(dat.test1);
+                        }
+                    });
+
+                });
+            });
+        </script>
+    </jsp:attribute>
 
     <jsp:body>
         <c:if test="${orderCount < 1}">
@@ -75,8 +99,7 @@
                             </td>
                             <td style="vertical-align: middle">
                                 <form action="/BazaarWeb/CartServletFragment" method="POST">
-                                    <input type="hidden" value="${order.getId()}" name="id_amount"/>
-                                    <input class="form-control input-sm" id="${id}" name="amount" placeholder="${place}" onchange="form.submit();" type="number" min="1" value="${amount}" />
+                                    <input class="form-control input-sm" id="${id}" placeholder="${place}" type="number" min="1" value="${amount}" />
                                 </form>
                             </td>
                             <td class="active" style="text-align: right; vertical-align: middle">

@@ -7,6 +7,9 @@ package classes.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -71,7 +74,20 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("utf-8");
+        
+        String newAantal = request.getParameter("p_newAantal");
+        String id = request.getParameter("p_id");
+        
+        JsonObject jo = Json.createObjectBuilder()
+            .add("test1", "value1")
+            .build();
+        
+        
+        response.getWriter().write(jo.toString());
+        response.getWriter().flush();
     }
 
     /**

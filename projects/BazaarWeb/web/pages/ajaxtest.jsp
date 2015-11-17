@@ -5,7 +5,7 @@
     <jsp:attribute name="script">
         <script>
             $(function () {
-                $("#btn").click(function () {
+                $('input[id^="tag"]').click(function (event) {
                     $.ajax({
                         url: '../AjaxServlet',
                         data: {
@@ -30,7 +30,7 @@
                     <form>
                         
                         naam : <input type="text" id="naam"/>
-                        <input type="button" id="btn" value="do some ajax magic"/>
+                        <input type="button" id="tag0" value="do some ajax magic"/>
                     
                     </form>
 

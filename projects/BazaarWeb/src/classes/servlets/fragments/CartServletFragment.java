@@ -1,7 +1,9 @@
 package classes.servlets.fragments;
 
 import classes.domain.Cart;
+import classes.domain.Item;
 import classes.domain.Order;
+import classes.domain.Picture;
 import classes.servlets.base.BaseHttpServlet;
 
 import javax.servlet.ServletException;
@@ -18,19 +20,39 @@ public class CartServletFragment extends BaseHttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Cart cart = Cart.readCartFromCookies(request);
+
+        String data = request.getParameter("id_delete");
+        if (data != null) {
+            if (!data.equals("")) {
+                cart.removeOrder(Integer.parseInt(data));
+            }
+        }
+        else
+        {
+            data = request.getParameter("id_amount");
+            if (!data.equals("")) {
+                Order o = cart.getOrder(Integer.parseInt(data)); 
+                data = request.getParameter("amount");
+                o.setAmount(Integer.parseInt(data));
+            }
+        }
         
-        String data = request.getParameter("id");
-        if(data == null || data.equals(""))
-            response.sendRedirect("pages/cart.jsp");
-        
-        cart.removeOrder(Integer.parseInt(data));
+
         cart.saveCart(request, response);
-        
+
         response.sendRedirect("pages/cart.jsp");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+//        Cart cart = Cart.readCartFromCookies(request);
+//        if (cart == null) {
+//            cart = new Cart();
+//        }
+//        cart.addOrder(Item.getItemFromId(1), new Picture(), 1);
+//        cart.saveCart(request, response);
         
+        Cart.addItemToCart(1, new Picture(), request, response);
 
         //request.setAttribute("orders", cart.getOverview());
         response.sendRedirect("pages/cart.jsp");

@@ -219,11 +219,16 @@ public class Cart implements Serializable {
 
         return response;
     }
+    
+    public Order getOrder(int id)
+    {
+        return this.orders.get(id);
+    }
 
     private Cookie getCookie(String name, HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         for (int i = 0; i < cookies.length; i++) {
-            if (cookies[i].getName().toLowerCase().startsWith("order")) {
+            if (cookies[i].getName().equals(name)) {
                 return cookies[i];
             }
         }
