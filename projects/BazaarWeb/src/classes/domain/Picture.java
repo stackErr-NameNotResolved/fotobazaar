@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,7 +34,7 @@ public class Picture implements Serializable {
     private double price;
 
     private int id;
-    
+
     private float startX;
     private float startY;
     private float endX;
@@ -45,6 +46,8 @@ public class Picture implements Serializable {
     private int saturation;
     private int hue;
     private int clip;
+    
+    private DecimalFormat df;
 
     /**
      *
@@ -52,9 +55,8 @@ public class Picture implements Serializable {
     public Picture() {
         this.price = 1.0;
     }
-    
-    public Picture(int databaseId, float startX, float startY, float endX, float endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip)
-    {
+
+    public Picture(int databaseId, float startX, float startY, float endX, float endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip) {
         this.id = databaseId;
         this.startX = startX;
         this.startY = startY;
@@ -66,11 +68,10 @@ public class Picture implements Serializable {
         this.saturation = saturation;
         this.hue = hue;
         this.clip = clip;
-        
+
         DataTable dt = DatabaseConnector.getInstance().executeQuery("select price from photo where id=?", databaseId);
-        if(dt.getRowCount() > 0)
-        {
-            price = ((BigDecimal)dt.getDataFromRow(0, "price")).doubleValue();
+        if (dt.getRowCount() > 0) {
+            price = ((BigDecimal) dt.getDataFromRow(0, "price")).doubleValue();
         }
     }
 
@@ -120,6 +121,11 @@ public class Picture implements Serializable {
 
     public double getPrice() {
         return price;
+    }
+    
+    public String getPriceFormat()
+    {
+        return formatDouble(price);
     }
 
     public int getId() {
@@ -177,7 +183,7 @@ public class Picture implements Serializable {
     public void setClip(int clip) {
         this.clip = clip;
     }
-    
+
     public void addEffects(int startX, int startY, int endX, int endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip) {
         this.startX = startX;
         this.startY = startY;
@@ -241,19 +247,20 @@ public class Picture implements Serializable {
         }
 
         if (isPicturePublished(imageCode)) {
-            result = DatabaseConnector.getInstance().executeQuery("SELECT " + imageType + " AS IMAGE FROM photo WHERE CODE = ?", imageCode);
-            if (result == null) {
-                result = DatabaseConnector.getInstance().executeQuery("SELECT IMAGE FROM item WHERE CODE = ?", imageCode);
-                if (result != null) {
-                    try {
-                        result.getResultSet().next(); // Get first resultset result.
-                        blobbytes = result.getResultSet().getBytes("IMAGE");
-                    } catch (SQLException ex) {
-                        throw new IllegalStateException("Cannot download image.", ex);
-                    }
-                    return blobbytes;
-                }
+            result = DatabaseConnector.getInstance().executeQuery("SELECT COUNT(*) FROM photo WHERE CODE = ?", imageCode);
+            if ((Long) result.getRow(0)[0] == 1) {
+                result = DatabaseConnector.getInstance().executeQuery("SELECT " + imageType + " AS IMAGE FROM photo WHERE CODE = ?", imageCode);
+            } else {
+                result = DatabaseConnector.getInstance().executeQuery("SELECT IMAGE FROM item WHERE ID = ?", imageCode);
             }
+
+            try {
+                result.getResultSet().next(); // Get first resultset result.
+                blobbytes = result.getResultSet().getBytes("IMAGE");
+            } catch (SQLException ex) {
+                throw new IllegalStateException("Cannot download image.", ex);
+            }
+            return blobbytes;
         }
         return null;
     }
@@ -270,15 +277,19 @@ public class Picture implements Serializable {
             if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0] > 0) {
                 //check if image is published
                 if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0] == 1) {
-                    return true;
+                    if (DatabaseConnector.getInstance().executeQuery("SELECT DATA_BIG FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0] != null && DatabaseConnector.getInstance().executeQuery("SELECT DATA_SMALL FROM photo WHERE CODE = ?", pictureCode).getRow(0)[0] != null) {
+                        return true;
+                    }
                 }
             }
 
             //check if image actually exists in items table
-            if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM item WHERE CODE = ?", pictureCode).getRow(0)[0] > 0) {
+            if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM item WHERE ID = ?", pictureCode).getRow(0)[0] > 0) {
                 //check if image is published
-                if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM item WHERE CODE = ?", pictureCode).getRow(0)[0] == 1) {
-                    return true;
+                if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM item WHERE ID = ?", pictureCode).getRow(0)[0] == 1) {
+                    if (DatabaseConnector.getInstance().executeQuery("SELECT IMAGE FROM item WHERE ID = ?", pictureCode).getRow(0)[0] != null) {
+                        return true;
+                    }
                 }
             }
         }
@@ -518,20 +529,19 @@ public class Picture implements Serializable {
     public Picture getPictureFromId(int id) {
         return null;
     }
-    
-    public String getCookieData()
-    {
+
+    public String getCookieData() {
         StringBuilder sb = new StringBuilder();
-        
+
         String splitChar = "/";
-        
+
         sb.append("id=").append(this.id).append(splitChar);
-        
+
         sb.append("sx=").append(this.startX).append(splitChar);
         sb.append("sy=").append(this.startY).append(splitChar);
         sb.append("ex=").append(this.endX).append(splitChar);
         sb.append("ey=").append(this.endY).append(splitChar);
-        
+
         sb.append("b=").append(this.brightness).append(splitChar);
         sb.append("s=").append(this.sepia).append(splitChar);
         sb.append("n=").append(this.noise).append(splitChar);
@@ -541,5 +551,16 @@ public class Picture implements Serializable {
         sb.append("c=").append(this.clip).append(splitChar);
 
         return sb.toString();
+    }
+    
+    private String formatDouble(double value) {
+        if (df == null) {
+            df = new DecimalFormat();
+            df.applyPattern("0.00");
+            df.setGroupingUsed(true);
+            df.setGroupingSize(3);
+        }
+
+        return df.format(value);
     }
 }

@@ -9,6 +9,7 @@ import classes.database.orm.annotations.Id;
 import classes.database.orm.annotations.Table;
 import classes.domain.AESEncryption;
 import classes.domain.ELoginStatus;
+import classes.domain.ELoginTypes;
 
 @Table(name = "ACCOUNT")
 public class Account extends DataModel {
@@ -66,26 +67,47 @@ public class Account extends DataModel {
         return ELoginStatus.FAILED;
     }
 
+    public static boolean hasPermission(String username, ELoginTypes type) {
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("select access from account where username=?", username);
+        if (dt.containsData()) {
+            int data = (int) dt.getDataFromRow(0, "access");
+            if (data < 0) {
+                return false;
+            }
+            if (data == 1 && type == ELoginTypes.ADMINISTRATOR) {
+                return true;
+            } else if (data == 2 && type == ELoginTypes.PRODUCER) {
+                return true;
+            } else if (data == 3 && type == ELoginTypes.PHOTOGRAPHER) {
+                return true;
+            } else if (data == 4 && type == ELoginTypes.CUSTOMER) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
     public static boolean registerNewAccount(String username, String password, int right) {
 
         boolean result = false;
         StatementResult dbResult = null;
         if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
-            
-                String encryptedPassword  = AESEncryption.encrypt(password, username);
-                String s_right = String.format(" " + right);
-                try{
-                    dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO account (USERNAME, PASSWORD, ACCESS) VALUES (?,?,?) ", username, encryptedPassword, s_right);
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }
-                
 
-                if (dbResult.equals(StatementResult.ERROR) || dbResult.equals(StatementResult.NO_ROWS_UPDATED)) {
-                    result = false;
-                }
-                
-                result = true;
+            String encryptedPassword = AESEncryption.encrypt(password, username);
+            String s_right = String.format(" " + right);
+            try {
+                dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO account (USERNAME, PASSWORD, ACCESS) VALUES (?,?,?) ", username, encryptedPassword, s_right);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            if (dbResult.equals(StatementResult.ERROR) || dbResult.equals(StatementResult.NO_ROWS_UPDATED)) {
+                result = false;
+            }
+
+            result = true;
 
         } else {
             result = false;

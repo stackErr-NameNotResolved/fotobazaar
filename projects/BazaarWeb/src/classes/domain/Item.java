@@ -11,6 +11,7 @@ import classes.database.StatementResult;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import javax.servlet.http.Part;
 
 /**
@@ -22,9 +23,9 @@ public class Item implements Serializable {
     private int id;
     private double price;
     private String description;
+    private DecimalFormat df;
 
     public Item(int id) {
-        this.id = id;
         DataTable retVal = DatabaseConnector.getInstance().executeQuery("SELECT DESCRIPTION,PRICE FROM item WHERE ID = ?", id);
         this.description = (String) retVal.getRow(0)[0];
         this.price = ((BigDecimal) retVal.getRow(0)[1]).doubleValue();
@@ -49,6 +50,10 @@ public class Item implements Serializable {
 
     public double getPrice() {
         return price;
+    }
+
+    public String getPriceFormat() {
+        return formatDouble(price);
     }
 
     public int getId() {
@@ -130,6 +135,17 @@ public class Item implements Serializable {
         }
 
         return result;
+    }
+
+    private String formatDouble(double value) {
+        if (df == null) {
+            df = new DecimalFormat();
+            df.applyPattern("0.00");
+            df.setGroupingUsed(true);
+            df.setGroupingSize(3);
+        }
+
+        return df.format(value);
     }
 
     /**

@@ -5,19 +5,25 @@
  */
 package classes.servlets;
 
-import classes.domain.Picture;
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
+import classes.domain.Item;
+import classes.servlets.base.BaseHttpServlet;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
+ *
  * @author Jip
  */
-@WebServlet(name = "ShowPictureServlet", urlPatterns = {"/ShowPictureServlet"})
-public class ShowPictureServlet extends HttpServlet {
+@WebServlet(name = "testServlet", urlPatterns = {"/testServlet"})
+public class testServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,6 +37,18 @@ public class ShowPictureServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet testServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet testServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -45,22 +63,21 @@ public class ShowPictureServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        if (request.getParameter("imageCode") != null) {
-            String imageCode = request.getParameter("imageCode");
-            String imageSize = request.getParameter("imageSize");
-            if (imageSize == null) {
-                imageSize = "small";
-            }
 
-            if (Picture.isPicturePublished(imageCode)) {
-                byte[] image = Picture.downloadImage(imageCode, imageSize);
-                if (image != null) {
-                    response.getOutputStream().write(image);
-                }
+        ArrayList<Item> items = new ArrayList<>();
+
+        DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT ID FROM item WHERE ACTIVE = 1");
+        while (true) {
+            Object[] itemRow = result.getNextRow();
+            if (itemRow.length == 0) {
+                break;
             }
+            Item tempItem = Item.getItemFromId((Integer)(itemRow[0]));
+            items.add(tempItem);
         }
-
+        
+        request.setAttribute("items",items);
+       request.getRequestDispatcher("pages/itemView.jsp").forward(request, response);
     }
 
     /**
@@ -75,16 +92,6 @@ public class ShowPictureServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        if (request.getParameter("imageCode") != null) {
-            String imageCode = request.getParameter("imageCode");
-
-            if (Picture.isPicturePublished(imageCode)) {
-                response.sendRedirect(request.getContextPath() + "/pages/pictureView.jsp?imageCode=" + imageCode);
-            } else {
-                request.setAttribute("visibility", "visible");
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-            }
-        }
     }
 
     /**
