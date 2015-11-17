@@ -16,7 +16,6 @@
         <function-signature>boolean checkSessionData(java.lang.String,java.lang.String,java.lang.String)
         </function-signature>
     </function>
-
     <!-- Invoke 'Generate' action to add tags or functions -->
 
 </taglib>
