@@ -12,8 +12,15 @@ import java.io.PrintWriter;
 public class AdminCreateAccountServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter writer = response.getWriter();
-        writer.write(request.getParameter("inputUsername"));
-        writer.write(request.getParameter("inputPassword"));
+        String user = request.getParameter("inputUsername");
+        String pass = request.getParameter("inputPassword");
+
+        // Create json.
+
+
+
+        response.setContentType("application/json");
+        //writer.write();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

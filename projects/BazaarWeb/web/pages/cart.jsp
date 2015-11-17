@@ -1,8 +1,5 @@
-<%@page import="classes.domain.Picture"%>
-<%@page import="classes.domain.Item"%>
-<%@page import="classes.domain.Order"%>
-<%@page import="classes.servlets.fragments.CartServletFragment"%>
 <%@page import="classes.domain.Cart"%>
+<%@page import="classes.domain.Order"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@include file="/pages/langInclude.jsp" %>
