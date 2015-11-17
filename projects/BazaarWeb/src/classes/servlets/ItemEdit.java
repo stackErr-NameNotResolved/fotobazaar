@@ -62,9 +62,6 @@ public class ItemEdit extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-
-        request.setAttribute("item", Item.getItemFromId(Integer.parseInt(request.getParameter("itemId"))));
-        request.getRequestDispatcher("pages/itemEdit.jsp").forward(request, response);
     }
 
     /**
@@ -78,7 +75,13 @@ public class ItemEdit extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        if (request.getParameter("redirectItem") != null) {
+            request.setAttribute("item", Item.getItemFromId(Integer.parseInt(request.getParameter("redirectItem"))));
+            request.getRequestDispatcher("pages/itemEdit.jsp").forward(request, response);
+        }
+        else if (request.getParameter("setItem") != null) {
+            //Item.
+        }
     }
 
     /**
