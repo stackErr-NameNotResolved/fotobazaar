@@ -21,30 +21,25 @@ import javax.servlet.http.Part;
 public class Item implements Serializable {
 
     private int id;
+    private boolean active;
     private double price;
     private String description;
     private DecimalFormat df;
-    
-    
-    public Item(int id) {
-        DataTable retVal = DatabaseConnector.getInstance().executeQuery("SELECT DESCRIPTION,PRICE FROM item WHERE ID = ?", id);
-        this.description = (String) retVal.getRow(0)[0];
-        this.price = ((BigDecimal) retVal.getRow(0)[1]).doubleValue();
-        this.id = id;
-    }
-        
 
     public Item() {
     }
-    
 
     public static Item getItemFromId(int id) {
         Item i = new Item();
-        DataTable dt = DatabaseConnector.getInstance().executeQuery("select description, price from item where id=?", id);
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("select description, price, active from item where id=?", id);
         if (dt.getRowCount() == 1) {
             i.id = id;
             i.description = (String) dt.getDataFromRow(0, "description");
             i.price = ((BigDecimal) dt.getDataFromRow(0, "price")).doubleValue();
+            i.active = false;
+            if ((int)dt.getDataFromRow(0, "active")==1) {
+                i.active = true;
+            }
 
             return i;
         }
@@ -55,16 +50,18 @@ public class Item implements Serializable {
     public double getPrice() {
         return price;
     }
-    
+
     public String getPriceFormat() {
         return formatDouble(price);
     }
 
-
     public int getId() {
         return id;
     }
-    
+
+    public boolean getActive() {
+        return this.active;
+    }
 
     @Override
     public String toString() {
@@ -192,23 +189,19 @@ public class Item implements Serializable {
      * @param newImage The new image of the item
      * @return
      */
-    public static boolean changeItem(int itemId, String newDescription, double newPrice, boolean newisActive, Part newImage) {
+    public static boolean changeItem(int itemId, String newDescription, double newPrice, Boolean newisActive, Part newImage) {
         boolean result = false;
-        int dbIsActive = 0;
-        if (newisActive) {
-            dbIsActive = 1;
-        }
         if (itemId > 0 && !newDescription.isEmpty() && newPrice >= 0.00) {
             StatementResult dbResult = null;
-            try {
 
+            try {
                 if (newImage == null) {
                     //No image
-                    dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE item SET DESCRIPTION = ?, PRICE = ?, ACTIVE = ? WHERE ID = ?", newDescription, newPrice, dbIsActive, itemId);
+                    dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE item SET DESCRIPTION = ?, PRICE = ?, ACTIVE = ? WHERE ID = ?", newDescription, newPrice, newisActive, itemId);
                 } else {
                     //with Image
                     InputStream dbImage = newImage.getInputStream();
-                    dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE item SET DESCRIPTION = ?, PRICE = ?, ACTIVE = ?, IMAGE = ? WHERE ID = ?", newDescription, newPrice, dbIsActive, dbImage, itemId);
+                    dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE item SET DESCRIPTION = ?, PRICE = ?, ACTIVE = ?, IMAGE = ? WHERE ID = ?", newDescription, newPrice, newisActive, dbImage, itemId);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

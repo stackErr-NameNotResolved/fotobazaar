@@ -66,7 +66,7 @@ public class testServlet extends HttpServlet {
 
         ArrayList<Item> items = new ArrayList<>();
 
-        DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT ID FROM item WHERE ACTIVE = 1");
+        DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT ID FROM item");
         while (true) {
             Object[] itemRow = result.getNextRow();
             if (itemRow.length == 0) {

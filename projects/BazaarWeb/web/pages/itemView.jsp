@@ -14,11 +14,17 @@
             <div class="row">
                 <div class="col-md-12">
                     <c:forEach items="${items}" var="item">
-                        <form action="${pageContext.servletContext.contextPath}/ItemEdit?itemId=${item.getId()}" method="GET">
-                            <div style="text-align: center; background-color: #f8f8f8;"><img src="${pageContext.servletContext.contextPath}/ShowPictureServlet?imageCode=${item.getId()}" alt="" style="height: 500px; max-width: 100%; "></div><br><br>
-                            <fmt:message key="pictureManage.header.price"/>: ${item.getPrice()}<br><br>
-                            ${item.toString()}<br><br>
-                            <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i><fmt:message key="pictureManage.button.save"/></button>
+                        <form action="${pageContext.servletContext.contextPath}/ItemEdit" method="POST">
+                            <div style="text-align: center; background-color: #f8f8f8;"><img src="${pageContext.servletContext.contextPath}/ShowPictureServlet?imageCode=${item.getId()}" alt="" style="height: 500px; max-width: 100%; "></div><br>
+                            <fmt:message key="item.active"/>
+                            <input type="checkbox" name="active" disabled="disabled"
+                                   <c:if test ="${item.getActive()}">
+                                       checked="checked" 
+                                   </c:if>><br>
+                            <fmt:message key="pictureManage.header.price"/>: ${item.getPrice()}<br>
+                            ${item.toString()}<br>
+                            <input type="hidden" value="${item.getId()}" name="redirectItem"/>
+                            <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i><fmt:message key="cart.edit"/></button>
                             <hr>
                         </form>
                     </c:forEach>
