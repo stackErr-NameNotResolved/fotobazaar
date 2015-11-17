@@ -8,7 +8,6 @@ package classes.domain;
 import classes.database.DatabaseConnector;
 
 /**
- *
  * @author Bas
  */
 public class Session {
@@ -22,40 +21,40 @@ public class Session {
 
         data += username + "~" + ipaddr;
         String enc = AESEncryption.encrypt(data, username);
-        
+
         System.out.println("session: " + enc);
         System.out.println("data: " + data);
-        
+
         return enc;
     }
 
     public static boolean checkSessionData(String username, String encrypted, String ipaddr) {
-        if(username == null || encrypted == null || ipaddr == null)
+        if (username == null || username.isEmpty() || encrypted == null || encrypted.isEmpty() || ipaddr == null || ipaddr.isEmpty())
             return false;
-        
+
         String data = AESEncryption.decrypt(username, encrypted);
-        if(data == null)
+        if (data == null)
             return false;
-        
+
+        System.out.println(data);
         String[] values = data.split("~");
 
         if (values.length < 3) {
             return false;
         }
-        
+
         try {
             int id = Integer.parseInt(values[0]);
-            String user = (String)DatabaseConnector.getInstance().executeQuery("select username from acconut where id=?", id).getDataFromRow(0, "username");
-            if(! user.equals(username))
-            {
+            String user = (String) DatabaseConnector.getInstance().executeQuery("select username from acconut where id=?", id).getDataFromRow(0, "username");
+            if (!user.equals(username)) {
                 return false;
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
-        
-        if(!values[1].equals(username))
+
+        if (!values[1].equals(username))
             return false;
-        
+
         return values[2].equals(ipaddr);
     }
 }
