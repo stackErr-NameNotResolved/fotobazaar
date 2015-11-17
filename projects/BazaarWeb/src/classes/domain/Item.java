@@ -24,15 +24,19 @@ public class Item implements Serializable {
     private double price;
     private String description;
     private DecimalFormat df;
-
+    
+    private DecimalFormat df;
     public Item(int id) {
         DataTable retVal = DatabaseConnector.getInstance().executeQuery("SELECT DESCRIPTION,PRICE FROM item WHERE ID = ?", id);
         this.description = (String) retVal.getRow(0)[0];
         this.price = ((BigDecimal) retVal.getRow(0)[1]).doubleValue();
+        this.id = id;
     }
+        
 
     public Item() {
     }
+    
 
     public static Item getItemFromId(int id) {
         Item i = new Item();
@@ -51,14 +55,16 @@ public class Item implements Serializable {
     public double getPrice() {
         return price;
     }
-
+    
     public String getPriceFormat() {
         return formatDouble(price);
     }
 
+
     public int getId() {
         return id;
     }
+    
 
     @Override
     public String toString() {
