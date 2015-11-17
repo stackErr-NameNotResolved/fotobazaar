@@ -387,7 +387,7 @@
         </style>
 
         <form id="example-form" action="../FinishEditServlet" method="POST">
-            <input type="hidden" id="ImageCode" name="${param.imageCode}"/>
+            <input type="hidden" name="ImageCode" value="${param.imageCode}"/>
             <div>
                 <h3>Filters</h3>
                 <section>
