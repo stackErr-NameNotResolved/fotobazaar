@@ -35,6 +35,7 @@ public class Picture implements Serializable {
 
     private int id;
 
+    private String code;
     private float startX;
     private float startY;
     private float endX;
@@ -56,8 +57,8 @@ public class Picture implements Serializable {
         this.price = 1.0;
     }
 
-    public Picture(int databaseId, float startX, float startY, float endX, float endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip) {
-        this.id = databaseId;
+    public Picture(String code, float startX, float startY, float endX, float endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip) {
+        this.code = code;
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;
@@ -69,9 +70,10 @@ public class Picture implements Serializable {
         this.hue = hue;
         this.clip = clip;
 
-        DataTable dt = DatabaseConnector.getInstance().executeQuery("select price from photo where id=?", databaseId);
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("select price, id from photo where code=?", code);
         if (dt.getRowCount() > 0) {
             price = ((BigDecimal) dt.getDataFromRow(0, "price")).doubleValue();
+            id = (int)dt.getDataFromRow(0, "id");
         }
     }
 
