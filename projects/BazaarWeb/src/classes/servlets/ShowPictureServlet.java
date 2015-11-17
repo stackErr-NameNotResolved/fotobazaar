@@ -53,7 +53,12 @@ public class ShowPictureServlet extends HttpServlet {
                 imageSize = "small";
             }
 
-            response.getOutputStream().write(Picture.downloadImage(imageCode, imageSize));
+            if (Picture.isPicturePublished(imageCode)) {
+                byte[] image = Picture.downloadImage(imageCode, imageSize);
+                if (image != null) {
+                    response.getOutputStream().write(image);
+                }
+            }
         }
 
     }
@@ -74,7 +79,7 @@ public class ShowPictureServlet extends HttpServlet {
             String imageCode = request.getParameter("imageCode");
 
             if (Picture.isPicturePublished(imageCode)) {
-                response.sendRedirect(request.getContextPath() + "/pages/pictureView.jsp?imageCode="+imageCode);
+                response.sendRedirect(request.getContextPath() + "/pages/pictureView.jsp?imageCode=" + imageCode);
             } else {
                 request.setAttribute("visibility", "visible");
                 request.getRequestDispatcher("index.jsp").forward(request, response);

@@ -22,21 +22,12 @@ import javax.servlet.http.Part;
 public class Item implements Serializable {
 
     private int id;
-    private String pictureCode;
     private double price;
     private String description;
 
-    public Item(int id) {
-        this.id = id;
-        DataTable retVal = DatabaseConnector.getInstance().executeQuery("SELECT CODE,DESCRIPTION,PRICE FROM item WHERE ID = ?", id);
-        this.pictureCode = (String) retVal.getRow(0)[0];
-        this.description = (String) retVal.getRow(0)[1];
-        this.price = ((BigDecimal) retVal.getRow(0)[2]).doubleValue();
+    public Item() {
     }
     
-    public Item()
-    {
-    }
 
     public static Item getItemFromId(int id) {
         Item i = new Item();
@@ -56,9 +47,6 @@ public class Item implements Serializable {
         return price;
     }
 
-    public String getPictureCode() {
-        return pictureCode;
-        }
     public int getId() {
         return id;
     }

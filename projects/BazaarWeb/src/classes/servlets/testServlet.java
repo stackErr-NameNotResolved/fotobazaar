@@ -5,9 +5,13 @@
  */
 package classes.servlets;
 
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
+import classes.domain.Item;
 import classes.servlets.base.BaseHttpServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Jip
  */
 @WebServlet(name = "testServlet", urlPatterns = {"/testServlet"})
-public class testServlet extends BaseHttpServlet {
+public class testServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -59,10 +63,21 @@ public class testServlet extends BaseHttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
 
-        request.setAttribute("list", "visible");
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        ArrayList<Item> items = new ArrayList<>();
+
+        DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT ID FROM item WHERE ACTIVE = 1");
+        while (true) {
+            Object[] itemRow = result.getNextRow();
+            if (itemRow.length == 0) {
+                break;
+            }
+            Item tempItem = Item.getItemFromId((Integer)(itemRow[0]));
+            items.add(tempItem);
+        }
+        
+        request.setAttribute("items",items);
+       request.getRequestDispatcher("pages/itemView.jsp").forward(request, response);
     }
 
     /**
