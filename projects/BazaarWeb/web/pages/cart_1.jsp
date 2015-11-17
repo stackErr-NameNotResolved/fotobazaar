@@ -43,7 +43,17 @@
                         },
                         success: function (data) {
                             var dat = $.parseJSON(data);
-                            alert(dat.test1);
+                            
+                            // TODO: Id's!!
+                            $('#total' + dat.id).text(dat.total);
+                            $('#subtotal').text(dat.subtotal);
+                            $('#vat').text(dat.vat);
+                            $('#final_total').text(dat.final_total);
+                            
+                            //alert(dat.total);
+                            //alert(dat.subtotal);
+                            //alert(dat.vat);
+                            //alert(dat.final_total);
                         }
                     });
 
@@ -103,7 +113,7 @@
                                 </form>
                             </td>
                             <td class="active" style="text-align: right; vertical-align: middle">
-                                € ${order.getTotalPriceFormat()}
+                                € <span id="total${order.getId()}">${order.getTotalPriceFormat()}</span>
                             </td>
                             <td>
                                 <button type="submit" class="btn btn-primary col-md-12" style="font-size:8pt; vertical-align: middle">
@@ -132,9 +142,9 @@
                             <b><fmt:message key="cart.finaltotal"/></b>
                         </td>
                         <td class="active" style="text-align: right">
-                            € ${cart.getTotalPriceFormat()} <br/>
-                            € ${cart.getBTWFormat(21)}</br>
-                            € ${cart.getTotalPriceAndBTWFormat(21)}
+                            € <span id="subtotal">${cart.getTotalPriceFormat()}</span> <br/>
+                            € <span id="vat">${cart.getBTWFormat(21)}</span></br>
+                            € <span id="final_total">${cart.getTotalPriceAndBTWFormat(21)}</span>
                         </td>
                         <td></td>
                         <td></td>

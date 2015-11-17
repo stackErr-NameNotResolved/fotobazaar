@@ -5,6 +5,8 @@
  */
 package classes.servlets;
 
+import classes.domain.Cart;
+import classes.domain.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.json.Json;
@@ -40,7 +42,7 @@ public class CartServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CartServlet</title>");            
+            out.println("<title>Servlet CartServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet CartServlet at " + request.getContextPath() + "</h1>");
@@ -74,18 +76,39 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("text/plain");
         response.setCharacterEncoding("utf-8");
-        
+
         String newAantal = request.getParameter("p_newAantal");
         String id = request.getParameter("p_id");
+
+        int iNewAantal = -1;
+        int iId = -1;
+        if (!newAantal.equals("")) {
+            iNewAantal = Integer.parseInt(newAantal);
+        }
+        if (!id.equals("")) {
+            iId = Integer.parseInt(id.replaceAll("amount", ""));
+        }
         
+        if(iNewAantal == -1 || iId == -1)
+            return;
+
+        Cart cart = Cart.readCartFromCookies(request);
+        Order o = cart.getOrder(iId);
+        o.setAmount(iNewAantal);
+        
+        cart.saveCart(request, response);
+
         JsonObject jo = Json.createObjectBuilder()
-            .add("test1", "value1")
-            .build();
-        
-        
+                .add("id", o.getId())
+                .add("total", o.getTotalPriceFormat()) 
+                .add("subtotal", cart.getTotalPriceFormat())
+                .add("vat", cart.getBTWFormat(21))
+                .add("final_total", cart.getTotalPriceAndBTWFormat(21)) 
+                .build();
+
         response.getWriter().write(jo.toString());
         response.getWriter().flush();
     }

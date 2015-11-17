@@ -186,6 +186,14 @@ public class Picture implements Serializable {
         this.clip = clip;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public void addEffects(int startX, int startY, int endX, int endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip) {
         this.startX = startX;
         this.startY = startY;

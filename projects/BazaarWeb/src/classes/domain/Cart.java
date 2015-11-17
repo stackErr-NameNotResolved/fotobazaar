@@ -160,9 +160,10 @@ public class Cart implements Serializable {
                 }
 
                 if (pic.getId() != 0) {
-                    DataTable dt = DatabaseConnector.getInstance().executeQuery("select price from photo where id=?", pic.getId());
+                    DataTable dt = DatabaseConnector.getInstance().executeQuery("select price, code from photo where id=?", pic.getId());
                     if (dt.getRowCount() != 0) {
                         pic.setPrice(((BigDecimal) dt.getDataFromRow(0, "price")).doubleValue());
+                        pic.setCode((String)dt.getDataFromRow(0, "code"));
                     }
                 }
 
