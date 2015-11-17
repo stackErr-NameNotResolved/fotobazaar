@@ -8,8 +8,21 @@
 <c:set var="password_description"><fmt:message key="admin.account.password.description" /></c:set>
 
 <c:set var="title"><fmt:message key="admin.account.title" /></c:set>
+
 <t:MasterPageContent title="${title}">
-    <form role="form" method="post" action="${pageContext.servletContext.contextPath}/AdminCreateAccountServlet">
+    <jsp:attribute name="script">
+        <script>
+            function submitCreateAccount() {
+                $.ajax({
+                    url: '${pageContext.servletContext.contextPath}/AdminCreateAccountServlet',
+                }).success(function(data) {
+                    alert(data);
+                });
+            }
+        </script>
+    </jsp:attribute>
+
+    <form role="form">
         <div class="form-group">
             <label for="inputUsername">${username}</label>
             <input type="text" class="form-control" id="inputUsername" name="inputUsername" placeholder="${username_description}">
@@ -18,6 +31,6 @@
             <label for="inputUsername">${password}</label>
             <input type="text" class="form-control" id="inputPassword" name="inputPassword" placeholder="${password_description}">
         </div>
-        <button type="submit" class="btn btn-default">Account aanmaken</button>
+        <button type="submit" class="btn btn-default"><fmt:message key="master.menu.admin.createAccount"/></button>
     </form>
 </t:MasterPageContent>

@@ -30,17 +30,17 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/BazaarWeb/index.jsp">Foto<span>bazaar</span></a>
+                    <a class="navbar-brand"
+                       href="${pageContext.servletContext.contextPath}/index.jsp">Foto<span>bazaar</span></a>
                 </div>
 
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="index.jsp">Home</a></li>
+                        <li><a href="${pageContext.servletContext.contextPath}/index.jsp">Home</a></li>
                         <li>
                                 <%--Check if user is logged in.--%>
                             <c:choose>
-                                <%--<c:when test="${sf:checkSessionData(sessionScope.username, sessionScope.username-encrypted, pageContext.request.remoteAddr)}">--%>
-                                <c:when test="${sf:checkSessionData(sessionScope.username, sessionScope.username-encrypted, pageContext.request.remoteAddr)}">
+                                <c:when test="${sf:checkSessionData(sessionScope.username, sessionScope.get('username-encrypted'), pageContext.request.remoteAddr)}">
                                     <c:set var="loginButtonText"><fmt:message key="master.menu.logout"/></c:set>
                                     <c:set var="loginButtonAction">${pageContext.servletContext.contextPath}/LogOutServlet</c:set>
                                 </c:when>
@@ -51,32 +51,41 @@
                             </c:choose>
 
                             <a href="javascript:document.submitForm.submit()">${loginButtonText}</a>
+
                             <form name="submitForm" method="post" action="${loginButtonAction}"></form>
                         </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-close-others="false" data-delay="0" data-hover="dropdown"
-                               data-toggle="dropdown" href="#"><fmt:message key="master.menu.admin"/>
-                                <i class="fa fa-angle-down"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="${pageContext.servletContext.contextPath}/pages/admin/createAccount.jsp"><fmt:message
-                                            key="master.menu.admin.createAccount"/></a></li>
-                            </ul>
-                        </li>
+                        <c:if test="${sf:checkSessionData(sessionScope.username, sessionScope.get('username-encrypted'), pageContext.request.remoteAddr)}">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-close-others="false" data-delay="0"
+                                   data-hover="dropdown"
+                                   data-toggle="dropdown" href="#"><fmt:message key="master.menu.admin"/>
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="${pageContext.servletContext.contextPath}/pages/admin/createAccount.jsp"><fmt:message
+                                                key="master.menu.admin.createAccount"/></a></li>
+                                </ul>
+                            </li>
+                        </c:if>
                         <li>
                             <a>
                                 <form>
                                     <select id="language" name="language" onchange="submit()">
-                                        <option value="en">English</option>
-                                        <option value="nl">Nederlands</option>
+                                        <c:set var="langStr">${language.class.name.equals('Locale') ? language.language : language}</c:set>
+                                        ${langStr}
+                                        <option value="en" <c:if test="${langStr.equals('en')}">selected</c:if>>
+                                            English
+                                        </option>
+                                        <option value="nl" <c:if test="${langStr.equals('nl')}">selected</c:if>>
+                                            Nederlands
+                                        </option>
                                     </select>
                                 </form>
                             </a>
                         </li>
                     </ul>
                 </div>
-                    <%--<jsp:include page="/NavbarServletFragment" />--%>
             </div>
         </header>
         <!--header end-->

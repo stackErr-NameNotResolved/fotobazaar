@@ -13,7 +13,7 @@ import classes.database.DatabaseConnector;
 public class Session {
 
     public static String generateSessionData(String username, String ipaddr) {
-        String id = ((Integer) DatabaseConnector.getInstance().executeQuery("select id from Account where username=?", username).getDataFromRow(0, "id")).toString();
+        String id = DatabaseConnector.getInstance().executeQuery("select id from Account where username=?", username).getDataFromRow(0, "id").toString();
         String data = "";
         if (id != null) {
             data = id + "~";
@@ -36,7 +36,6 @@ public class Session {
         if (data == null)
             return false;
 
-        System.out.println(data);
         String[] values = data.split("~");
 
         if (values.length < 3) {
