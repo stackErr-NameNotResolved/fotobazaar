@@ -7,11 +7,11 @@ package classes.domain;
 
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
-import java.io.Serializable;
 import classes.database.StatementResult;
 import java.io.InputStream;
-import java.text.DecimalFormat;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import javax.servlet.http.Part;
 
 /**
@@ -23,8 +23,16 @@ public class Item implements Serializable {
     private int id;
     private double price;
     private String description;
-    
     private DecimalFormat df;
+    
+    
+    public Item(int id) {
+        DataTable retVal = DatabaseConnector.getInstance().executeQuery("SELECT DESCRIPTION,PRICE FROM item WHERE ID = ?", id);
+        this.description = (String) retVal.getRow(0)[0];
+        this.price = ((BigDecimal) retVal.getRow(0)[1]).doubleValue();
+        this.id = id;
+    }
+        
 
     public Item() {
     }
@@ -48,10 +56,10 @@ public class Item implements Serializable {
         return price;
     }
     
-    public String getPriceFormat()
-    {
+    public String getPriceFormat() {
         return formatDouble(price);
     }
+
 
     public int getId() {
         return id;
@@ -100,7 +108,7 @@ public class Item implements Serializable {
      * @param image The image of the item
      * @return if the item is created
      */
-    public static boolean create(String code, String description, double price, boolean isActive, Part image) {
+    public static boolean create(String description, double price, boolean isActive, Part image) {
         boolean result = false;
         StatementResult dbResult = null;
 
@@ -110,16 +118,16 @@ public class Item implements Serializable {
         }
 
         if (price > 0.00) {
-            if (!code.isEmpty() || !description.isEmpty()) {
+            if (!description.isEmpty()) {
                 try {
                     if (image == null) {
                         //Upload without image
-                        dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO item (CODE, DESCRIPTION, PRICE, ACTIVE) VALUES (?,?,?,?)", description, code, price, dbIsActive);
+                        dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO item ( DESCRIPTION, PRICE, ACTIVE) VALUES (?,?,?)", description, price, dbIsActive);
 
                     } else {
                         //Upload with image
                         InputStream dbImage = image.getInputStream();
-                        dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO item (CODE, DESCRIPTION, PRICE, ACTIVE, IMAGE) VALUES (?,?,?,?,?)", description, code, price, dbIsActive, dbImage);
+                        dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO item ( DESCRIPTION, PRICE, ACTIVE, IMAGE) VALUES (?,?,?,?)", description, price, dbIsActive, dbImage);
                     }
 
                     if (!dbResult.equals(StatementResult.ERROR) || !dbResult.equals(StatementResult.NO_ROWS_UPDATED)) {
@@ -145,29 +153,71 @@ public class Item implements Serializable {
 
         return df.format(value);
     }
+
     /**
      * Changes the price of an item in the database
+     *
      * @param itemId The item ID
      * @param newPrice The new price of the item
      * @return If it has succes
      */
-    public static boolean changePrice(int itemId, double newPrice){
-        
+    public static boolean changePrice(int itemId, double newPrice) {
+
         boolean result = false;
-        
-        if(itemId > 0 && newPrice >= 0.00){
-            
-            try{
+
+        if (itemId > 0 && newPrice >= 0.00) {
+
+            try {
                 StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE item SET PRICE = ? WHERE ID = ?", newPrice, itemId);
-                
-                if(!dbResult.equals(StatementResult.ERROR) || !dbResult.equals(StatementResult.NO_ROWS_UPDATED)){
+
+                if (!dbResult.equals(StatementResult.ERROR) || !dbResult.equals(StatementResult.NO_ROWS_UPDATED)) {
                     result = true;
-                }                
-            }catch (Exception ex){
+                }
+            } catch (Exception ex) {
                 ex.printStackTrace();
-            }            
-        }       
-        
-        return result;        
+            }
+        }
+
+        return result;
     }
+
+    /**
+     * Change the item in the database
+     *
+     * @param itemId The itemid
+     * @param newCode The new code of the item
+     * @param newDescription The new description of the item
+     * @param newPrice The new price of the item
+     * @param newisActive Item is active or not
+     * @param newImage The new image of the item
+     * @return
+     */
+    public static boolean changeItem(int itemId, String newDescription, double newPrice, boolean newisActive, Part newImage) {
+        boolean result = false;
+        int dbIsActive = 0;
+        if (newisActive) {
+            dbIsActive = 1;
+        }
+        if (itemId > 0 && !newDescription.isEmpty() && newPrice >= 0.00) {
+            StatementResult dbResult = null;
+            try {
+
+                if (newImage == null) {
+                    //No image
+                    dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE item SET DESCRIPTION = ?, PRICE = ?, ACTIVE = ? WHERE ID = ?", newDescription, newPrice, dbIsActive, itemId);
+                } else {
+                    //with Image
+                    InputStream dbImage = newImage.getInputStream();
+                    dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE item SET DESCRIPTION = ?, PRICE = ?, ACTIVE = ?, IMAGE = ? WHERE ID = ?", newDescription, newPrice, dbIsActive, dbImage, itemId);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            if (!dbResult.equals(StatementResult.ERROR) || !dbResult.equals(StatementResult.NO_ROWS_UPDATED)) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
 }

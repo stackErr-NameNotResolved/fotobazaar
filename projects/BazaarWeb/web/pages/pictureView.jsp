@@ -29,7 +29,7 @@
                         <hr>
                     </div> 
                         <p>
-                    <form action="../" method="post" enctype="multipart/form-data">
+                    <form action="../PictureEditServlet" method="post">
                         <input type="hidden" value="${param.imageCode}" name="photoId"/>
                         <button class="btn bg-blue margin"><i class="fa fa-gift pr-5"></i><fmt:message key="pictureManage.button.order" /></button> 
                     </form>
