@@ -25,7 +25,7 @@ public class Item implements Serializable {
     private String description;
     private DecimalFormat df;
     
-    private DecimalFormat df;
+    
     public Item(int id) {
         DataTable retVal = DatabaseConnector.getInstance().executeQuery("SELECT DESCRIPTION,PRICE FROM item WHERE ID = ?", id);
         this.description = (String) retVal.getRow(0)[0];
