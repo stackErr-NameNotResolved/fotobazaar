@@ -5,6 +5,8 @@
  */
 package classes.servlets;
 
+import classes.domain.Cart;
+import classes.domain.Picture;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -63,6 +65,34 @@ public class FinishEditServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
+        int Brightness = Integer.parseInt(request.getParameter("Brightness"));
+        int Saturation = Integer.parseInt(request.getParameter("Saturation"));
+        int Sepia = Integer.parseInt(request.getParameter("Sepia"));
+        int Clip = Integer.parseInt(request.getParameter("Clip"));
+        int Blur = Integer.parseInt(request.getParameter("Blur"));
+        int Noise = Integer.parseInt(request.getParameter("Noise"));
+        int Hue = Integer.parseInt(request.getParameter("Hue"));
+
+        float pictureX = Integer.parseInt(request.getParameter("pictureX"));
+        float pictureY = Integer.parseInt(request.getParameter("pictureY"));
+        float pictureWidth = Integer.parseInt(request.getParameter("pictureWidth"));
+        float pictureHeight = Integer.parseInt(request.getParameter("pictureHeight"));
+
+        Picture p = new Picture(0,
+                pictureX,
+                pictureY,
+                pictureWidth,
+                pictureHeight,
+                Brightness,
+                Sepia,
+                Noise,
+                Blur,
+                Saturation,
+                Hue,
+                Clip);
+        
+        Cart.addItemToCart(1, p, request, response);
     }
 
 }

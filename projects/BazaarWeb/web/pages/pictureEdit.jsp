@@ -395,18 +395,18 @@
                 </div>
             </div>
         </div>
-        <form id="example-form" action="">
+        <form id="example-form" action="../FinishEditServlet" method="POST">
             <div>
                 <h3>Filters</h3>
                 <section>
                     <div class="row" style="text-align:center;">
-                        <input type="hidden" id="Brightness">
-                        <input type="hidden" id="Saturation">
-                        <input type="hidden" id="Sepia">
-                        <input type="hidden" id="Clip">
-                        <input type="hidden" id="Blur">
-                        <input type="hidden" id="Noise">
-                        <input type="hidden" id="Hue">
+                        <input type="hidden" id="Brightness" id="Brightness">
+                        <input type="hidden" id="Saturation" id="Saturation">
+                        <input type="hidden" id="Sepia" id="Sepia">
+                        <input type="hidden" id="Clip" id="Clip">
+                        <input type="hidden" id="Blur" id="Blur">
+                        <input type="hidden" id="Noise" id="Noise">
+                        <input type="hidden" id="Hue" id="Hue">
 
                         <canvas id="editor" style="height:500px; max-width: 100%;"></canvas>
                         <a class="btn btn-app" >
@@ -471,10 +471,10 @@
                         </div>
 
                         <p id="info" style="visibility: hidden">ratio</p>
-                        <input type="hidden" id="pictureX" value="0"/>
-                        <input type="hidden" id="pictureY" value="0"/>
-                        <input type="hidden" id="pictureWidth" value="100"/>
-                        <input type="hidden" id="pictureHeight" value="100"/>
+                        <input type="hidden" id="pictureX" namw="pictureX" value="0"/>
+                        <input type="hidden" id="pictureY" name="pictureY" value="0"/>
+                        <input type="hidden" id="pictureWidth" name="pictureWidth" value="100"/>
+                        <input type="hidden" id="pictureHeight" name="pictureHeight"  value="100"/>
 
                     </div>
                 </section>

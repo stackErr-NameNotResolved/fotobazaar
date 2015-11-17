@@ -29,7 +29,7 @@ public class AjaxServlet extends HttpServlet {
          
          
         String returnVal = "Hello " + input;
-         
+        
         response.setContentType("text/plain");
         response.getWriter().write(returnVal);
     }
