@@ -13,10 +13,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <jsp:include page="/ItemServletFragment" />
-                    <div style="text-align: center; background-color: #f8f8f8;">
-                        <img src="../ShowPictureServlet?imageCode=${param.imageCode}" alt="" style="height: 500px; max-width: 100%; ">
-                    </div>
+                    <c:forEach items="${items}" var="item">
+                        <form action="../PhotoChangePriceServlet" method="post">
+                            <fmt:message key="pictureManage.header.price"/>: ${item.getPrice()}<br><br>
+                            ${item.toString()}<br><br>
+                            <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i><fmt:message key="cart.edit"/></button>
+                            <div style="text-align: center; background-color: #f8f8f8;"><img src="${pageContext.servletContext.contextPath}/ShowPictureServlet?imageCode=${item.getId()}" alt="" style="height: 500px; max-width: 100%; "></div>
+                        </form>
+                    </c:forEach>
                 </div>
             </div>
         </div>
