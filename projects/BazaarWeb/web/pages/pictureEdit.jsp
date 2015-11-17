@@ -14,7 +14,7 @@
                 $("#overlay").draggable({
                     containment: "#container",
                     drag: function (event, ui) {
-                         var parentX = $("#container").offset().left;
+                        var parentX = $("#container").offset().left;
                         var parentY = $("#container").offset().top;
                         var parentW = $("#container").width();
                         var parentH = $("#container").height();
@@ -204,7 +204,7 @@
                 </div>
             </div>
         </div>
-        <form id="example-form" action="#">
+        <form id="example-form" action="">
             <div>
                 <h3>Filters</h3>
                 <section>
