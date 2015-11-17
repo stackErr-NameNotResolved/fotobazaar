@@ -8,11 +8,10 @@ package classes.domain;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import java.io.Serializable;
-import java.math.BigDecimal;
-
-import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import javax.servlet.http.Part;
 
 /**
@@ -24,6 +23,8 @@ public class Item implements Serializable {
     private int id;
     private double price;
     private String description;
+    
+    private DecimalFormat df;
 
     public Item() {
     }
@@ -45,6 +46,11 @@ public class Item implements Serializable {
 
     public double getPrice() {
         return price;
+    }
+    
+    public String getPriceFormat()
+    {
+        return formatDouble(price);
     }
 
     public int getId() {
@@ -129,4 +135,39 @@ public class Item implements Serializable {
         return result;
     }
 
+    private String formatDouble(double value) {
+        if (df == null) {
+            df = new DecimalFormat();
+            df.applyPattern("0.00");
+            df.setGroupingUsed(true);
+            df.setGroupingSize(3);
+        }
+
+        return df.format(value);
+    }
+    /**
+     * Changes the price of an item in the database
+     * @param itemId The item ID
+     * @param newPrice The new price of the item
+     * @return If it has succes
+     */
+    public static boolean changePrice(int itemId, double newPrice){
+        
+        boolean result = false;
+        
+        if(itemId > 0 && newPrice >= 0.00){
+            
+            try{
+                StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE item SET PRICE = ? WHERE ID = ?", newPrice, itemId);
+                
+                if(!dbResult.equals(StatementResult.ERROR) || !dbResult.equals(StatementResult.NO_ROWS_UPDATED)){
+                    result = true;
+                }                
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }            
+        }       
+        
+        return result;        
+    }
 }

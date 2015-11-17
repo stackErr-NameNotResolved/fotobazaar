@@ -17,13 +17,23 @@ public class CartServletFragment extends BaseHttpServlet {
     private static DecimalFormat df;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        response.sendRedirect("index.jsp");
-        return;
+        Cart cart = Cart.readCartFromCookies(request);
+        
+        String data = request.getParameter("id");
+        if(data == null || data.equals(""))
+            response.sendRedirect("pages/cart.jsp");
+        
+        cart.removeOrder(Integer.parseInt(data));
+        cart.saveCart(request, response);
+        
+        response.sendRedirect("pages/cart.jsp");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
 
+        //request.setAttribute("orders", cart.getOverview());
+        response.sendRedirect("pages/cart.jsp");
     }
 
     public static String generateCart(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -39,7 +49,6 @@ public class CartServletFragment extends BaseHttpServlet {
 //        if (crt != null) {
 //            response = crt.saveCart(response);
 //        }
-        
         int ROW_WIDTH = 9;
 
         if (crt == null) {

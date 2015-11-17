@@ -42,7 +42,7 @@ public class NavbarServletFragment extends BaseHttpServlet {
 
         // Create sub-items for header.
         writer.write("<ul class=\"dropdown-menu\">");
-        writer.write("<li><a href=\"" + createPath("pages", "admin", "createAccount") + "\">");
+        writer.write("<li><a href=\"" + createPath("pages", "admin", "createAccount.jsp") + "\">");
         writer.write(getLocal(request, "master.menu.admin.createAccount"));
         writer.write("</a></li>");
         writer.write("</ul>");
