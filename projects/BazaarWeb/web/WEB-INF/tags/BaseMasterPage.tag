@@ -10,6 +10,7 @@
 
 <%--Custom EL functions.--%>
 <%@ taglib prefix="sf" uri="/WEB-INF/tld/SessionLibrary.tld" %>
+<%@ taglib prefix="tr" uri="/WEB-INF/tld/TranslateLibrary.tld" %>
 
 <%
     request.setAttribute("order_count", Cart.readCartFromCookies(request).getOverview().length);
@@ -106,6 +107,8 @@
                     <div class="col-md-4">
                         <div class="copyright">
                             <p>&copy; Copyright - Fotobazaar</p>
+                            <br/>
+                            <p><a href="http://translate.yandex.com">Powered by Yandex.Translator</a></p>
                         </div>
                     </div>
                 </div>
