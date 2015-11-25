@@ -20,17 +20,19 @@ public abstract class JsonServlet extends BaseHttpServlet {
 
         doPost(req, resp, builder);
 
+        if (resp.getStatus() != HttpServletResponse.SC_OK) return;
         resp.getWriter().write(builder.build().toString());
         resp.getWriter().flush();
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected final void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         setJsonResponse(resp);
         JsonObjectBuilder builder = Json.createObjectBuilder();
 
         doGet(req, resp, builder);
 
+        if (resp.getStatus() != HttpServletResponse.SC_OK) return;
         resp.getWriter().write(builder.build().toString());
         resp.getWriter().flush();
     }
@@ -42,7 +44,7 @@ public abstract class JsonServlet extends BaseHttpServlet {
      * @param resp    Response that has been created on the server.
      * @param builder {@link JsonObjectBuilder} to return a JSON response.
      */
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp, JsonObjectBuilder builder) {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp, JsonObjectBuilder builder) throws IOException {
     }
 
     /**

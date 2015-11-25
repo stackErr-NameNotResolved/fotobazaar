@@ -21,7 +21,7 @@
                                    checked="checked" 
                                </c:if>><br>
                         <fmt:message key="pictureManage.header.price"/>:<input type="number" class="form-control" name="itemPrice"  id="photoPrice" min="0" max="99999" step="0.01" value="${item.getPrice()}"><br>
-                        <input type="text" value="${item.toString()}" class="form-control" name="itemDescription"><br>
+                        <fmt:message key="item.description"/>: <input type="text" value="${item.toString()}" class="form-control" name="itemDescription"><br>
                         <input type="hidden" value="${item.getId()}" name="setItem"/>
                         <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i><fmt:message key="pictureManage.button.save"/></button>
                         <hr>

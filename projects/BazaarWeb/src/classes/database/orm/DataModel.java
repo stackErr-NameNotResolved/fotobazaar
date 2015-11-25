@@ -18,7 +18,7 @@ public abstract class DataModel {
     public DataModel() {
     }
 
-    public StatementResult select() {
+    public static StatementResult select() {
         throw new NotImplementedException();
     }
 
