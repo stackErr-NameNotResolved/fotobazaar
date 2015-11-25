@@ -13,15 +13,15 @@ import java.text.DecimalFormat;
  * @author Bas
  */
 public class Order implements Serializable {
+
     private int id;
     private Picture picture;
     private Item item;
     private int amount;
-    
+
     private DecimalFormat df;
-   
-    public Order(int id, Picture picture, Item item, int amount)
-    {
+
+    public Order(int id, Picture picture, Item item, int amount) {
         this.picture = picture;
         this.item = item;
         this.amount = amount;
@@ -55,17 +55,15 @@ public class Order implements Serializable {
     public void setItem(Item item) {
         this.item = item;
     }
-    
-    public double getTotalPrice()
-    {
+
+    public double getTotalPrice() {
         return (this.picture.getPrice() + this.item.getPrice()) * this.amount;
     }
-    
-    public String getTotalPriceFormat()
-    {
+
+    public String getTotalPriceFormat() {
         return formatDouble(getTotalPrice());
     }
-    
+
     private String formatDouble(double value) {
         if (df == null) {
             df = new DecimalFormat();
@@ -75,5 +73,24 @@ public class Order implements Serializable {
         }
 
         return df.format(value);
+    }
+
+    public String generateEditLine() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("imageCode=").append(this.picture.getCode());
+        sb.append("&startX=").append(this.picture.getStartX());
+        sb.append("&startY=").append(this.picture.getStartY());
+        sb.append("&endX=").append(this.picture.getEndX());
+        sb.append("&endY=").append(this.picture.getEndY());
+
+        sb.append("&Brightness=").append(this.picture.getBrightness());
+        sb.append("&Saturation=").append(this.picture.getSaturation());
+        sb.append("&Sepia=").append(this.picture.getSepia());
+        sb.append("&Clip=").append(this.picture.getClip());
+        sb.append("&Blur=").append(this.picture.getBlur());
+        sb.append("&Noise=").append(this.picture.getNoise());
+        sb.append("&Hue=").append(this.picture.getHue());
+
+        return sb.toString();
     }
 }

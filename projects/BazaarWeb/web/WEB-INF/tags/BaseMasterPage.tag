@@ -73,7 +73,7 @@
                                 <form>
                                     <select id="language" name="language" onchange="submit()">
                                         <c:set var="langStr">${language.class.name.equals('Locale') ? language.language : language}</c:set>
-                                        ${langStr}
+                                            ${langStr}
                                         <option value="en" <c:if test="${langStr.equals('en')}">selected</c:if>>
                                             English
                                         </option>
