@@ -4,18 +4,17 @@
 
 <c:set var="title"> <fmt:message key="login.title" /></c:set>
 <c:set var="login_message">
-    <%
-        String message = (String) session.getAttribute("login_message");
-        if(message == "1")
-        { %>
-        <fmt:message key="login.response.invalid"/>
-    <% } else if(message == "2")
-    { %>
-    <fmt:message key="login.response.disabled"/>
-    <% } else if(message == "3")
-    { %>
-    <fmt:message key="login.response.empty"/>
-    <% } %>
+    <c:choose>
+        <c:when test="${pageContext.session.getAttribute('login_message') == 1}">
+            <fmt:message key="login.response.invalid"/>
+        </c:when>
+        <c:when test="${pageContext.session.getAttribute('login_message') == 2}">
+            <fmt:message key="login.response.disabled"/>
+        </c:when>
+        <c:when test="${pageContext.session.getAttribute('login_message') == 3}">
+            <fmt:message key="login.response.empty"/>
+        </c:when>
+    </c:choose>
 </c:set>
 
 

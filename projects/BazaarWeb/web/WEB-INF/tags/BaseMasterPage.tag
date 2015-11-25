@@ -1,3 +1,4 @@
+<%@tag import="classes.domain.Cart"%>
 <%@tag description="BaseMasterPage" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="title" required="true" description="Header of the page to be shown in the theme." %>
@@ -10,6 +11,10 @@
 <%--Custom EL functions.--%>
 <%@ taglib prefix="sf" uri="/WEB-INF/tld/SessionLibrary.tld" %>
 
+<%
+    request.setAttribute("order_count", Cart.readCartFromCookies(request).getOverview().length);
+%>
+
 <t:EmptyMasterPage title="${title}">
 
     <jsp:attribute name="style">
@@ -19,7 +24,6 @@
     <jsp:attribute name="script">
         <jsp:invoke fragment="script"/>
     </jsp:attribute>
-
     <jsp:body>
         <!--header start-->
         <header class="head-section">
@@ -37,8 +41,11 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="${pageContext.servletContext.contextPath}/index.jsp">Home</a></li>
+                            <c:if test="${order_count > 0}">
+                            <li><a href="${pageContext.servletContext.contextPath}/pages/cart.jsp"><fmt:message key="master.menu.cart"/> [${order_count}]</a></li>
+                            </c:if>
                         <li>
-                                <%--Check if user is logged in.--%>
+                            <%--Check if user is logged in.--%>
                             <c:choose>
                                 <c:when test="${sf:checkSessionData(sessionScope.username, sessionScope.get('username-encrypted'), pageContext.request.remoteAddr)}">
                                     <c:set var="loginButtonText"><fmt:message key="master.menu.logout"/></c:set>
@@ -73,22 +80,22 @@
                                 <form>
                                     <select id="language" name="language" onchange="submit()">
                                         <c:set var="langStr">${language.class.name.equals('Locale') ? language.language : language}</c:set>
-                                            ${langStr}
+                                        ${langStr}
                                         <option value="en" <c:if test="${langStr.equals('en')}">selected</c:if>>
-                                            English
-                                        </option>
-                                        <option value="nl" <c:if test="${langStr.equals('nl')}">selected</c:if>>
-                                            Nederlands
-                                        </option>
-                                    </select>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
+                                                English
+                                            </option>
+                                            <option value="nl" <c:if test="${langStr.equals('nl')}">selected</c:if>>
+                                                Nederlands
+                                            </option>
+                                        </select>
+                                    </form>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </header>
-        <!--header end-->
+            </header>
+            <!--header end-->
 
         <jsp:doBody/>
 

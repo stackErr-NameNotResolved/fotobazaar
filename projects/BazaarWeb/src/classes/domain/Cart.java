@@ -173,7 +173,7 @@ public class Cart implements Serializable {
             return cart;
         }
 
-        return null;
+        return new Cart();
     }
 
     private String formatDouble(double value) {

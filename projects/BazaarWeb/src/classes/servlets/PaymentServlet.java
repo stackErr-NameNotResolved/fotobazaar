@@ -7,6 +7,10 @@ package classes.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.net.URLDecoder;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -72,7 +76,15 @@ public class PaymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        String urlWithParams = "https://api-3t.sandbox.paypal.com/nvp?";
+        Enumeration paramNames = request.getParameterNames();
+        while(paramNames.hasMoreElements()) {
+            String paramName = (String)paramNames.nextElement();
+            String paramValue = request.getParameter(paramName);
+            urlWithParams = urlWithParams + paramName + "=" + paramValue + "&";
+        }
+        response.sendRedirect(urlWithParams);
     }
 
     /**

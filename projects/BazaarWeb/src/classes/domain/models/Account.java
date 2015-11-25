@@ -89,30 +89,55 @@ public class Account extends DataModel {
         return false;
     }
 
-    public static boolean registerNewAccount(String username, String password, int right) {
+    public static boolean registerNewAccount(String username, String password, Rights right) {
 
         boolean result = false;
         StatementResult dbResult = null;
         if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
 
             String encryptedPassword = AESEncryption.encrypt(password, username);
-            String s_right = String.format(" " + right);
             try {
-                dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO account (USERNAME, PASSWORD, ACCESS) VALUES (?,?,?) ", username, encryptedPassword, s_right);
+                dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO account (USERNAME, PASSWORD, ACCESS) VALUES (?,?,?) ", username, encryptedPassword, right.toString());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
 
             if (dbResult.equals(StatementResult.ERROR) || dbResult.equals(StatementResult.NO_ROWS_UPDATED)) {
-                result = false;
+                return false;
             }
 
             result = true;
-
         } else {
             result = false;
         }
 
         return result;
+    }
+
+    public static enum Rights {
+        // Banned.
+        BannedCustomer(-3),
+        BannedPhotographer(-2),
+        BannedProducer(-1),
+
+        // Active.
+        Producer(1),
+        Photographer(2),
+        Customer(3);
+
+        public int getRight() {
+            return right;
+        }
+
+        int right;
+
+        Rights(int right) {
+            this.right = right;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(right);
+        }
     }
 }
