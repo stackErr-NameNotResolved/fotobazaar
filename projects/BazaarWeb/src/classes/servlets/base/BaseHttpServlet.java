@@ -3,12 +3,106 @@ package classes.servlets.base;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 @WebServlet(name = "BaseHttpServlet")
 public abstract class BaseHttpServlet extends HttpServlet {
+    public enum ResponseCodes {
+        /**
+         * Everything went find with the request and could be handled.
+         */
+        OK(200),
+
+        /**
+         * The request has been fulfilled and resulted in a new resource being created.
+         */
+        CREATED(201),
+
+        /**
+         * The server cannot or will not process the request due to something that is
+         * perceived to be a client error (e.g., malformed request syntax,
+         * invalid request message framing, or deceptive request routing).
+         */
+        BAD_REQUEST(400),
+
+        /**
+         * Similiar to {@literal ResponseCodes.FORBIDDEN}, but specifically for use when
+         * authentication is required and has failed or has not yet been provided. The
+         * response must include a WWW-Authenticate header field containing a challenge applicable
+         * to the equested resource. {@literal ResponseCodes.UNAUTHORIZED} semantically means "unauthenticated", i.e.
+         * "you don't have necessary credentials".
+         */
+        UNAUTHORIZED(401),
+
+        /**
+         * The request was a valid request, but the server is refusing to
+         * respond to it. Unlike a {@literal ResponseCodes.UNAUTHORIZED}, authenticating
+         * will make no difference. {@literal ResponseCodes.FORBIDDEN} error semantically means
+         * "unauthorized", i.e. "You don't have necessary permissions for the resource".
+         */
+        FORBIDDEN(403),
+
+        /**
+         * The requested resource could not be found but may be available again in the
+         * future. Subsequent requests by the client are permissible.
+         */
+        NOT_FOUND(404),
+
+        /**
+         * The request was well-formed but was unable to be followed due to semantic errors.
+         */
+        UNPROCESSABLE_ENTITY(422),
+
+        LOCKED(423);
+
+        int code;
+
+        public int getCode() {
+            return code;
+        }
+
+        ResponseCodes(int code) {
+            this.code = code;
+        }
+    }
+
+
+    /**
+     * Changes the status of the response to {@code errorCode} and appends an error message.
+     * Does nothing if error message is empty.
+     *
+     * @param response Response to write to the client.
+     * @param error    Error message to append to the response.
+     * @param errorCode    Code to return with the error.
+     * @throws IOException
+     */
+    protected void addError(HttpServletResponse response, String error, ResponseCodes errorCode) throws IOException {
+        if (response == null) return;
+        if (error == null || error.isEmpty()) return;
+        if (response.getStatus() != errorCode.getCode()) {
+            response.setStatus(errorCode.getCode());
+        }
+        response.getWriter().write(error);
+    }
+
+    /**
+     * Changes the status of the response to {@literal ResponseCodes.UNPROCESSABLE_ENTITY} and appends an error message.
+     * Does nothing if error message is empty.
+     *
+     * @param response Response to write to the client.
+     * @param error    Error message to append to the response.
+     * @throws IOException
+     */
+    protected void addError(HttpServletResponse response, String error) throws IOException {
+        if (response == null) return;
+        if (error == null || error.isEmpty()) return;
+        response.setStatus(ResponseCodes.UNPROCESSABLE_ENTITY.getCode());
+        response.getWriter().write(error);
+    }
 
     /**
      * Creates a new path to the relative directory of the file on the server.

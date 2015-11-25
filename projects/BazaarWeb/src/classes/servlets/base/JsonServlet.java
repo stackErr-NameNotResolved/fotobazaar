@@ -20,6 +20,7 @@ public abstract class JsonServlet extends BaseHttpServlet {
 
         doPost(req, resp, builder);
 
+        if (resp.getStatus() != HttpServletResponse.SC_OK) return;
         resp.getWriter().write(builder.build().toString());
         resp.getWriter().flush();
     }
@@ -31,6 +32,7 @@ public abstract class JsonServlet extends BaseHttpServlet {
 
         doGet(req, resp, builder);
 
+        if (resp.getStatus() != HttpServletResponse.SC_OK) return;
         resp.getWriter().write(builder.build().toString());
         resp.getWriter().flush();
     }
@@ -42,7 +44,7 @@ public abstract class JsonServlet extends BaseHttpServlet {
      * @param resp    Response that has been created on the server.
      * @param builder {@link JsonObjectBuilder} to return a JSON response.
      */
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp, JsonObjectBuilder builder) {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp, JsonObjectBuilder builder) throws IOException {
     }
 
     /**
