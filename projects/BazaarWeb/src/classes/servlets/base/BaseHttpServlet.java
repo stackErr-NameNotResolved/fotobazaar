@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 
 @WebServlet(name = "BaseHttpServlet")
 public abstract class BaseHttpServlet extends HttpServlet {
-    public enum ResponseCodes {
+    public enum ResponseStatusCodes {
         /**
          * Everything went find with the request and could be handled.
          */
@@ -30,18 +30,18 @@ public abstract class BaseHttpServlet extends HttpServlet {
         BAD_REQUEST(400),
 
         /**
-         * Similiar to {@literal ResponseCodes.FORBIDDEN}, but specifically for use when
+         * Similiar to {@literal ResponseStatusCodes.FORBIDDEN}, but specifically for use when
          * authentication is required and has failed or has not yet been provided. The
          * response must include a WWW-Authenticate header field containing a challenge applicable
-         * to the equested resource. {@literal ResponseCodes.UNAUTHORIZED} semantically means "unauthenticated", i.e.
+         * to the equested resource. {@literal ResponseStatusCodes.UNAUTHORIZED} semantically means "unauthenticated", i.e.
          * "you don't have necessary credentials".
          */
         UNAUTHORIZED(401),
 
         /**
          * The request was a valid request, but the server is refusing to
-         * respond to it. Unlike a {@literal ResponseCodes.UNAUTHORIZED}, authenticating
-         * will make no difference. {@literal ResponseCodes.FORBIDDEN} error semantically means
+         * respond to it. Unlike a {@literal ResponseStatusCodes.UNAUTHORIZED}, authenticating
+         * will make no difference. {@literal ResponseStatusCodes.FORBIDDEN} error semantically means
          * "unauthorized", i.e. "You don't have necessary permissions for the resource".
          */
         FORBIDDEN(403),
@@ -65,43 +65,36 @@ public abstract class BaseHttpServlet extends HttpServlet {
             return code;
         }
 
-        ResponseCodes(int code) {
+        ResponseStatusCodes(int code) {
             this.code = code;
         }
     }
 
-
     /**
-     * Changes the status of the response to {@code errorCode} and appends an error message.
-     * Does nothing if error message is empty.
+     * Sets the response status to return to the client. Returns true if it was set.
      *
-     * @param response Response to write to the client.
-     * @param error    Error message to append to the response.
-     * @param errorCode    Code to return with the error.
-     * @throws IOException
+     * @param response Response to set the status on.
+     * @param status   Error to set.
+     * @return True if status was set, false otherwise.
      */
-    protected void addError(HttpServletResponse response, String error, ResponseCodes errorCode) throws IOException {
-        if (response == null) return;
-        if (error == null || error.isEmpty()) return;
-        if (response.getStatus() != errorCode.getCode()) {
-            response.setStatus(errorCode.getCode());
-        }
-        response.getWriter().write(error);
+    protected boolean setStatus(HttpServletResponse response, ResponseStatusCodes status) {
+        if (response == null || status == null) return false;
+        response.setStatus(status.getCode());
+        return true;
     }
 
     /**
-     * Changes the status of the response to {@literal ResponseCodes.UNPROCESSABLE_ENTITY} and appends an error message.
-     * Does nothing if error message is empty.
+     * Appends to the message message.
      *
      * @param response Response to write to the client.
-     * @param error    Error message to append to the response.
+     * @param message  Status message to append to the response.
      * @throws IOException
      */
-    protected void addError(HttpServletResponse response, String error) throws IOException {
+    protected void addErrorMessage(HttpServletResponse response, String message) throws IOException {
         if (response == null) return;
-        if (error == null || error.isEmpty()) return;
-        response.setStatus(ResponseCodes.UNPROCESSABLE_ENTITY.getCode());
-        response.getWriter().write(error);
+        if (message == null || message.isEmpty()) return;
+        setStatus(response, ResponseStatusCodes.UNPROCESSABLE_ENTITY);
+        response.getWriter().write(message);
     }
 
     /**

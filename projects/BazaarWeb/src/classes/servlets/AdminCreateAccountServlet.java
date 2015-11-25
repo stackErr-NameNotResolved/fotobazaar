@@ -16,8 +16,14 @@ public class AdminCreateAccountServlet extends JsonServlet {
         String user = request.getParameter("inputUsername");
         String pass = request.getParameter("inputPassword");
 
-        if (user == null || user.isEmpty()) addError(resp, "Gebruikersnaam is niet ingevoerd.<br/>");
-        if (pass == null || pass.isEmpty()) addError(resp, "Wachtwoord is niet ingevoerd.<br/>");
+        if (user == null || user.isEmpty()) {
+            setStatus(resp, ResponseStatusCodes.UNPROCESSABLE_ENTITY);
+            addErrorMessage(resp, "Gebruikersnaam is niet ingevoerd.<br/>");
+        }
+        if (pass == null || pass.isEmpty()) {
+            setStatus(resp, ResponseStatusCodes.UNPROCESSABLE_ENTITY);
+            addErrorMessage(resp, "Wachtwoord is niet ingevoerd.<br/>");
+        }
 
         if (Account.registerNewAccount(user, pass, Account.Rights.Photographer)) {
             builder.add("response", String.format("Account '%s' is aangemaakt.", user));
