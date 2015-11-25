@@ -13,5 +13,7 @@
     </head>
     <body>
         <h1>Payment success!</h1>
+        <p><%= request.getParameter("TOKEN") %></p>
+                
     </body>
 </html>

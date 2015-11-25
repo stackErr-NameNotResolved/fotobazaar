@@ -24,34 +24,35 @@
     </title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/BazaarWeb/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/BazaarWeb/css/theme.css" rel="stylesheet">
-    <link href="/BazaarWeb/css/bootstrap-reset.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/theme.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/bootstrap-reset.css" rel="stylesheet">
     <!-- <link href="css/bootstrap.min.css" rel="stylesheet">-->
 
     <!--external css-->
-    <link href="/BazaarWeb/assets/font-awesome/css/font-awesome.css" rel="stylesheet"/>
-    <link href="/BazaarWeb/css/flexslider.css" rel="/stylesheet"/>
-    <link href="/BazaarWeb/assets/bxslider/jquery.bxslider.css" rel="stylesheet"/>
-    <link href="/BazaarWeb/css/animate.css" rel="/stylesheet">
-    <link href="/BazaarWeb/assets/owlcarousel/owl.carousel.css" rel="/stylesheet">
-    <link href="/BazaarWeb/assets/owlcarousel/owl.theme.css" rel="/stylesheet">
-    <link href="/BazaarWeb/css/jquery-ui.css" rel="stylesheet" type="text/css"/>
-    <link href="/BazaarWeb/css/superfish.css" rel="stylesheet" media="screen">
+    <link href="${pageContext.request.contextPath}/assets/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/css/flexslider.css" rel="/stylesheet"/>
+    <link href="${pageContext.request.contextPath}/assets/bxslider/jquery.bxslider.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/css/animate.css" rel="/stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/owlcarousel/owl.carousel.css" rel="/stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/owlcarousel/owl.theme.css" rel="/stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="${pageContext.request.contextPath}/css/superfish.css" rel="stylesheet" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'> -->
 
 
     <!-- Custom styles for this template -->
-    <link href="/BazaarWeb/css/component.css" rel="stylesheet" type="text/css">
-    <link href="/BazaarWeb/css/style.css" rel="stylesheet">
-    <link href="/BazaarWeb/css/style-responsive.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/css/component.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet"/>
 
-    <link href="/BazaarWeb/css/parallax-slider/parallax-slider.css" rel="stylesheet" type="text/css"/>
+    <link href="${pageContext.request.contextPath}/css/parallax-slider/parallax-slider.css" rel="stylesheet" type="text/css"/>
 
     <jsp:invoke fragment="style"/>
 
-    <script src="/BazaarWeb/js/parallax-slider/modernizr.custom.28468.js" type="text/javascript">
+    <script src="${pageContext.request.contextPath}/js/parallax-slider/modernizr.custom.28468.js" type="text/javascript">
     </script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
@@ -71,31 +72,31 @@
 <script src="js/jquery.js">
 </script>
 -->
-<script src="/BazaarWeb/js/jquery-1.8.3.min.js">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js">
 </script>
-<script src="/BazaarWeb/js/bootstrap.min.js">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/hover-dropdown.js">
 </script>
-<script type="text/javascript" src="/BazaarWeb/js/hover-dropdown.js">
+<script defer src="${pageContext.request.contextPath}/js/jquery.flexslider.js">
 </script>
-<script defer src="/BazaarWeb/js/jquery.flexslider.js">
-</script>
-<script type="text/javascript" src="/BazaarWeb/assets/bxslider/jquery.bxslider.js">
-</script>
-
-<script type="text/javascript" src="/BazaarWeb/js/jquery.parallax-1.1.3.js">
-</script>
-<script src="/BazaarWeb/js/wow.min.js">
-</script>
-<script src="/BazaarWeb/assets/owlcarousel/owl.carousel.js">
+<script type="text/javascript" src="${pageContext.request.contextPath}/assets/bxslider/jquery.bxslider.js">
 </script>
 
-<script src="/BazaarWeb/js/jquery.easing.min.js">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.parallax-1.1.3.js">
 </script>
-<script src="/BazaarWeb/js/link-hover.js">
+<script src="${pageContext.request.contextPath}/js/wow.min.js">
 </script>
-<script src="/BazaarWeb/js/superfish.js">
+<script src="${pageContext.request.contextPath}/assets/owlcarousel/owl.carousel.js">
 </script>
-<script type="text/javascript" src="/BazaarWeb/js/parallax-slider/jquery.cslider.js">
+
+<script src="${pageContext.request.contextPath}/js/jquery.easing.min.js">
+</script>
+<script src="${pageContext.request.contextPath}/js/link-hover.js">
+</script>
+<script src="${pageContext.request.contextPath}/js/superfish.js">
+</script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/parallax-slider/jquery.cslider.js">
 </script>
 <script type="text/javascript">
     $(function () {
@@ -110,8 +111,8 @@
 
 
 <!--common script for all pages-->
-<script src="/BazaarWeb/js/common-scripts.js">
-</script>
+<script src="${pageContext.request.contextPath}/js/common-scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
 
 <script type="text/javascript">
     jQuery(document).ready(function () {

@@ -53,22 +53,22 @@ public class AccountTest extends TestCase {
         boolean actual1;
         final String username1 = "test1";
         final String password1 = "test1";
-        final int right1 = 4;
+        final Account.Rights right1 = Account.Rights.Producer;
         
         boolean actual2;
         final String username2 = "test2";
         final String password2 = "test2";
-        final int right2 = -4;
+        final Account.Rights right2 = Account.Rights.BannedCustomer;
         
         boolean actual3;
         final String username3 = "";
         final String password3 = "test3";
-        final int right3 = 4;
+        final Account.Rights right3 = Account.Rights.Photographer;
         
         boolean actual4;
         final String username4 = "test4";
         final String password4 = "";
-        final int right4 = 4;
+        final Account.Rights right4 = Account.Rights.Customer;
         //Act
         
         actual1 = Account.registerNewAccount(username1, password1, right1);

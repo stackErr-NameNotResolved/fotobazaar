@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+
+    <display-name>Translation EL Functions</display-name>
+    <tlib-version>1.0</tlib-version>
+    <short-name>tr</short-name>
+    <uri>/WEB-INF/tld/TranslateLibrary.tld</uri>
+
+    <function>
+        <name>translate</name>
+        <function-class>classes.domain.Translate</function-class>
+        <function-signature>String translate(java.lang.String, java.lang.String)
+        </function-signature>
+    </function>
+    <!-- Invoke 'Generate' action to add tags or functions -->
+
+</taglib>

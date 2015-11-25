@@ -1,3 +1,4 @@
+<%@page import="classes.domain.Translate"%>
 <%@page import="classes.domain.Picture"%>
 <%@page import="classes.domain.Item"%>
 <%@page import="classes.domain.Order"%>
@@ -5,6 +6,7 @@
 <%@page import="classes.domain.Cart"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="tr" uri="/WEB-INF/tld/TranslateLibrary.tld" %>
 <%@include file="/pages/langInclude.jsp" %>
 
 <c:set var="title"> <fmt:message key="cart.title" /></c:set>
@@ -27,8 +29,8 @@
     <jsp:attribute name="style">
         <link href="/BazaarWeb/css/custom.css" rel="stylesheet">
     </jsp:attribute>
-        
-        <jsp:attribute name="script">
+
+    <jsp:attribute name="script">
         <script>
             $(function () {
                 $('input[id^="amount"]').change(function (event) {
@@ -43,7 +45,7 @@
                         },
                         success: function (data) {
                             var dat = $.parseJSON(data);
-                            
+
                             $('#total' + dat.id).text(dat.total);
                             $('#subtotal').text(dat.subtotal);
                             $('#vat').text(dat.vat);
@@ -93,7 +95,7 @@
 
                             <tr>
                                 <td style="vertical-align: middle">
-                                ${order.getItem().toString()} + <fmt:message key="cart.foto"/>
+                                ${tr:translate(order.getItem().toString(),language)} + <fmt:message key="cart.foto"/>
                             </td>
                             <td style="vertical-align: middle">
                                 € ${order.getItem().getPriceFormat()}
@@ -103,7 +105,7 @@
                             </td>
                             <td style="vertical-align: middle">
                                 <form action="/BazaarWeb/CartServletFragment" method="POST">
-                                    <input class="form-control input-sm" id="${id}" placeholder="${place}" type="number" min="1" value="${amount}" />
+                                    <input class="form-control input-sm" id="${id}" placeholder="${place}" type="number" min="1" max="100" value="${amount}" />
                                 </form>
                             </td>
                             <td class="active" style="text-align: right; vertical-align: middle">

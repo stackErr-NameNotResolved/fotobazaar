@@ -6,20 +6,27 @@
 package classes.servlets;
 
 import classes.domain.Item;
+import classes.domain.Picture;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Collection;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 /**
  *
  * @author Jip
  */
-@WebServlet(name = "ItemEdit", urlPatterns = {"/ItemEdit"})
-public class ItemEdit extends HttpServlet {
+@MultipartConfig
+@WebServlet(name = "ItemAdd", urlPatterns = {"/ItemAdd"})
+public class ItemAdd extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +45,10 @@ public class ItemEdit extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ItemEdit</title>");
+            out.println("<title>Servlet ItemAdd</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ItemEdit at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ItemAdd at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,7 +66,7 @@ public class ItemEdit extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("testServlet");
+        response.sendRedirect("pages/itemAdd.jsp");
     }
 
     /**
@@ -73,20 +80,49 @@ public class ItemEdit extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("redirectItem") != null) {
-            request.setAttribute("item", Item.getItemFromId(Integer.parseInt(request.getParameter("redirectItem"))));
-            request.getRequestDispatcher("pages/itemEdit.jsp").forward(request, response);
-        } else if (request.getParameter("setItem") != null) {
-            int id = Integer.valueOf(request.getParameter("setItem"));
-            String description = request.getParameter("itemDescription");
-            double price = Double.parseDouble(request.getParameter("itemPrice"));
-             boolean active = false;
-            if (request.getParameter("active") != null) {
-                active = true;
-            }      
-            Item.changeItem(id, description, price, active, null);
-            response.sendRedirect("testServlet");
+        try {
+            if (request.getPart("itemPrice") != null && request.getPart("itemDescription") != null && request.getParts() != null) {
+                Double price = Double.valueOf(getValueFromPart(request.getPart("itemPrice")));
+                String description = getValueFromPart(request.getPart("itemDescription"));
+                boolean active = false;
+
+                if (request.getPart("active") != null) {
+                    active = true;
+                }
+
+                Collection<Part> filePart = request.getParts(); // Retrieves <input type="file" name="file">
+                Part image = null;
+
+                for (Part part : filePart) {
+                    if (part.getContentType() != null) {//true if is image
+                        image = part;
+                    }
+                }
+
+                Item.create(description, price, active, image);
+                response.sendRedirect("testServlet");
+            }
+
+        } catch (IOException | ServletException | NumberFormatException e) {
+            System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Will return the String content of a part.
+     *
+     * @param part servlet response
+     * @throws IOException if an I/O error occurs
+     * @return String value of the text property
+     */
+    private static String getValueFromPart(Part part) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(part.getInputStream(), "UTF-8"));
+        StringBuilder value = new StringBuilder();
+        char[] buffer = new char[1024];
+        for (int length = 0; (length = reader.read(buffer)) > 0;) {
+            value.append(buffer, 0, length);
+        }
+        return value.toString();
     }
 
     /**

@@ -173,7 +173,11 @@ public class Cart implements Serializable {
             return cart;
         }
 
-        return null;
+        return new Cart();
+    }
+
+    public static int readCartItemCountFromCookies(HttpServletRequest request) {
+        return readCartFromCookies(request).getOverview().length;
     }
 
     private String formatDouble(double value) {
