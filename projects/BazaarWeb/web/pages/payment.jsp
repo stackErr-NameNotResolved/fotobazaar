@@ -28,6 +28,8 @@
     <jsp:body>
         <c:if test="${orderCount < 1}">
             <table width="100%">
+                <form method=post action=https://api-3t.sandbox.paypal.com/nvp>
+                    <input type=hidden name=USER value=test2_api1.testemail.nl>
                 <tr>
                     <td align="center">
                         <i style="font-size:50pt;" class="glyphicon glyphicon-shopping-cart"></i>
@@ -55,13 +57,11 @@
 
             <table class="table table-hover">
                 <thead>
-                    <tr>
                         <th width="44%"><fmt:message key="cart.product"/></th>
                         <th width="9%"><fmt:message key="cart.productp"/></th>
                         <th width="9%"><fmt:message key="cart.fotop"/></th>
                         <th width="9%"><fmt:message key="cart.amount"/></th>
                         <th width="9%"><fmt:message key="cart.total"/></th>
-                    </tr>
                 </thead>
                 <tbody>
                     <c:forEach items="${orders}" var="order">
