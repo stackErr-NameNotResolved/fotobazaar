@@ -138,6 +138,10 @@ public class Picture implements Serializable {
     }
 
     public void setId(int id) {
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("select code from photo where id=?", id);
+        if (dt.getRowCount() > 0) {
+            code = (String) dt.getDataFromRow(0, "code");
+        }
         this.id = id;
     }
 

@@ -12,18 +12,27 @@
 <t:MasterPageContent title="${title}">
     <jsp:attribute name="script">
         <script>
-            function submitCreateAccount() {
+            $('#formCreateAccount').submit(function(e) {
                 $.ajax({
+                    type: 'POST',
                     url: '${pageContext.servletContext.contextPath}/AdminCreateAccountServlet',
-                }).success(function (data) {
-                    alert(data);
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        if (data.errors.length > 0) {
+                            $('#error').each(function() {
+                                $(this).html(data.errors.join('<br/>'));
+                                $(this).fadeIn()
+                            })
+                        }
+                    }
                 });
-            }
+                e.preventDefault();
+            });
         </script>
     </jsp:attribute>
 
     <jsp:body>
-        <form role="form">
+        <form id="formCreateAccount" role="form" action="#">
             <div class="form-group">
                 <label for="inputUsername">${username}</label>
                 <input type="text" class="form-control" id="inputUsername" name="inputUsername"
@@ -34,10 +43,7 @@
                 <input type="text" class="form-control" id="inputPassword" name="inputPassword"
                        placeholder="${password_description}">
             </div>
-            <div class="alert alert-danger fade in">
-                <a href="#" class="close" data-dismiss="alert">%times;</a>
-                <strong></strong>
-            </div>
+            <div id="error" class="alert alert-danger" hidden></div>
             <button type="submit" class="btn btn-default"><fmt:message key="master.menu.admin.createAccount"/></button>
         </form>
     </jsp:body>
