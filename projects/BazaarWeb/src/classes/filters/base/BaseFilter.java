@@ -5,9 +5,11 @@ import java.io.IOException;
 
 public class BaseFilter implements Filter {
     protected String contextPath;
+    protected FilterConfig config;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        config = filterConfig;
         contextPath = filterConfig.getServletContext().getContextPath();
     }
 

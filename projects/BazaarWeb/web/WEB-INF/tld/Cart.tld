@@ -7,7 +7,7 @@
 
     <display-name>Cart EL Functions</display-name>
     <tlib-version>1.0</tlib-version>
-    <short-name>sf</short-name>
+    <short-name>domain_cart</short-name>
     <uri>/WEB-INF/tld/Cart.tld</uri>
     <function>
         <name>readCartItemCountFromCookies</name>
