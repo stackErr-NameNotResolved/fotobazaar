@@ -9,14 +9,13 @@
         <script type="text/javascript" src="/BazaarWeb/js/jquery.steps.js"></script>
         <script>
             $(function () {
-                var Brightness = 0;
-                var Saturation = 0;
-                var Sepia = 0;
-                var Clip = 0;
-                var Blur = 0;
-                var Noise = 0;
-                var Hue = 0;
-
+                var Brightness = (("${param.Brightness}") ? parseInt(${param.Brightness}) : 0);
+                var Saturation = (("${param.Saturation}") ? parseInt(${param.Saturation}) : 0);
+                var Sepia = (("${param.Sepia}") ? parseInt(${param.Sepia}) : 0);
+                var Clip = (("${param.Clip}") ? parseInt(${param.Clip}) : 0);
+                var Blur = (("${param.Blur}") ? parseInt(${param.Blur}) : 0);
+                var Noise = (("${param.Noise}") ? parseInt(${param.Noise}) : 0);
+                var Hue = (("${param.Hue}") ? parseInt(${param.Hue}) : 0);
 
                 Caman("#editor", "../ShowPictureServlet?imageCode=${param.imageCode}&imageSize=small", function () {
                     this.render();
@@ -137,7 +136,7 @@
                         renderCanvas();
                     }
                 });
-                resetFilterValues();
+                setFilterValues();
                 // Render Canvas image
                 function renderCanvas()
                 {
@@ -158,31 +157,31 @@
                 {
                     $("#Brightness-level").val(Brightness);
                     $("#Brightness").val(Brightness);
-                    $("#slider-Brightness").slider('value', 0);
+                    $("#slider-Brightness").slider('value', Brightness);
 
                     $("#Saturation-level").val(Saturation);
                     $("#Saturation").val(Saturation);
-                    $("#slider-Saturation").slider('value', 0);
+                    $("#slider-Saturation").slider('value', Saturation);
 
                     $("#Sepia-level").val(Sepia);
                     $("#Sepia").val(Sepia);
-                    $("#slider-Sepia").slider('value', 0);
+                    $("#slider-Sepia").slider('value', Sepia);
 
                     $("#Clip-level").val(Clip);
                     $("#Clip").val(Clip);
-                    $("#slider-Clip").slider('value', 0);
+                    $("#slider-Clip").slider('value', Clip);
 
                     $("#Blur-level").val(Blur);
                     $("#Blur").val(Blur);
-                    $("#slider-Blur").slider('value', 0);
+                    $("#slider-Blur").slider('value', Blur);
 
                     $("#Noise-level").val(Noise);
                     $("#Noise").val(Noise);
-                    $("#slider-Noise").slider('value', 0);
+                    $("#slider-Noise").slider('value', Noise);
 
                     $("#Hue-level").val(Hue);
                     $("#Hue").val(Hue);
-                    $("#slider-Hue").slider('value', 0);
+                    $("#slider-Hue").slider('value', Hue);
                 }
 
                 function resetFilterValues()
@@ -197,6 +196,7 @@
                     setFilterValues();
                 }
 
+
                 $("#reset").click(function () {
                     resetFilterValues();
                     Caman("#editor", function () {
@@ -209,6 +209,17 @@
         </script>
         <script>
             $(function () {
+                var startX = (("${param.startX}") ? parseFloat()(${param.startX}) : 0);
+                var startY = (("${param.startY}") ? parseFloat(${param.startY}) : 0);
+                var endX = (("${param.endX}") ? parseFloat(${param.endX}) : 0);
+                var endY = (("${param.endY}") ? parseFloat(${param.endY}) : 0);
+
+                $("#pictureX").val(startX);
+                $("#pictureY").val(startY);
+                $("#pictureWidth").val(endX);
+                $("#pictureHeight").val(endY);
+
+
                 $("#overlay").draggable({
                     containment: "#container",
                     drag: function (event, ui) {
