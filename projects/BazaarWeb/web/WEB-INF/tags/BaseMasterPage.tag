@@ -10,10 +10,10 @@
 
 <%--Custom EL functions.--%>
 <%@ taglib prefix="sf" uri="/WEB-INF/tld/SessionLibrary.tld" %>
+<%@ taglib prefix="domain_cart" uri="/WEB-INF/tld/Cart.tld" %>
 
-<%
-    request.setAttribute("order_count", Cart.readCartFromCookies(request).getOverview().length);
-%>
+<%--Session data--%>
+<c:set var="order_count">${domain_cart:readCartItemCountFromCookies(pageContext.request)}</c:set>
 
 <t:EmptyMasterPage title="${title}">
 
