@@ -27,8 +27,8 @@
     <jsp:attribute name="style">
         <link href="/BazaarWeb/css/custom.css" rel="stylesheet">
     </jsp:attribute>
-        
-        <jsp:attribute name="script">
+
+    <jsp:attribute name="script">
         <script>
             $(function () {
                 $('input[id^="amount"]').change(function (event) {
@@ -43,7 +43,7 @@
                         },
                         success: function (data) {
                             var dat = $.parseJSON(data);
-                            
+
                             $('#total' + dat.id).text(dat.total);
                             $('#subtotal').text(dat.subtotal);
                             $('#vat').text(dat.vat);
@@ -103,7 +103,7 @@
                             </td>
                             <td style="vertical-align: middle">
                                 <form action="/BazaarWeb/CartServletFragment" method="POST">
-                                    <input class="form-control input-sm" id="${id}" placeholder="${place}" type="number" min="1" value="${amount}" />
+                                    <input class="form-control input-sm" id="${id}" placeholder="${place}" type="number" min="1" max="100" value="${amount}" />
                                 </form>
                             </td>
                             <td class="active" style="text-align: right; vertical-align: middle">
