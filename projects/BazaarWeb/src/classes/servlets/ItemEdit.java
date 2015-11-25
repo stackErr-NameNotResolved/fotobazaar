@@ -5,8 +5,6 @@
  */
 package classes.servlets;
 
-import classes.database.DataTable;
-import classes.database.DatabaseConnector;
 import classes.domain.Item;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -61,7 +59,7 @@ public class ItemEdit extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.sendRedirect("testServlet");
     }
 
     /**
@@ -78,9 +76,16 @@ public class ItemEdit extends HttpServlet {
         if (request.getParameter("redirectItem") != null) {
             request.setAttribute("item", Item.getItemFromId(Integer.parseInt(request.getParameter("redirectItem"))));
             request.getRequestDispatcher("pages/itemEdit.jsp").forward(request, response);
-        }
-        else if (request.getParameter("setItem") != null) {
-            //Item.
+        } else if (request.getParameter("setItem") != null) {
+            int id = Integer.valueOf(request.getParameter("setItem"));
+            String description = request.getParameter("itemDescription");
+            double price = Double.parseDouble(request.getParameter("itemPrice"));
+             boolean active = false;
+            if (request.getParameter("active") != null) {
+                active = true;
+            }      
+            Item.changeItem(id, description, price, active, null);
+            response.sendRedirect("testServlet");
         }
     }
 

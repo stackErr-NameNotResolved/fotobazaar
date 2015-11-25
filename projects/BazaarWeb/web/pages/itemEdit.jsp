@@ -13,10 +13,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="../ItemEdit" method="POST">
-                        <div style="text-align: center; background-color: #f8f8f8;"><img src="${pageContext.servletContext.contextPath}/ShowPictureServlet?imageCode=${item.getId()}" alt="" style="height: 500px; max-width: 100%; "></div><br><br>
-                        <fmt:message key="pictureManage.header.price"/>:<input type="number" class="form-control" name="itemPrice"  id="photoPrice" min="0" max="99999" step="0.01" value="${item.getPrice()}"><br><br>
-                        <input type="text" value="${item.toString()}" class="form-control" id="itemDescription"><br><br>
+                    <form action="${pageContext.servletContext.contextPath}/ItemEdit" method="POST">
+                        <div style="text-align: center; background-color: #f8f8f8;"><img src="${pageContext.servletContext.contextPath}/ShowPictureServlet?imageCode=${item.getId()}" alt="" style="height: 500px; max-width: 100%; "></div><br>
+                        <fmt:message key="item.active"/>
+                        <input type="checkbox" name="active"
+                               <c:if test ="${item.getActive()}">
+                                   checked="checked" 
+                               </c:if>><br>
+                        <fmt:message key="pictureManage.header.price"/>:<input type="number" class="form-control" name="itemPrice"  id="photoPrice" min="0" max="99999" step="0.01" value="${item.getPrice()}"><br>
+                        <input type="text" value="${item.toString()}" class="form-control" name="itemDescription"><br>
+                        <input type="hidden" value="${item.getId()}" name="setItem"/>
                         <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i><fmt:message key="pictureManage.button.save"/></button>
                         <hr>
                     </form>

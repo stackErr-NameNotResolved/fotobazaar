@@ -47,7 +47,7 @@ public class Picture implements Serializable {
     private int saturation;
     private int hue;
     private int clip;
-    
+
     private DecimalFormat df;
 
     /**
@@ -73,7 +73,7 @@ public class Picture implements Serializable {
         DataTable dt = DatabaseConnector.getInstance().executeQuery("select price, id from photo where code=?", code);
         if (dt.getRowCount() > 0) {
             price = ((BigDecimal) dt.getDataFromRow(0, "price")).doubleValue();
-            id = (int)dt.getDataFromRow(0, "id");
+            id = (int) dt.getDataFromRow(0, "id");
         }
     }
 
@@ -124,9 +124,8 @@ public class Picture implements Serializable {
     public double getPrice() {
         return price;
     }
-    
-    public String getPriceFormat()
-    {
+
+    public String getPriceFormat() {
         return formatDouble(price);
     }
 
@@ -296,10 +295,8 @@ public class Picture implements Serializable {
             //check if image actually exists in items table
             if ((long) DatabaseConnector.getInstance().executeQuery("SELECT count(ID) FROM item WHERE ID = ?", pictureCode).getRow(0)[0] > 0) {
                 //check if image is published
-                if ((int) DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM item WHERE ID = ?", pictureCode).getRow(0)[0] == 1) {
-                    if (DatabaseConnector.getInstance().executeQuery("SELECT IMAGE FROM item WHERE ID = ?", pictureCode).getRow(0)[0] != null) {
-                        return true;
-                    }
+                if (DatabaseConnector.getInstance().executeQuery("SELECT IMAGE FROM item WHERE ID = ?", pictureCode).getRow(0)[0] != null) {
+                    return true;
                 }
             }
         }
@@ -562,7 +559,7 @@ public class Picture implements Serializable {
 
         return sb.toString();
     }
-    
+
     private String formatDouble(double value) {
         if (df == null) {
             df = new DecimalFormat();

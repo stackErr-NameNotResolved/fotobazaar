@@ -213,4 +213,17 @@ public class Item implements Serializable {
         return result;
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    
 }
