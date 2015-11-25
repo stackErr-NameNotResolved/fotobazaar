@@ -161,7 +161,7 @@ public class DatabaseConnector {
             }
             return (statement.executeUpdate() == 0 ? StatementResult.NO_ROWS_UPDATED : StatementResult.ROWS_UPDATED);
         } catch (SQLException ex) {
-            throw new IllegalStateException("The connection to the database throws an error", ex);
+            return StatementResult.ERROR;
         }
     }
 }
