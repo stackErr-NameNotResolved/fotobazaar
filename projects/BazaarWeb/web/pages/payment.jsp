@@ -28,8 +28,6 @@
     <jsp:body>
         <c:if test="${orderCount < 1}">
             <table width="100%">
-                <form method=post action=https://api-3t.sandbox.paypal.com/nvp>
-                    <input type=hidden name=USER value=test2_api1.testemail.nl>
                 <tr>
                     <td align="center">
                         <i style="font-size:50pt;" class="glyphicon glyphicon-shopping-cart"></i>
@@ -57,11 +55,13 @@
 
             <table class="table table-hover">
                 <thead>
+                    <tr>
                         <th width="44%"><fmt:message key="cart.product"/></th>
                         <th width="9%"><fmt:message key="cart.productp"/></th>
                         <th width="9%"><fmt:message key="cart.fotop"/></th>
                         <th width="9%"><fmt:message key="cart.amount"/></th>
                         <th width="9%"><fmt:message key="cart.total"/></th>
+                    </tr>
                 </thead>
                 <tbody>
                     <c:forEach items="${orders}" var="order">
@@ -169,7 +169,25 @@
                         </td>
                     </tr>
                 </table>
+
+            </c:if>
+            <div class="container">
+                <div class="row">
+                    <form method="post" action="https://api-3t.sandbox.paypal.com/nvp">
+                        <input type="hidden" name="USER" value="test2_api1.testemail.nl"/>
+                        <input type="hidden" name="PWD" value="9WH8HKQTD6WU2Z4Z"/>
+                        <input type="hidden" name="SIGNATURE" value="An5ns1Kso7MWUdW4ErQKJJJ4qi4-A4.bZdp4H4uchYV6inx1cTkbj0pG"/>
+                        <input type="hidden" name="VERSION" value="124.0"/>
+                        <input type="hidden" name="METHOD" value="SetExpressCheckout"/>
+                        <input type="hidden" name="PAYMENTREQUEST_0_PAYMENTACTION" value="Sale"/>
+                        <input type="hidden" name="PAYMENTREQUEST_0_CURRENCYCODE" value="USD"/>
+                        <input name="PAYMENTREQUEST_0_AMT" value="19.95"/>
+                        <input type="hidden" name="RETURNURL" value="http://www.google.nl" />
+                        <input type="hidden" name="CANCELURL" value="http://localhost:8080/BazaarWeb/pages/payment.jsp"/>
+                        <input type="submit" value="Checkout"/>
+                    </form>
+                </div>
             </div>
-        </c:if>
-    </jsp:body>
-</t:MasterPageContent>
+        </jsp:body>
+    </t:MasterPageContent>
+
