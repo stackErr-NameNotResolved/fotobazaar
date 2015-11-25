@@ -1,5 +1,8 @@
-<%@page import="classes.domain.Cart"%>
+<%@page import="classes.domain.Picture"%>
+<%@page import="classes.domain.Item"%>
 <%@page import="classes.domain.Order"%>
+<%@page import="classes.servlets.fragments.CartServletFragment"%>
+<%@page import="classes.domain.Cart"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@include file="/pages/langInclude.jsp" %>
@@ -23,6 +26,34 @@
 
     <jsp:attribute name="style">
         <link href="/BazaarWeb/css/custom.css" rel="stylesheet">
+    </jsp:attribute>
+        
+        <jsp:attribute name="script">
+        <script>
+            $(function () {
+                $('input[id^="amount"]').change(function (event) {
+                    var newAantal = this.value;
+                    var id = this.id;
+                    $.ajax({
+                        type: 'POST',
+                        url: '../CartServlet',
+                        data: {
+                            p_newAantal: newAantal,
+                            p_id: id
+                        },
+                        success: function (data) {
+                            var dat = $.parseJSON(data);
+                            
+                            $('#total' + dat.id).text(dat.total);
+                            $('#subtotal').text(dat.subtotal);
+                            $('#vat').text(dat.vat);
+                            $('#final_total').text(dat.final_total);
+                        }
+                    });
+
+                });
+            });
+        </script>
     </jsp:attribute>
 
     <jsp:body>
@@ -72,17 +103,16 @@
                             </td>
                             <td style="vertical-align: middle">
                                 <form action="/BazaarWeb/CartServletFragment" method="POST">
-                                    <input type="hidden" value="${order.getId()}" name="id_amount"/>
-                                    <input class="form-control input-sm" id="${id}" name="amount" placeholder="${place}" onchange="form.submit();" type="number" min="1" value="${amount}" />
+                                    <input class="form-control input-sm" id="${id}" placeholder="${place}" type="number" min="1" value="${amount}" />
                                 </form>
                             </td>
                             <td class="active" style="text-align: right; vertical-align: middle">
-                                € ${order.getTotalPriceFormat()}
+                                € <span id="total${order.getId()}">${order.getTotalPriceFormat()}</span>
                             </td>
                             <td>
-                                <button type="submit" class="btn btn-primary col-md-12" style="font-size:8pt; vertical-align: middle">
+                                <a href="pictureEdit.jsp?${order.generateEditLine()}" class="btn btn-primary col-md-12" style="font-size:8pt; vertical-align: middle">
                                     <i class="glyphicon glyphicon-edit" style="color: white;"></i>&nbsp;&nbsp;&nbsp;<fmt:message key="cart.edit"/>
-                                </button>
+                                </a>
                             </td>
                             <td>
                                 <form action="/BazaarWeb/CartServletFragment" method="POST">
@@ -106,9 +136,9 @@
                             <b><fmt:message key="cart.finaltotal"/></b>
                         </td>
                         <td class="active" style="text-align: right">
-                            € ${cart.getTotalPriceFormat()} <br/>
-                            € ${cart.getBTWFormat(21)}</br>
-                            € ${cart.getTotalPriceAndBTWFormat(21)}
+                            € <span id="subtotal">${cart.getTotalPriceFormat()}</span> <br/>
+                            € <span id="vat">${cart.getBTWFormat(21)}</span></br>
+                            € <span id="final_total">${cart.getTotalPriceAndBTWFormat(21)}</span>
                         </td>
                         <td></td>
                         <td></td>
@@ -119,15 +149,9 @@
             <br/>
             <br/>
 
-            <div class="col-md-9"><fmt:message key="cart.changes"/></div>
+            <div class="col-md-9"><fmt:message key="cart.payment"/></div>
             <div class="col-md-3">
-                <div class="col-md-2"></div>
-                <a href="#" onclick="$(this).closest('form').submit()">
-                    <div class="btn btn-info col-md-4">
-                        <fmt:message key="cart.save"/>
-                    </div>
-                </a>
-                <div class="col-md-1"></div>
+                <div class="col-md-8"></div>
                 <a href="payment.jsp">
                     <div class="btn btn-info col-md-4">
                         <fmt:message key="cart.pay"/>
