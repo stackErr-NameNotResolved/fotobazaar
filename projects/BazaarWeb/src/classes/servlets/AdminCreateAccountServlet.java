@@ -1,29 +1,21 @@
 package classes.servlets;
 
-import javax.servlet.ServletException;
+import classes.servlets.base.JsonServlet;
+
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 
-@WebServlet(name = "AdminCreateAccountServlet", urlPatterns = { "/AdminCreateAccountServlet" })
-public class AdminCreateAccountServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter writer = response.getWriter();
+@WebServlet(name = "AdminCreateAccountServlet", urlPatterns = {"/AdminCreateAccountServlet"})
+public class AdminCreateAccountServlet extends JsonServlet {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse resp, JsonObjectBuilder builder) {
         String user = request.getParameter("inputUsername");
         String pass = request.getParameter("inputPassword");
 
         // Create json.
-
-
-
-        response.setContentType("application/json");
-        //writer.write();
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        builder.add("errors", Json.createArrayBuilder().add("Error 1"));
     }
 }
