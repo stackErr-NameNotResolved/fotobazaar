@@ -18,6 +18,14 @@
                 var Hue = (("${param.Hue}") ? parseInt(${param.Hue}) : 0);
 
                 Caman("#editor", "../ShowPictureServlet?imageCode=${param.imageCode}&imageSize=small", function () {
+                    this.brightness(Brightness);
+                    this.saturation(Saturation);
+                    this.sepia(Sepia);
+                    this.clip(Clip);
+                    this.stackBlur(Blur);
+                    this.noise(Noise);
+                    this.hue(Hue);
+                    this.render();
                     this.render();
                 });
 
@@ -137,6 +145,7 @@
                     }
                 });
                 setFilterValues();
+
                 // Render Canvas image
                 function renderCanvas()
                 {
@@ -182,6 +191,7 @@
                     $("#Hue-level").val(Hue);
                     $("#Hue").val(Hue);
                     $("#slider-Hue").slider('value', Hue);
+
                 }
 
                 function resetFilterValues()
@@ -205,24 +215,36 @@
                     });
                 });
 
-            });
-        </script>
-        <script>
-            $(function () {
-                var startX = (("${param.startX}") ? parseFloat()(${param.startX}) : 0);
-                var startY = (("${param.startY}") ? parseFloat(${param.startY}) : 0);
-                var endX = (("${param.endX}") ? parseFloat(${param.endX}) : 0);
-                var endY = (("${param.endY}") ? parseFloat(${param.endY}) : 0);
-
-                $("#pictureX").val(startX);
-                $("#pictureY").val(startY);
-                $("#pictureWidth").val(endX);
-                $("#pictureHeight").val(endY);
-
-
+                ////////////////// Resize code
+                /*
+                 var parentW = $("#editor").width();      
+                 var parentH = $("#editor").height();
+                 
+                 var procentX = (("${param.startX}") ? parseFloat(${param.startX}) : 0);
+                 var procentY = (("${param.startY}") ? parseFloat(${param.startY}) : 0);
+                 var procentWidth = (("${param.endX}") ? parseFloat(${param.endX}) : 100);
+                 var procentHeight = (("${param.endY}") ? parseFloat(${param.endY}) : 100);
+                 
+                 $("#pictureX").val(procentX);
+                 $("#pictureY").val(procentY);
+                 $("#pictureWidth").val(procentWidth);
+                 $("#pictureHeight").val(procentHeight);
+                 
+                 var left = (parentW/100)*procentX;
+                 var top = (parentH/100)*procentY;
+                 var width = (parentW/100) * procentWidth;
+                 var height = (parentH/100) * procentHeight;
+                 
+                 $("#overlay").css({ top: top});                
+                 $("#overlay").css({ left: left});
+                 $("#overlay").width(width);
+                 $("#overlay").height(height);
+                 
+                 */
                 $("#overlay").draggable({
                     containment: "#container",
                     drag: function (event, ui) {
+
                         var parentX = $("#container").offset().left;
                         var parentY = $("#container").offset().top;
                         var parentW = $("#container").width();
@@ -266,6 +288,7 @@
                         'w': '#wgrip'
                     },
                     resize: function (event, ui) {
+
                         var parentX = $("#container").offset().left;
                         var parentY = $("#container").offset().top;
                         var parentW = $("#container").width();
@@ -305,6 +328,7 @@
                 transitionEffect: "slideLeft",
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
+                    // set div background with same x,y as canvas
                     var canvas = document.getElementById("editor");
                     var dataURL = canvas.toDataURL();
                     var height = $("#editor").height();
@@ -315,15 +339,36 @@
 
                     document.getElementById('container').style.background = 'url(' + dataURL + ') no-repeat';
                     $("#container").css("background-size", "100% 100%");
+
+                    // resize overlay div
+                    var procentX = (("${param.startX}") ? parseFloat(${param.startX}) : 0);
+                    var procentY = (("${param.startY}") ? parseFloat(${param.startY}) : 0);
+                    var procentWidth = (("${param.endX}") ? parseFloat(${param.endX}) : 100);
+                    var procentHeight = (("${param.endY}") ? parseFloat(${param.endY}) : 100);
+
+                    $("#pictureX").val(procentX);
+                    $("#pictureY").val(procentY);
+                    $("#pictureWidth").val(procentWidth);
+                    $("#pictureHeight").val(procentHeight);
+
+                    var left = (width / 100) * procentX;
+                    var top = (height / 100) * procentY;
+                    var width = (width / 100) * procentWidth;
+                    var height = (height / 100) * procentHeight;
+
+                    $("#overlay").css({top: top});
+                    $("#overlay").css({left: left});
+                    $("#overlay").width(width);
+                    $("#overlay").height(height);
+
                     return true;
                 },
                 onFinished: function (event, currentIndex)
                 {
-
-                    alert("Submitted!");
                     form.submit();
                 }
             });
+
 
 
         </script>
