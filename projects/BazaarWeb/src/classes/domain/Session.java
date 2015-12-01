@@ -6,6 +6,7 @@
 package classes.domain;
 
 import classes.database.DatabaseConnector;
+import classes.domain.models.Account;
 
 /**
  * @author Bas
@@ -55,5 +56,31 @@ public class Session {
             return false;
 
         return values[2].equals(ipaddr);
+    }
+
+    public static Account getAccountFromSession(String username, String encrypted, String ipaddr) {
+        if (username == null || username.isEmpty() || encrypted == null || encrypted.isEmpty() || ipaddr == null || ipaddr.isEmpty())
+            return null;
+
+        String data = AESEncryption.decrypt(username, encrypted);
+        if (data == null)
+            return null;
+
+        String[] values = data.split("~");
+
+        if (values.length < 3) {
+            return null;
+        }
+
+        try {
+            int id = Integer.parseInt(values[0]);
+            String user = (String) DatabaseConnector.getInstance().executeQuery("select username from account where id=?", id).getDataFromRow(0, "username");
+            if (user.equals(username)) {
+                return Account.fromId(Account.class, id);
+            }
+        } catch (Exception ignored) {
+        }
+
+        return null;
     }
 }

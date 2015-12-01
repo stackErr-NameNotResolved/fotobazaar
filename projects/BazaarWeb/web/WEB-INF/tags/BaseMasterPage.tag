@@ -48,7 +48,7 @@
                         <li>
                             <%--Check if user is logged in.--%>
                             <c:choose>
-                                <c:when test="${sf:checkSessionData(sessionScope.username, sessionScope.get('username-encrypted'), pageContext.request.remoteAddr)}">
+                                <c:when test="${account != null}">
                                     <c:set var="loginButtonText"><fmt:message key="master.menu.logout"/></c:set>
                                     <c:set var="loginButtonAction">${pageContext.servletContext.contextPath}/LogOutServlet</c:set>
                                 </c:when>
@@ -62,7 +62,7 @@
 
                             <form name="submitForm" method="post" action="${loginButtonAction}"></form>
                         </li>
-                        <c:if test="${sf:checkSessionData(sessionScope.username, sessionScope.get('username-encrypted'), pageContext.request.remoteAddr)}">
+                        <c:if test="${account != null}">
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-close-others="false" data-delay="0"
                                    data-hover="dropdown"

@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Bas
  */
 public class AESEncryption {
@@ -46,12 +45,12 @@ public class AESEncryption {
     }
 
     public static String encrypt(String password, String username) {
-        if(password == null || password.equals(""))
+        if (password == null || password.isEmpty())
             throw new IllegalArgumentException("Cannot encrypt an empty message");
-        
-        if(username == null || username.equals(""))
+
+        if (username == null || username.isEmpty())
             throw new IllegalArgumentException("Cannot use an empty key as encryption");
-        
+
         try {
             Key key = new SecretKeySpec(getKey(username).getBytes(), "AES");
 
@@ -59,7 +58,8 @@ public class AESEncryption {
 
             cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] encrypted = cipher.doFinal(password.getBytes());
-            System.out.println("encrypted string:" + Base64.getEncoder().encodeToString(encrypted));
+
+            //System.out.println("encrypted string:" + Base64.getEncoder().encodeToString(encrypted));
             return new String(Base64.getEncoder().encodeToString(encrypted).getBytes("ISO-8859-1"), "ISO-8859-1");
         } catch (NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | NoSuchPaddingException | UnsupportedEncodingException ex) {
             Logger.getLogger(AESEncryption.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,13 +67,18 @@ public class AESEncryption {
         return null;
     }
 
+    /**
+     * @param username  Name of the account to get the password from.
+     * @param encrypted Encrypted version of the password that is stored in the database.
+     * @return The password of the user in plain text.
+     */
     public static String decrypt(String username, String encrypted) {
-        if(encrypted == null || encrypted.equals(""))
+        if (encrypted == null || encrypted.equals(""))
             throw new IllegalArgumentException("Cannot decrypt an empty message");
-        
-        if(username == null || username.equals(""))
+
+        if (username == null || username.equals(""))
             throw new IllegalArgumentException("Cannot use an empty key for decryption");
-        
+
         try {
             Key k = new SecretKeySpec(getKey(username).getBytes(), "AES");
             Cipher c = Cipher.getInstance("AES/ECB/PKCS5Padding");
@@ -81,8 +86,8 @@ public class AESEncryption {
             byte[] decodedValue = Base64.getDecoder().decode(encrypted.getBytes("ISO-8859-1"));
             byte[] decValue = c.doFinal(decodedValue);
             String decryptedValue = new String(decValue, "ISO-8859-1");
-            
-            System.out.println("decoded string: " + decryptedValue);
+
+            //System.out.println("decoded string: " + decryptedValue);
             return decryptedValue;
         } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | UnsupportedEncodingException ex) {
             Logger.getLogger(AESEncryption.class.getName()).log(Level.SEVERE, null, ex);
