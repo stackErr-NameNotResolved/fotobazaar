@@ -5,6 +5,8 @@
  */
 package classes.domain;
 
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -19,26 +21,17 @@ public class Translate {
 
     /**
      * Translates the given text to the given language
-     * @param text The text that needs to be translated
-     * @param to The language to translate to. Example: 'en' or 'nl'
-     * @return The text translated into the given language
-     */
-    public static String translate(String text, String to)
-    {
-        return translate(text, "nl", to);
-    }
-    
-    /**
-     * Translates the given text to the given language
+     *
      * @param text The text that needs to be translated
      * @param from The language the given text is in. Example: 'en' or 'nl'
      * @param to The language to translate to. Example: 'en' or 'nl'
      * @return The text translated into the given language
      */
-    public static String translate(String text, String from, String to) {
-        if(to.equals(from))
+    private static String translate(String text, String from, String to) {
+        if (to.equals(from)) {
             return text;
-        
+        }
+
         String outputLine = "";
 
         try {
@@ -98,5 +91,33 @@ public class Translate {
         }
 
         return new String[]{code, value};
+    }
+
+    private static String checkDatabase(int item_id, String language) {
+        DataTable dt = null;
+        if (!language.equals("nl")) {
+            dt = DatabaseConnector.getInstance().executeQuery("select description from translation where item_id=? and language=?", item_id, language);
+            if (dt.containsData()) {
+                return (String) dt.getDataFromRow(0, "description");
+            }
+        }
+
+        dt = DatabaseConnector.getInstance().executeQuery("select description from item where id=?", item_id);
+        if (dt.containsData()) {
+            return (!language.equals("nl") ? "»" : "") + (String) dt.getDataFromRow(0, "description");
+        }
+
+        return "»";
+    }
+
+    public static String translate(int itemId, String language) {
+        String translation = checkDatabase(itemId, language);
+        if (!translation.startsWith("»")) {
+            return translation;
+        } else {
+            translation = translate(translation.substring(1), "nl", language);
+            DatabaseConnector.getInstance().executeNonQuery("insert into translation (`item_id`, `language`, `description`) values (?, ?, ?)", itemId, language, translation);
+            return translation;
+        }
     }
 }
