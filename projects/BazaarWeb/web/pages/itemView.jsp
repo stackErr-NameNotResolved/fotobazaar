@@ -6,6 +6,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@include file="/pages/langInclude.jsp" %>
+<%@page import="classes.domain.Translate"%>
 
 <c:set var="title"><fmt:message key="itemView.title" /></c:set>
 <t:MasterPageContent title="${title}">
@@ -29,7 +30,7 @@
                                        checked="checked" 
                                    </c:if>><br>
                             <fmt:message key="pictureManage.header.price"/>: ${item.getPrice()}<br>
-                            <fmt:message key="item.description"/>: ${item.toString()}<br>
+                            <fmt:message key="item.description"/>: ${Translate.translate(item.getId(),language)}<br>
                             <input type="hidden" value="${item.getId()}" name="redirectItem"/>
                             <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i><fmt:message key="cart.edit"/></button>
                             <hr>
