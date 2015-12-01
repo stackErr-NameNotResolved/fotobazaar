@@ -66,9 +66,9 @@ public class FinishEditServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String ImageCode = request.getParameter("ImageCode");        
-        int orderId = Integer.parseInt(request.getParameter("OrderId"));
-
-
+        int orderId = (request.getParameter("OrderId").equals("")) ? -1 : Integer.parseInt(request.getParameter("OrderId"));
+                
+                
         int brightness = Integer.parseInt(request.getParameter("Brightness"));
         int saturation = Integer.parseInt(request.getParameter("Saturation"));
         int sepia = Integer.parseInt(request.getParameter("Sepia"));
@@ -82,7 +82,7 @@ public class FinishEditServlet extends HttpServlet {
         float pictureWidth = Float.parseFloat(request.getParameter("pictureWidth"));
         float pictureHeight = Float.parseFloat(request.getParameter("pictureHeight"));
 
-        boolean update = (request.getParameter("Update") != null);
+        boolean update = (!request.getParameter("Update").equals(""));
 
         Picture p = new Picture(ImageCode,
                 pictureX,
