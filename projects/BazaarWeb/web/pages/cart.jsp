@@ -6,7 +6,7 @@
 <%@page import="classes.domain.Cart"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="tr" uri="/WEB-INF/tld/TranslateLibrary.tld" %>
+<%@taglib prefix="tr" uri="/WEB-INF/tld/TranslateLibrary.tld" %>
 <%@include file="/pages/langInclude.jsp" %>
 
 <c:set var="title"> <fmt:message key="cart.title" /></c:set>
@@ -22,8 +22,6 @@
         request.setAttribute("orderCount", 0);
         request.setAttribute("cart", new Cart());
     }
-
-    
 %>
 
 <t:MasterPageContent title="${title}">
@@ -97,7 +95,7 @@
 
                             <tr>
                                 <td style="vertical-align: middle">
-                                ${tr:translate(order.getItem().toString(),language)} + <fmt:message key="cart.foto"/>
+                                ${tr:translate(order.getItem().getId(),language)} + <fmt:message key="cart.foto"/>
                             </td>
                             <td style="vertical-align: middle">
                                 € ${order.getItem().getPriceFormat()}

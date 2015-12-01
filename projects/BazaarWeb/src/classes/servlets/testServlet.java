@@ -8,7 +8,6 @@ package classes.servlets;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.domain.Item;
-import classes.servlets.base.BaseHttpServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;

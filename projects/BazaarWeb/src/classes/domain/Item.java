@@ -114,7 +114,7 @@ public class Item implements Serializable {
             dbIsActive = 1;
         }
 
-        if (price > 0.00) {
+        if (price >= 0.00) {
             if (!description.isEmpty()) {
                 try {
                     if (image == null) {
