@@ -66,7 +66,7 @@ public class FinishEditServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String ImageCode = request.getParameter("ImageCode");        
-        String orderId = request.getParameter("OrderId");
+        int orderId = Integer.parseInt(request.getParameter("OrderId"));
 
 
         int brightness = Integer.parseInt(request.getParameter("Brightness"));
@@ -98,7 +98,7 @@ public class FinishEditServlet extends HttpServlet {
                 clip);
         
         if (update) {
-            
+            Cart.updateItemToCart(orderId, p, request, response);
         } else {
             Cart.addItemToCart(1, p, request, response);
         }
