@@ -6,7 +6,6 @@
 
 <c:set var="title"> <fmt:message key="payment.title" /></c:set>
 
-
 <%
     Cart cart = Cart.readCartFromCookies(request);
     if (cart != null) {
@@ -175,10 +174,10 @@
             </c:if>
             <div class="container">
                 <div class="row">
-                <form method=post action=../PaymentServlet>
-                        <input type="hidden" name="USER" value="test2_api1.testemail.nl"/>
-                        <input type="hidden" name="PWD" value="9WH8HKQTD6WU2Z4Z"/>
-                        <input type="hidden" name="SIGNATURE" value="An5ns1Kso7MWUdW4ErQKJJJ4qi4-A4.bZdp4H4uchYV6inx1cTkbj0pG"/>
+                    <form method=post action="../PaymentServlet">
+                        <input type="hidden" name="USER" value="bayatsog-facilitator_api1.gmail.com"/>
+                        <input type="hidden" name="PWD" value="Z753VHA2X8ERZC3Z"/>
+                        <input type="hidden" name="SIGNATURE" value="AFcWxV21C7fd0v3bYYYRCpSSRl31AgR7hyolpYUBDUBrr2Cb3hFOYWEG"/>
                         <input type="hidden" name="VERSION" value="124.0"/>
                         <input type="hidden" name="METHOD" value="SetExpressCheckout"/>
                         <input type="hidden" name="PAYMENTREQUEST_0_PAYMENTACTION" value="Sale"/>
@@ -187,6 +186,13 @@
                         <input type="hidden" name="RETURNURL" value="http://www.google.nl" />
                         <input type="hidden" name="CANCELURL" value="http://localhost:8080/BazaarWeb/pages/payment.jsp"/>
                         <input type="submit" value="Checkout"/>
+                    </form>
+                </div>
+            </div>
+            <div class="container">
+                <div class ="row">
+                    <form action='expresscheckout.jsp' METHOD='POST'>
+                        <input type='image' name='submit' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' border='0' align='top' alt='Check out with PayPal'/>
                     </form>
                 </div>
             </div>
