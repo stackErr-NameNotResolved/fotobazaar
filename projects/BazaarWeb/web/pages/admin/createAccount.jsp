@@ -20,28 +20,28 @@
                         inputUsername: {
                             validators: {
                                 notEmpty: {
-                                    message: 'Gebruikersnaam is verplicht.'
+                                    message: '<fmt:message key="admin.account.usernameNeeded"/>'
                                 },
                                 stringLength: {
                                     min: 3,
                                     max: 50,
-                                    message: 'Gebruikersnaam moet tussen de 5 en 50 karakters lang zijn.'
+                                    message: '<fmt:message key="admin.account.usernameLength"/>'
                                 }
                             }
                         },
                         inputPassword: {
                             validators: {
                                 notEmpty: {
-                                    message: 'Wachtwoord is verplicht.'
+                                    message: '<fmt:message key="admin.account.passwordNeeded"/>'
                                 },
                                 identical: {
                                     field: 'inputPasswordRedo',
-                                    message: 'Wachtwoord bevestiging komt niet overeen.'
+                                    message: '<fmt:message key="admin.account.passwordNoMatch"/>'
                                 },
                                 stringLength: {
                                     min: 5,
                                     max: 50,
-                                    message: 'Wachtwoord moet tussen de 5 en 50 karakters lang zijn.'
+                                    message: '<fmt:message key="admin.account.passwordLength"/>'
                                 }
                             }
                         },
@@ -49,7 +49,7 @@
                             validators: {
                                 identical: {
                                     field: 'inputPassword',
-                                    message: 'Wachtwoord moet overeenkomen met bevestiging.'
+                                    message: '<fmt:message key="admin.account.passwordNoMatch"/>'
                                 }
                             }
                         }

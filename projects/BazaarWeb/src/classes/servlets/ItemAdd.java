@@ -95,11 +95,16 @@ public class ItemAdd extends HttpServlet {
 
                 for (Part part : filePart) {
                     if (part.getContentType() != null) {//true if is image
-                        image = part;
+                        if (part.getSize() != 0) {
+                            image = part;
+                        }
                     }
                 }
 
-                Item.create(description, price, active, image);
+                if (image != null) {
+                    Item.create(description, price, active, image);
+                }
+
                 response.sendRedirect("testServlet");
             }
 
