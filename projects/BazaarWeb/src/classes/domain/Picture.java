@@ -66,6 +66,7 @@ public class Picture implements Serializable {
         this.brightness = brightness;
         this.sepia = sepia;
         this.noise = noise;
+        this.blur = blur;
         this.saturation = saturation;
         this.hue = hue;
         this.clip = clip;
