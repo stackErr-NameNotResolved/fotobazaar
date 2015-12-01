@@ -19,7 +19,7 @@ public class BaseHttpFilter extends BaseFilter {
         doFilter(request, response, filterChain);
     }
 
-    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
+    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException {
 
     }
 }
