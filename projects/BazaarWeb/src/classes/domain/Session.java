@@ -44,7 +44,7 @@ public class Session {
 
         try {
             int id = Integer.parseInt(values[0]);
-            String user = (String) DatabaseConnector.getInstance().executeQuery("select username from acconut where id=?", id).getDataFromRow(0, "username");
+            String user = (String) DatabaseConnector.getInstance().executeQuery("select username from account where id=?", id).getDataFromRow(0, "username");
             if (!user.equals(username)) {
                 return false;
             }
