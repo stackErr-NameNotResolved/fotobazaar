@@ -6,7 +6,7 @@
 <t:BaseMasterPage title="${title}">
     <jsp:body>
         <div class="breadcrumbs" style="height: 250px;">
-            <div class="row">
+            <div class="container">
                 <div class="col-lg-10 col-lg-offset-1" style="margin-top:37px;">
 
                     <h1><fmt:message key="index.label.code" /></h1>
