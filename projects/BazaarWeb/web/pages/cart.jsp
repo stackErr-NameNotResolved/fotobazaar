@@ -104,9 +104,7 @@
                                 € ${order.getPicture().getPriceFormat()}
                             </td>
                             <td style="vertical-align: middle">
-                                <form action="/BazaarWeb/CartServletFragment" method="POST">
-                                    <input class="form-control input-sm" id="${id}" placeholder="${place}" type="number" min="1" max="100" value="${amount}" />
-                                </form>
+                                <input class="form-control input-sm" id="${id}" placeholder="${place}" type="number" min="1" max="100" value="${amount}" />
                             </td>
                             <td class="active" style="text-align: right; vertical-align: middle">
                                 € <span id="total${order.getId()}">${order.getTotalPriceFormat()}</span>
