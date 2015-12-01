@@ -65,43 +65,44 @@ public class FinishEditServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String ImageCode = request.getParameter("ImageCode");    
-        
-        int Brightness = Integer.parseInt(request.getParameter("Brightness"));
-        int Saturation = Integer.parseInt(request.getParameter("Saturation"));
-        int Sepia = Integer.parseInt(request.getParameter("Sepia"));
-        int Clip = Integer.parseInt(request.getParameter("Clip"));
-        int Blur = Integer.parseInt(request.getParameter("Blur"));
-        int Noise = Integer.parseInt(request.getParameter("Noise"));
-        int Hue = Integer.parseInt(request.getParameter("Hue"));
+        String ImageCode = request.getParameter("ImageCode");        
+        String orderId = request.getParameter("OrderId");
+
+
+        int brightness = Integer.parseInt(request.getParameter("Brightness"));
+        int saturation = Integer.parseInt(request.getParameter("Saturation"));
+        int sepia = Integer.parseInt(request.getParameter("Sepia"));
+        int clip = Integer.parseInt(request.getParameter("Clip"));
+        int blur = Integer.parseInt(request.getParameter("Blur"));
+        int noise = Integer.parseInt(request.getParameter("Noise"));
+        int hue = Integer.parseInt(request.getParameter("Hue"));
 
         float pictureX = Float.parseFloat(request.getParameter("pictureX"));
         float pictureY = Float.parseFloat(request.getParameter("pictureY"));
         float pictureWidth = Float.parseFloat(request.getParameter("pictureWidth"));
         float pictureHeight = Float.parseFloat(request.getParameter("pictureHeight"));
-        
-        String test = request.getParameter("hoi");
-        boolean update = (request.getParameter("hoi") == null);
-        
+
+        boolean update = (request.getParameter("Update") != null);
+
         Picture p = new Picture(ImageCode,
                 pictureX,
                 pictureY,
                 pictureWidth,
                 pictureHeight,
-                Brightness,
-                Sepia,
-                Noise,
-                Blur,
-                Saturation,
-                Hue,
-                Clip);
+                brightness,
+                sepia,
+                noise,
+                blur,
+                saturation,
+                hue,
+                clip);
+        
         if (update) {
             
-        }
-        else
-        {
+        } else {
             Cart.addItemToCart(1, p, request, response);
         }
+
     }
 
 }

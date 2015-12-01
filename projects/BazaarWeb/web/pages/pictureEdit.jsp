@@ -15,9 +15,7 @@
                 var Clip = (("${param.Clip}") ? parseInt(${param.Clip}) : 0);
                 var Blur = (("${param.Blur}") ? parseInt(${param.Blur}) : 0);
                 var Noise = (("${param.Noise}") ? parseInt(${param.Noise}) : 0);
-                var Hue = (("${param.Hue}") ? parseInt(${param.Hue}) : 0);               
-                var Update = (("${param.Update}") ? parseInt(${param.Update}) : 0);
-
+                var Hue = (("${param.Hue}") ? parseInt(${param.Hue}) : 0);            
 
                 Caman("#editor", "../ShowPictureServlet?imageCode=${param.imageCode}&imageSize=small", function () {
                     this.brightness(Brightness);
@@ -445,7 +443,10 @@
         </style>
 
         <form id="example-form" action="../FinishEditServlet" method="POST">
-            <input type="hidden" name="ImageCode" value="${param.imageCode}"/>
+            <input type="hidden" name="ImageCode" value="${param.imageCode}"/>            
+            <input type="hidden" name="OrderId" value="${param.orderId}"/>
+            <input type="hidden" name="Update" value="${param.Update}"/>
+
             <div>
                 <h3>Filters</h3>
                 <section>
@@ -456,8 +457,7 @@
                         <input type="hidden" id="Clip" name="Clip">
                         <input type="hidden" id="Blur" name="Blur">
                         <input type="hidden" id="Noise" name="Noise">
-                        <input type="hidden" id="Hue" name="Hue">                        
-                        <input type="hidden" id="Update" name="Update">
+                        <input type="hidden" id="Hue" name="Hue">         
 
 
                         <canvas id="editor" style="height:500px; max-width: 100%;"></canvas>

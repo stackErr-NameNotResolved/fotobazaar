@@ -77,7 +77,9 @@ public class Order implements Serializable {
 
     public String generateEditLine() {
         StringBuilder sb = new StringBuilder();
-        sb.append("imageCode=").append(this.picture.getCode());
+        sb.append("imageCode=").append(this.picture.getCode());        
+        sb.append("&orderId=").append(this.getId());
+
         sb.append("&startX=").append(this.picture.getStartX());
         sb.append("&startY=").append(this.picture.getStartY());
         sb.append("&endX=").append(this.picture.getEndX());
@@ -91,7 +93,7 @@ public class Order implements Serializable {
         sb.append("&Noise=").append(this.picture.getNoise());
         sb.append("&Hue=").append(this.picture.getHue());
         
-        sb.append("&hoi=").append(1);
+        sb.append("&Update=").append(1);
 
         return sb.toString();
     }
