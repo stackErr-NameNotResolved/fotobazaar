@@ -111,6 +111,8 @@ public class Translate {
     }
 
     public static String translate(int itemId, String language) {
+        language = language.substring(0, 2);
+        
         String translation = checkDatabase(itemId, language);
         if (!translation.startsWith("»")) {
             return translation;
