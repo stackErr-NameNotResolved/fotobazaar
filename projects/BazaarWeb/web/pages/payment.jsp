@@ -18,7 +18,7 @@
         request.setAttribute("cart", new Cart());
     }
 
-    
+
 %>
 
 <t:MasterPageContent title="${title}">
@@ -48,7 +48,7 @@
             </table>
         </c:if>
 
-        <c:if test="${orderCount > 0}">
+        <c:if test="${orderCount < 1}">
             <h2><fmt:message key="payment.check"/></h2>
             <br/>
             <br/>
@@ -128,74 +128,42 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
                 <hr/>
+                <h3 align="center"><fmt:message key="payment.select"/></h3>
+
             </div>
-
-
-            <div class="col-md-8">
-
-                <br/>
-                <h3><fmt:message key="payment.select"/></h3>
-                <br/>
-                <br/>
-                <br/>
-                <table>
-                    <tr align="center">
-                        <td>
-                            <a href="#" style="text-decoration:none">
-                                <img src="http://media.coindesk.com/2014/09/paypal.png" width="150px" />
-                            </a>
-                        </td>
-                        <td>
-                            &nbsp;
-                        </td>
-                        <td>
-                            <a href="#" style="text-decoration:none">
-                                <img src="https://www.rijschoolovertoom.nl/wp-content/uploads/2014/09/ideal_logo_zw_500x432.png" width="75px" />
-                            </a>
-                        </td>
-                    </tr>
-                    <tr align="center">
-                        <td width="30%">
-                            <a href="#" style="text-decoration:none;">
-                                <h4><b><fmt:message key="payment.paypal"/></b></h4>
-                            </a>
-                        </td>
-                        <td width="30%">
-                            &nbsp;
-                        </td>
-                        <td width="40%">
-                            <a href="#" style="text-decoration:none;">
-                                <h4><b><fmt:message key="payment.ideal"/></b></h4>
-                            </a>
-                        </td>
-                    </tr>
-                </table>
-
-            </c:if>
-            <div class="container">
-                <div class="row">
-                    <form method=post action="../PaymentServlet">
-                        <input type="hidden" name="USER" value="bayatsog-facilitator_api1.gmail.com"/>
-                        <input type="hidden" name="PWD" value="Z753VHA2X8ERZC3Z"/>
-                        <input type="hidden" name="SIGNATURE" value="AFcWxV21C7fd0v3bYYYRCpSSRl31AgR7hyolpYUBDUBrr2Cb3hFOYWEG"/>
-                        <input type="hidden" name="VERSION" value="124.0"/>
-                        <input type="hidden" name="METHOD" value="SetExpressCheckout"/>
-                        <input type="hidden" name="PAYMENTREQUEST_0_PAYMENTACTION" value="Sale"/>
-                        <input type="hidden" name="PAYMENTREQUEST_0_CURRENCYCODE" value="USD"/>
-                        <input name="PAYMENTREQUEST_0_AMT" value="19.95"/>
-                        <input type="hidden" name="RETURNURL" value="http://www.google.nl" />
-                        <input type="hidden" name="CANCELURL" value="http://localhost:8080/BazaarWeb/pages/payment.jsp"/>
-                        <input type="submit" value="Checkout"/>
-                    </form>
-                </div>
-            </div>
-            <div class="container">
-                <div class ="row">
-                    <form action='expresscheckout.jsp' METHOD='POST'>
-                        <input type='image' name='submit' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' border='0' align='top' alt='Check out with PayPal'/>
-                    </form>
-                </div>
-            </div>
-        </jsp:body>
-    </t:MasterPageContent>
+            <table align="center">
+                <tr align="center">
+                    <td>
+                        <a href="#" style="text-decoration:none">
+                            <img src="http://media.coindesk.com/2014/09/paypal.png" width="150px" />
+                        </a>
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        <a href="#" style="text-decoration:none">
+                            <img src="https://www.rijschoolovertoom.nl/wp-content/uploads/2014/09/ideal_logo_zw_500x432.png" width="75px" />
+                        </a>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td width="30%">
+                        <a href="#" style="text-decoration:none;">
+                            <h4><b><fmt:message key="payment.paypal"/></b></h4>
+                        </a>
+                    </td>
+                    <td width="30%">
+                        &nbsp;
+                    </td>
+                    <td width="40%">
+                        <a href="#" style="text-decoration:none;">
+                            <h4><b><fmt:message key="payment.ideal"/></b></h4>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </c:if>
+    </jsp:body>
+</t:MasterPageContent>
 
