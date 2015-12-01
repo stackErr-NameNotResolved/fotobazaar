@@ -16,12 +16,14 @@
     if (cart != null) {
         request.setAttribute("orders", cart.getOverview());
         request.setAttribute("orderCount", cart.getOverview().length);
+        request.setAttribute("cart", cart);
     } else {
         request.setAttribute("orders", new Order[]{});
         request.setAttribute("orderCount", 0);
+        request.setAttribute("cart", new Cart());
     }
 
-    request.setAttribute("cart", cart);
+    
 %>
 
 <t:MasterPageContent title="${title}">
