@@ -258,4 +258,13 @@ public class Cart implements Serializable {
     public static HttpServletResponse addItemToCart(int itemId, Picture picture, HttpServletRequest request, HttpServletResponse response) {
         return addItemToCart(Item.getItemFromId(itemId), picture, request, response);
     }
+    
+    public static HttpServletResponse updateItemToCart(int orderId, Picture picture, HttpServletRequest request, HttpServletResponse response)
+    {
+        Cart cart = Cart.readCartFromCookies(request);
+        Order o = cart.getOrder(orderId);
+        
+        o.setPicture(picture);
+        return cart.saveCart(request, response);
+    }
 }
