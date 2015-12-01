@@ -114,7 +114,7 @@ public class Account extends DataModel {
         return result;
     }
 
-    public static enum Rights {
+    public enum Rights {
         // Banned.
         BannedCustomer(-3),
         BannedPhotographer(-2),

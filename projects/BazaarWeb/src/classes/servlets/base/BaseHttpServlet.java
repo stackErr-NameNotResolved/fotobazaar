@@ -1,6 +1,5 @@
 package classes.servlets.base;
 
-import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-@WebInitParam(name = "rights", value = "1")
 @WebServlet(name = "BaseHttpServlet")
 public abstract class BaseHttpServlet extends HttpServlet {
     public enum ResponseStatusCodes {
@@ -147,5 +145,10 @@ public abstract class BaseHttpServlet extends HttpServlet {
 
         Object attribute = request.getSession().getAttribute("language");
         return attribute instanceof String ? Locale.forLanguageTag((String) attribute) : (Locale) attribute;
+    }
+
+    @Override
+    public String getInitParameter(String name) {
+        return super.getInitParameter(name);
     }
 }

@@ -3,7 +3,7 @@ package classes.filters.base;
 import javax.servlet.*;
 import java.io.IOException;
 
-public class BaseFilter implements Filter {
+public abstract class BaseFilter implements Filter {
     protected String contextPath;
     protected FilterConfig config;
 
