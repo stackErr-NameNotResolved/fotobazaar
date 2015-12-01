@@ -79,7 +79,10 @@ public class FinishEditServlet extends HttpServlet {
         float pictureY = Float.parseFloat(request.getParameter("pictureY"));
         float pictureWidth = Float.parseFloat(request.getParameter("pictureWidth"));
         float pictureHeight = Float.parseFloat(request.getParameter("pictureHeight"));
-
+        
+        String test = request.getParameter("hoi");
+        boolean update = (request.getParameter("hoi") == null);
+        
         Picture p = new Picture(ImageCode,
                 pictureX,
                 pictureY,
@@ -92,8 +95,13 @@ public class FinishEditServlet extends HttpServlet {
                 Saturation,
                 Hue,
                 Clip);
-        
-        Cart.addItemToCart(1, p, request, response);
+        if (update) {
+            
+        }
+        else
+        {
+            Cart.addItemToCart(1, p, request, response);
+        }
     }
 
 }

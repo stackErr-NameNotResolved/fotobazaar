@@ -90,6 +90,8 @@ public class Order implements Serializable {
         sb.append("&Blur=").append(this.picture.getBlur());
         sb.append("&Noise=").append(this.picture.getNoise());
         sb.append("&Hue=").append(this.picture.getHue());
+        
+        sb.append("&hoi=").append(1);
 
         return sb.toString();
     }
