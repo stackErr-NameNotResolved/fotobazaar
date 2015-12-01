@@ -1,5 +1,6 @@
 package classes.servlets;
 
+import classes.database.DatabaseConnector;
 import classes.domain.models.Account;
 import classes.servlets.base.JsonServlet;
 
@@ -11,6 +12,7 @@ import java.io.IOException;
 
 @WebServlet(name = "AdminCreateAccountServlet", urlPatterns = {"/AdminCreateAccountServlet"})
 public class AdminCreateAccountServlet extends JsonServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse resp, JsonObjectBuilder builder) throws IOException {
         String user = request.getParameter("inputUsername");
@@ -19,16 +21,22 @@ public class AdminCreateAccountServlet extends JsonServlet {
         if (user == null || user.isEmpty()) {
             setStatus(resp, ResponseStatusCodes.UNPROCESSABLE_ENTITY);
             addErrorMessage(resp, "Gebruikersnaam is niet ingevoerd.<br/>");
+            return;
         }
         if (pass == null || pass.isEmpty()) {
             setStatus(resp, ResponseStatusCodes.UNPROCESSABLE_ENTITY);
             addErrorMessage(resp, "Wachtwoord is niet ingevoerd.<br/>");
+            return;
         }
 
         if (Account.registerNewAccount(user, pass, Account.Rights.Photographer)) {
             builder.add("response", String.format("Account '%s' is aangemaakt.", user));
+        } else if (DatabaseConnector.getInstance().executeQuery("SELECT * FROM account WHERE USERNAME = ?", user).containsData()) {
+            setStatus(resp, ResponseStatusCodes.UNPROCESSABLE_ENTITY);
+            addErrorMessage(resp, String.format("Account '%s' bestaat al.", user));
         } else {
-            builder.add("response", String.format("Account '%s' kon niet aangemaakt worden.", user));
+            setStatus(resp, ResponseStatusCodes.UNPROCESSABLE_ENTITY);
+            addErrorMessage(resp, String.format("Account '%s' kon niet aangemaakt worden.", user));
         }
     }
 }

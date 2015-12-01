@@ -176,6 +176,10 @@ public class Cart implements Serializable {
         return new Cart();
     }
 
+    public static int readCartItemCountFromCookies(HttpServletRequest request) {
+        return readCartFromCookies(request).getOverview().length;
+    }
+
     private String formatDouble(double value) {
         if (df == null) {
             df = new DecimalFormat();

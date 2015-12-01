@@ -10,10 +10,11 @@
 
 <%--Custom EL functions.--%>
 <%@ taglib prefix="sf" uri="/WEB-INF/tld/SessionLibrary.tld" %>
+<%@ taglib prefix="tr" uri="/WEB-INF/tld/TranslateLibrary.tld" %>
+<%@ taglib prefix="domain_cart" uri="/WEB-INF/tld/Cart.tld" %>
 
-<%
-    request.setAttribute("order_count", Cart.readCartFromCookies(request).getOverview().length);
-%>
+<%--Session data--%>
+<c:set var="order_count">${domain_cart:readCartItemCountFromCookies(pageContext.request)}</c:set>
 
 <t:EmptyMasterPage title="${title}">
 
@@ -106,6 +107,8 @@
                     <div class="col-md-4">
                         <div class="copyright">
                             <p>&copy; Copyright - Fotobazaar</p>
+                            <br/>
+                            <p><a href="http://translate.yandex.com">Powered by Yandex.Translator</a></p>
                         </div>
                     </div>
                 </div>

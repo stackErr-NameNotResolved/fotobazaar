@@ -1,3 +1,4 @@
+<%@page import="classes.domain.Translate"%>
 <%@page import="classes.domain.Picture"%>
 <%@page import="classes.domain.Item"%>
 <%@page import="classes.domain.Order"%>
@@ -5,6 +6,7 @@
 <%@page import="classes.domain.Cart"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="tr" uri="/WEB-INF/tld/TranslateLibrary.tld" %>
 <%@include file="/pages/langInclude.jsp" %>
 
 <c:set var="title"> <fmt:message key="cart.title" /></c:set>
@@ -14,12 +16,14 @@
     if (cart != null) {
         request.setAttribute("orders", cart.getOverview());
         request.setAttribute("orderCount", cart.getOverview().length);
+        request.setAttribute("cart", cart);
     } else {
         request.setAttribute("orders", new Order[]{});
         request.setAttribute("orderCount", 0);
+        request.setAttribute("cart", new Cart());
     }
 
-    request.setAttribute("cart", cart);
+    
 %>
 
 <t:MasterPageContent title="${title}">
@@ -93,7 +97,7 @@
 
                             <tr>
                                 <td style="vertical-align: middle">
-                                ${order.getItem().toString()} + <fmt:message key="cart.foto"/>
+                                ${tr:translate(order.getItem().toString(),language)} + <fmt:message key="cart.foto"/>
                             </td>
                             <td style="vertical-align: middle">
                                 € ${order.getItem().getPriceFormat()}

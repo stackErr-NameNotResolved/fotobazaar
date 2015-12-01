@@ -26,7 +26,7 @@ public abstract class JsonServlet extends BaseHttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected final void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         setJsonResponse(resp);
         JsonObjectBuilder builder = Json.createObjectBuilder();
 
