@@ -1,5 +1,6 @@
 package classes.servlets.base;
 
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +10,11 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+@WebInitParam(name = "rights", value = "1")
 @WebServlet(name = "BaseHttpServlet")
 public abstract class BaseHttpServlet extends HttpServlet {
     public enum ResponseStatusCodes {
+
         /**
          * Everything went find with the request and could be handled.
          */
