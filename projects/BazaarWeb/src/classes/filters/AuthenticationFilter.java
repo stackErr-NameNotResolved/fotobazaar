@@ -1,6 +1,5 @@
 package classes.filters;
 
-import classes.domain.Session;
 import classes.filters.base.BaseHttpFilter;
 
 import javax.servlet.FilterChain;
@@ -12,7 +11,11 @@ public class AuthenticationFilter extends BaseHttpFilter {
 
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException {
-        response.setContentType("text/html");
-        response.getWriter().write(String.valueOf(Session.checkSessionData(request.getAttribute("username").toString(), request.getAttribute("username-encrypted").toString(), request.getRemoteAddr())));
+//        String username = String.valueOf(request.getAttribute("username"));
+//        String encrypted = String.valueOf(request.getAttribute("username-encrypted"));
+//
+//        if (username == null || username.isEmpty() || encrypted == null || encrypted.isEmpty()) return;
+//        Session.checkSessionData(username, encrypted, request.getRemoteAddr())
     }
 }
+
