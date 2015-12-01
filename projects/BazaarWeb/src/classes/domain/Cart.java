@@ -182,7 +182,7 @@ public class Cart implements Serializable {
         {
             return cart.getOverview().length;
         }
-        return new Cart().getOverview().length;
+        return 0;
     }
 
     private String formatDouble(double value) {

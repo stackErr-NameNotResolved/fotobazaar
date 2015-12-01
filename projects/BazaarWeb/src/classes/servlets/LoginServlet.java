@@ -79,6 +79,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
 
         String username = request.getParameter("Username");
         String password = request.getParameter("Password");
@@ -91,22 +92,22 @@ public class LoginServlet extends HttpServlet {
         }
 
         if (Account.validateCredentials(username, password) == ELoginStatus.SUCCESS) {
-
-            HttpSession session = request.getSession();
-            session.setAttribute("username", username);
-            session.setAttribute("username-encrypted", Session.generateSessionData(username, request.getRemoteAddr()));
-            
+            String encrypted = Session.generateSessionData(username, request.getRemoteAddr());
+            session.setAttribute("account", Session.getAccountFromSession(username, encrypted, request.getRemoteAddr()));
             session.removeAttribute("login_message");
 
-            response.sendRedirect("index.jsp");
-            return;
+            // Redirect.
+            String url = ((String) session.getAttribute("redirecturl"));
+            url = url != null && !url.isEmpty() ? url : "index.jsp";
+            response.sendRedirect(url);
         } else if (Account.validateCredentials(username, password) == ELoginStatus.FAILED) {
             request.getSession().setAttribute("login_message", "1");
         } else if (Account.validateCredentials(username, password) == ELoginStatus.DISABLED) {
             request.getSession().setAttribute("login_message", "2");
         }
 
-        response.sendRedirect("pages/login.jsp");
+        // Clear redirect data.
+        session.setAttribute("redirecturl", null);
     }
 
     /**

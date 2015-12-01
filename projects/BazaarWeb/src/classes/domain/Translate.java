@@ -27,7 +27,7 @@ public class Translate {
      * @param to The language to translate to. Example: 'en' or 'nl'
      * @return The text translated into the given language
      */
-    private static String translate(String text, String from, String to) {
+    static String translate(String text, String from, String to) {
         if (to.equals(from)) {
             return text;
         }

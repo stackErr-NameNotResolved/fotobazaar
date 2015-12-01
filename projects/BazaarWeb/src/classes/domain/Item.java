@@ -195,6 +195,7 @@ public class Item implements Serializable {
             StatementResult dbResult = null;
 
             try {
+                DatabaseConnector.getInstance().executeNonQuery("DELETE FROM translation WHERE ITEM_ID = ?", itemId);
                 if (newImage == null) {
                     //No image
                     dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE item SET DESCRIPTION = ?, PRICE = ?, ACTIVE = ? WHERE ID = ?", newDescription, newPrice, newisActive, itemId);
