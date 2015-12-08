@@ -5,6 +5,7 @@
 <%@ attribute name="script" fragment="true"
               description="All the scripts to be added on the bottom of the page go here." %>
 <%@include file="/pages/langInclude.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%-- The list of normal or fragment attributes can be specified here: --%>
 <%-- <%@attribute name="message"%> -->
 
