@@ -22,7 +22,7 @@
 
         <c:forEach items="${items}" var="item">
             <div class="col-md-4" style="border: 1px solid #f8f8f8;">
-                <form action="${pageContext.servletContext.contextPath}/ProductServlet" method="POST">
+                <form action="${pageContext.servletContext.contextPath}/ProductsServlet" method="GET">
                     <br>
                     <h4>${tr:translate(item.getId(),language)}</h4>
                     <br>
@@ -32,7 +32,9 @@
                     <br>
                     <fmt:message key="pictureManage.header.price"/>: <b>${item.getPrice()}</b>
                     <button class="btn bg-blue margin pull-right"><i class="fa fa-save pr-5"></i><fmt:message key="cart.edit"/></button>
-                    <input type="hidden" value="${item.getId()}" name="ProductId"/>
+                    <input type="hidden" value="${item.getId()}" name="ProductId"/>                    
+                    <input type="hidden" value="${orderId}" name="OrderId"/>
+
                 </form>
             </div>
         </c:forEach>
