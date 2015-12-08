@@ -6,11 +6,11 @@
 package classes.servlets;
 
 import classes.domain.Order;
+import classes.servlets.base.BaseHttpServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author sjorsvanmierlo
  */
 @WebServlet(name = "OrderOverviewServlet", urlPatterns = {"/OrderOverviewServlet"})
-public class OrderOverviewServlet extends HttpServlet {
+public class OrderOverviewServlet extends BaseHttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,7 +38,7 @@ public class OrderOverviewServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrderOverviewServlet</title>");            
+            out.println("<title>Servlet OrderOverviewServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet OrderOverviewServlet at " + request.getContextPath() + "</h1>");
@@ -59,9 +59,9 @@ public class OrderOverviewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       request.setAttribute("orders",Order.getAllOrders());
-       request.getRequestDispatcher("pages/orderOverview.jsp").forward(request, response);
-        
+        getSession(request).setAttribute("orders", Order.getAllOrders());
+        response.sendRedirect("pages/orderOverview.jsp");
+
     }
 
     /**
