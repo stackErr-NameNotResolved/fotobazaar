@@ -9,7 +9,7 @@ package classes.domain;
  *
  * @author Bas
  */
-public enum ELoginStatus {
+public enum LoginStatus {
 
     SUCCESS(0),
     FAILED(1),
@@ -17,7 +17,7 @@ public enum ELoginStatus {
 
     private int intValue;
 
-    private ELoginStatus(int value) {
+    LoginStatus(int value) {
         intValue = value;
     }
 

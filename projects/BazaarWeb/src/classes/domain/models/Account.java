@@ -8,7 +8,7 @@ import classes.database.orm.annotations.Column;
 import classes.database.orm.annotations.Id;
 import classes.database.orm.annotations.Table;
 import classes.domain.AESEncryption;
-import classes.domain.ELoginStatus;
+import classes.domain.LoginStatus;
 import classes.domain.ELoginTypes;
 
 @Table(name = "ACCOUNT")
@@ -54,17 +54,17 @@ public class Account extends DataModel {
         this.right = right;
     }
 
-    public static ELoginStatus validateCredentials(String username, String password) {
+    public static LoginStatus validateCredentials(String username, String password) {
         DataTable dt = DatabaseConnector.getInstance().executeQuery("select * from account where username=? and password=?", username, AESEncryption.encrypt(password, username));
         if (dt.containsData()) {
             if ((int) dt.getDataFromRow(0, "access") >= 0) {
-                return ELoginStatus.SUCCESS;
+                return LoginStatus.SUCCESS;
             } else {
-                return ELoginStatus.DISABLED;
+                return LoginStatus.DISABLED;
             }
         }
 
-        return ELoginStatus.FAILED;
+        return LoginStatus.FAILED;
     }
 
     public static boolean hasPermission(String username, ELoginTypes type) {

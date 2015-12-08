@@ -1,4 +1,3 @@
-<%@tag import="classes.domain.Cart"%>
 <%@tag description="BaseMasterPage" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="title" required="true" description="Header of the page to be shown in the theme." %>
@@ -78,7 +77,7 @@
                         </c:if>
                         <li>
                             <a>
-                                <form>
+                                <form action="${requestScope['javax.servlet.forward.query_string']}">
                                     <select id="language" name="language" onchange="submit()">
                                         <c:set var="langStr">${language.class.name.equals('Locale') ? language.language : language}</c:set>
                                         ${langStr}
