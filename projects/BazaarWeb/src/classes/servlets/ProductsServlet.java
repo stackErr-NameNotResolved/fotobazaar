@@ -5,24 +5,25 @@
  */
 package classes.servlets;
 
-import classes.domain.BankAccount;
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
+import classes.domain.Cart;
+import classes.domain.Item;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Baya
+ * @author Fatih
  */
-@WebServlet(name = "PaymentServlet", urlPatterns = {"/PaymentServlet"})
-public class PaymentServlet extends HttpServlet {
-    
-    BankAccount testBank;
+@WebServlet(name = "ProductsServlet", urlPatterns = {"/ProductsServlet"})
+public class ProductsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +42,10 @@ public class PaymentServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Payment</title>");
+            out.println("<title>Servlet ProductsServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Payment at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProductsServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,7 +63,13 @@ public class PaymentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        // update cart with the product id
+        int orderId = (request.getParameter("OrderId").equals("")) ? -1 : Integer.parseInt(request.getParameter("OrderId"));
+        int productId = (request.getParameter("ProductId").equals("")) ? -1 : Integer.parseInt(request.getParameter("ProductId"));
+        Cart.updateProductInCart(orderId, productId, request, response);
+
+        response.sendRedirect("pages/cart.jsp");
     }
 
     /**
@@ -76,27 +83,7 @@ public class PaymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        HttpSession session = request.getSession(false);
-        testBank = new BankAccount("user", "pass", 150.00);
-        String username = request.getParameter("Username");
-        String password = request.getParameter("Password");
-        
-        if(username.equals("") || password.equals("")){
-            session.setAttribute("login_message", "3");
-            session.setAttribute("bank_confirmed", false);
-            response.sendRedirect("pages/paymentProcess.jsp");
-            return;
-        }
-        
-        if(username.equals(testBank.getUsername()) && testBank.checkPassword(password)) {
-            session.setAttribute("bank_confirmed", true);
-            response.sendRedirect("pages/paymentProcess.jsp");
-        } else {
-            session.setAttribute("login_message", "1");
-            session.setAttribute("bank_confirmed", false);
-            response.sendRedirect("pages/paymentProcess.jsp");
-        }
+        processRequest(request, response);
     }
 
     /**

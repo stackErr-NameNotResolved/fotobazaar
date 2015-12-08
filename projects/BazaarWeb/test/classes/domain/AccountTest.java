@@ -24,22 +24,22 @@ public class AccountTest extends TestCase {
     public void testValidateCredentials()
     {
         // Try to log in an user on the normal way
-        assertEquals("User cannot log in", Account.validateCredentials("corpelijn", "Welkom01"), ELoginStatus.SUCCESS);
+        assertEquals("User cannot log in", Account.validateCredentials("corpelijn", "Welkom01"), LoginStatus.SUCCESS);
         
         // Try to log in with a wrong password
-        assertEquals("User should not be able to log in with wrong password", Account.validateCredentials("corpelijn", "foutje"), ELoginStatus.FAILED);
+        assertEquals("User should not be able to log in with wrong password", Account.validateCredentials("corpelijn", "foutje"), LoginStatus.FAILED);
         
         // Set the account disabled
         DatabaseConnector.getInstance().executeNonQuery("update account set access=? where username=?", -1, "corpelijn"); 
         
         // Try to log in an account that is disabled
-        assertEquals("User should not be able to log in with a disabled account", Account.validateCredentials("Corpelijn", "Welkom01"), ELoginStatus.DISABLED);
+        assertEquals("User should not be able to log in with a disabled account", Account.validateCredentials("Corpelijn", "Welkom01"), LoginStatus.DISABLED);
         
         // Enable the account again
         DatabaseConnector.getInstance().executeNonQuery("update account set access=? where username=?", 1, "Corpelijn");
         
         // Just for the fun of it, test it again
-        assertEquals("User cannot log in (2)", Account.validateCredentials("corpelijn", "Welkom01"), ELoginStatus.SUCCESS);
+        assertEquals("User cannot log in (2)", Account.validateCredentials("corpelijn", "Welkom01"), LoginStatus.SUCCESS);
     }
     
     @Test
