@@ -7,6 +7,7 @@ package classes.servlets;
 
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
+import classes.domain.Cart;
 import classes.domain.Item;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,7 +42,7 @@ public class ProductsServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProductsServlet</title>");            
+            out.println("<title>Servlet ProductsServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ProductsServlet at " + request.getContextPath() + "</h1>");
@@ -62,22 +63,13 @@ public class ProductsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-            ArrayList<Item> items = new ArrayList<>();
 
-        DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT ID FROM item");
-        while (true) {
-            Object[] itemRow = result.getNextRow();
-            if (itemRow.length == 0) {
-                break;
-            }
-            Item tempItem = Item.getItemFromId((Integer)(itemRow[0]));
-            items.add(tempItem);
-        }
-        
-        request.setAttribute("items",items);
-       request.getRequestDispatcher("pages/products.jsp").forward(request, response);
-        
+        // update cart with the product id
+        int orderId = (request.getParameter("OrderId").equals("")) ? -1 : Integer.parseInt(request.getParameter("OrderId"));
+        int productId = (request.getParameter("ProductId").equals("")) ? -1 : Integer.parseInt(request.getParameter("ProductId"));
+        Cart.updateProductInCart(orderId, productId, request, response);
+
+         response.sendRedirect("pages/cart.jsp");
     }
 
     /**

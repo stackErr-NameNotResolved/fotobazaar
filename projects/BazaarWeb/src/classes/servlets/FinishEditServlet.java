@@ -5,10 +5,14 @@
  */
 package classes.servlets;
 
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
 import classes.domain.Cart;
+import classes.domain.Item;
 import classes.domain.Picture;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -103,6 +107,23 @@ public class FinishEditServlet extends HttpServlet {
             Cart.addItemToCart(1, p, request, response);
         }
 
+        ////////////////////////////////////
+        // Redirect to Choose product view with items from db
+        ArrayList<Item> items = new ArrayList<>();
+
+        DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT ID FROM item");
+        while (true) {
+            Object[] itemRow = result.getNextRow();
+            if (itemRow.length == 0) {
+                break;
+            }
+            Item tempItem = Item.getItemFromId((Integer)(itemRow[0]));
+            items.add(tempItem);
+        }
+        
+        request.setAttribute("items",items);
+       request.getRequestDispatcher("pages/products.jsp").forward(request, response);
+        
     }
 
 }
