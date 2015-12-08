@@ -37,9 +37,19 @@ public class AuthenticationFilter extends BaseHttpFilter {
     }
 
     public enum AuthResult {
-        OK,
-        InsufficientRights,
-        NoAccount
+        OK(0),
+        InsufficientRights(1),
+        NoAccount(2);
+
+        private int id;
+
+        AuthResult(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
     }
 }
 
