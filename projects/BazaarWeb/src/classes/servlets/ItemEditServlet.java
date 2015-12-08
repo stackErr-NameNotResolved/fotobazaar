@@ -6,20 +6,21 @@
 package classes.servlets;
 
 import classes.domain.Item;
-import java.io.IOException;
-import java.io.PrintWriter;
+import classes.servlets.base.BaseHttpServlet;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  *
  * @author Jip
  */
-@WebServlet(name = "ItemEdit", urlPatterns = {"/ItemEdit"})
-public class ItemEdit extends HttpServlet {
+@WebServlet(name = "ItemEditServlet", urlPatterns = {"/ItemEditServlet"})
+public class ItemEditServlet extends BaseHttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +39,10 @@ public class ItemEdit extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ItemEdit</title>");
+            out.println("<title>Servlet ItemEditServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ItemEdit at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ItemEditServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,7 +60,7 @@ public class ItemEdit extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("testServlet");
+        response.sendRedirect("ItemViewServlet");
     }
 
     /**
@@ -85,7 +86,7 @@ public class ItemEdit extends HttpServlet {
                 active = true;
             }      
             Item.changeItem(id, description, price, active, null);
-            response.sendRedirect("testServlet");
+            response.sendRedirect("ItemViewServlet");
         }
     }
 
