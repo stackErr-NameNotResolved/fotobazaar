@@ -5,21 +5,15 @@
  */
 package classes.servlets;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import classes.domain.BankAccount;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashMap;
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "PaymentServlet", urlPatterns = {"/PaymentServlet"})
 public class PaymentServlet extends HttpServlet {
+    
+    BankAccount testBank;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -80,48 +76,27 @@ public class PaymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        //processRequest(request, response);
-        String endpoint = "https://api-3t.sandbox.paypal.com/nvp";
-        String data = null;
-        Enumeration paramNames = request.getParameterNames();
-        while (paramNames.hasMoreElements()) {
-            String paramName = (String) paramNames.nextElement();
-            String paramValue = request.getParameter(paramName);
-            data = data + paramName + "=" + paramValue + "&";
+        
+        HttpSession session = request.getSession(false);
+        testBank = new BankAccount("user", "pass", 150.00);
+        String username = request.getParameter("Username");
+        String password = request.getParameter("Password");
+        
+        if(username.equals("") || password.equals("")){
+            session.setAttribute("login_message", "3");
+            session.setAttribute("bank_confirmed", false);
+            response.sendRedirect("pages/paymentProcess.jsp");
+            return;
         }
-        System.out.println(endpoint);
-        URL url = new URL(endpoint);
-        HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-        conn.setDoOutput(true);
-        conn.setDoInput(true);
-        Enumeration headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String paramName = (String) headerNames.nextElement();
-            System.out.print(paramName + "=");
-            String paramValue = request.getHeader(paramName);
-            System.out.println(paramValue);
-            conn.setRequestProperty(paramName, paramValue);
+        
+        if(username.equals(testBank.getUsername()) && testBank.checkPassword(password)) {
+            session.setAttribute("bank_confirmed", true);
+            response.sendRedirect("pages/paymentProcess.jsp");
+        } else {
+            session.setAttribute("login_message", "1");
+            session.setAttribute("bank_confirmed", false);
+            response.sendRedirect("pages/paymentProcess.jsp");
         }
-        conn.setRequestMethod("POST");
-
-        DataOutputStream output = new DataOutputStream(conn.getOutputStream());
-        output.writeBytes(data);
-        output.flush();
-        output.close();
-        HashMap nvp = null;
-        String respText = null;
-        DataInputStream in = new DataInputStream(conn.getInputStream());
-        int rc = conn.getResponseCode();
-        if (rc != -1) {
-            BufferedReader is = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String _line = null;
-            while ((_line = is.readLine()) != null) {
-                respText = respText + _line;
-            }
-        }
-        System.out.println(respText);
-        conn.disconnect();
     }
 
     /**
