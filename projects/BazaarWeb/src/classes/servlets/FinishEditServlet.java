@@ -121,7 +121,9 @@ public class FinishEditServlet extends HttpServlet {
             items.add(tempItem);
         }
         
-        request.setAttribute("items",items);
+        request.setAttribute("items",items);        
+        request.setAttribute("orderId",orderId);
+
        request.getRequestDispatcher("pages/products.jsp").forward(request, response);
         
     }

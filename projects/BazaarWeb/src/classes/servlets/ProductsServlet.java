@@ -69,7 +69,7 @@ public class ProductsServlet extends HttpServlet {
         int productId = (request.getParameter("ProductId").equals("")) ? -1 : Integer.parseInt(request.getParameter("ProductId"));
         Cart.updateProductInCart(orderId, productId, request, response);
 
-         response.sendRedirect("pages/cart.jsp");
+        response.sendRedirect("pages/cart.jsp");
     }
 
     /**
