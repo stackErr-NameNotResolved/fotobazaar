@@ -48,7 +48,7 @@
             </table>
         </c:if>
 
-        <c:if test="${orderCount < 1}">
+        <c:if test="${orderCount > 0}">
             <h2><fmt:message key="payment.check"/></h2>
             <br/>
             <br/>
@@ -135,7 +135,7 @@
                 <tr align="center">
                     <td>
                         <a href="#" style="text-decoration:none">
-                            <img src="http://media.coindesk.com/2014/09/paypal.png" width="150px" />
+                            <img src="http://nitrographic.com/wp-content/themes/nitrographic/images/paypal-grey.png" width="150px" />
                         </a>
                     </td>
                     <td>
@@ -143,7 +143,7 @@
                     </td>
                     <td>
                         <a href="#" style="text-decoration:none">
-                            <img src="https://www.rijschoolovertoom.nl/wp-content/uploads/2014/09/ideal_logo_zw_500x432.png" width="75px" />
+                            <img src="https://static.webshopapp.com/shops/084012/files/035267280/ideal-logo-png.png" width="75px" />
                         </a>
                     </td>
                 </tr>

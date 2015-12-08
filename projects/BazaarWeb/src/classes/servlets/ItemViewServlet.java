@@ -8,21 +8,22 @@ package classes.servlets;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.domain.Item;
+import classes.servlets.base.BaseHttpServlet;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  *
  * @author Jip
  */
-@WebServlet(name = "testServlet", urlPatterns = {"/testServlet"})
-public class testServlet extends HttpServlet {
+@WebServlet(name = "ItemViewServlet", urlPatterns = {"/ItemViewServlet"})
+public class ItemViewServlet extends BaseHttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +42,10 @@ public class testServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet testServlet</title>");
+            out.println("<title>Servlet ItemViewServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet testServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ItemViewServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }

@@ -6,27 +6,27 @@
 package classes.servlets;
 
 import classes.domain.Item;
-import classes.domain.Picture;
+import classes.servlets.base.BaseHttpServlet;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Collection;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 /**
  *
  * @author Jip
  */
 @MultipartConfig
-@WebServlet(name = "ItemAdd", urlPatterns = {"/ItemAdd"})
-public class ItemAdd extends HttpServlet {
+@WebServlet(name = "ItemAddServlet", urlPatterns = {"/ItemAddServlet"})
+public class ItemAddServlet extends BaseHttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +45,10 @@ public class ItemAdd extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ItemAdd</title>");
+            out.println("<title>Servlet ItemAddServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ItemAdd at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ItemAddServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -105,7 +105,7 @@ public class ItemAdd extends HttpServlet {
                     Item.create(description, price, active, image);
                 }
 
-                response.sendRedirect("testServlet");
+                response.sendRedirect("ItemViewServlet");
             }
 
         } catch (IOException | ServletException | NumberFormatException e) {
