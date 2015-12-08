@@ -5,7 +5,7 @@
  */
 package classes.servlets;
 
-import classes.domain.ELoginStatus;
+import classes.domain.LoginStatus;
 import classes.domain.Session;
 import classes.domain.models.Account;
 import classes.servlets.base.BaseHttpServlet;
@@ -39,33 +39,35 @@ public class LoginServlet extends BaseHttpServlet {
             throws ServletException, IOException {              
         HttpSession session = request.getSession(false);
 
-        String username = request.getParameter("Username");
-        String password = request.getParameter("Password");
-        
-        if(username.equals("") || password.equals(""))
-        {
-            request.getSession().setAttribute("login_message", "3");
-            response.sendRedirect("pages/login.jsp");
-            return;
+        try {
+            String username = request.getParameter("Username");
+            String password = request.getParameter("Password");
+
+            if(username.equals("") || password.equals(""))
+            {
+                request.getSession().setAttribute("login_message", "3");
+                response.sendRedirect("pages/login.jsp");
+                return;
+            }
+
+            if (Account.validateCredentials(username, password) == LoginStatus.SUCCESS) {
+                String encrypted = Session.generateSessionData(username, request.getRemoteAddr());
+                session.setAttribute("account", Session.getAccountFromSession(username, encrypted, request.getRemoteAddr()));
+                session.removeAttribute("login_message");
+
+                // Redirect.
+                String url = ((String) session.getAttribute("redirecturl"));
+                url = url != null && !url.isEmpty() ? url : "index.jsp";
+                response.sendRedirect(url);
+            } else if (Account.validateCredentials(username, password) == LoginStatus.FAILED) {
+                request.getSession().setAttribute("login_message", "1");
+            } else if (Account.validateCredentials(username, password) == LoginStatus.DISABLED) {
+                request.getSession().setAttribute("login_message", "2");
+            }
+        } finally {
+            // Clear redirect data.
+            session.setAttribute("redirecturl", null);
         }
-
-        if (Account.validateCredentials(username, password) == ELoginStatus.SUCCESS) {
-            String encrypted = Session.generateSessionData(username, request.getRemoteAddr());
-            session.setAttribute("account", Session.getAccountFromSession(username, encrypted, request.getRemoteAddr()));
-            session.removeAttribute("login_message");
-
-            // Redirect.
-            String url = ((String) session.getAttribute("redirecturl"));
-            url = url != null && !url.isEmpty() ? url : "index.jsp";
-            response.sendRedirect(url);
-        } else if (Account.validateCredentials(username, password) == ELoginStatus.FAILED) {
-            request.getSession().setAttribute("login_message", "1");
-        } else if (Account.validateCredentials(username, password) == ELoginStatus.DISABLED) {
-            request.getSession().setAttribute("login_message", "2");
-        }
-
-        // Clear redirect data.
-        session.setAttribute("redirecturl", null);
     }
 
     /**

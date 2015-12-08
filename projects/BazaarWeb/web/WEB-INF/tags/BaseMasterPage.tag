@@ -1,4 +1,3 @@
-<%@tag import="classes.domain.Cart"%>
 <%@tag description="BaseMasterPage" pageEncoding="UTF-8" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="title" required="true" description="Header of the page to be shown in the theme." %>
@@ -7,6 +6,7 @@
 <%@ attribute name="script" fragment="true"
               description="All the scripts to be added on the bottom of the page go here." %>
 <%@include file="/pages/langInclude.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%--Custom EL functions.--%>
 <%@ taglib prefix="sf" uri="/WEB-INF/tld/SessionLibrary.tld" %>
@@ -21,8 +21,8 @@
     <jsp:attribute name="style">
         <jsp:invoke fragment="style"/>
     </jsp:attribute>
-
     <jsp:attribute name="script">
+
         <jsp:invoke fragment="script"/>
     </jsp:attribute>
     <jsp:body>
@@ -42,11 +42,12 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="${pageContext.servletContext.contextPath}/index.jsp">Home</a></li>
-                            <c:if test="${order_count > 0}">
-                            <li><a href="${pageContext.servletContext.contextPath}/pages/cart.jsp"><fmt:message key="master.menu.cart"/> [${order_count}]</a></li>
-                            </c:if>
+                        <c:if test="${order_count > 0}">
+                            <li><a href="${pageContext.servletContext.contextPath}/pages/cart.jsp"><fmt:message
+                                    key="master.menu.cart"/> [${order_count}]</a></li>
+                        </c:if>
                         <li>
-                            <%--Check if user is logged in.--%>
+                                <%--Check if user is logged in.--%>
                             <c:choose>
                                 <c:when test="${account != null}">
                                     <c:set var="loginButtonText"><fmt:message key="master.menu.logout"/></c:set>
@@ -78,25 +79,25 @@
                         </c:if>
                         <li>
                             <a>
-                                <form>
+                                <form action="${requestScope['javax.servlet.forward.query_string']}">
                                     <select id="language" name="language" onchange="submit()">
-                                        <c:set var="langStr">${language.class.name.equals('Locale') ? language.language : language}</c:set>
+                                        <c:set var="langStr">${fn:substring(language.class.name.equals('Locale') ? language.language : language, 0, 2)}</c:set>
                                         ${langStr}
-                                        <option value="en" <c:if test="${langStr.equals('en')}">selected</c:if>>
-                                                English
-                                            </option>
-                                            <option value="nl" <c:if test="${langStr.equals('nl')}">selected</c:if>>
-                                                Nederlands
-                                            </option>
-                                        </select>
-                                    </form>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                                        <option value="en" <c:if test="${langStr eq 'en'}">selected</c:if>>
+                                            English
+                                        </option>
+                                        <option value="nl" <c:if test="${langStr eq 'nl'}">selected</c:if>>
+                                            Nederlands
+                                        </option>
+                                    </select>
+                                </form>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-            </header>
-            <!--header end-->
+            </div>
+        </header>
+        <!--header end-->
 
         <jsp:doBody/>
 
@@ -108,6 +109,7 @@
                         <div class="copyright">
                             <p>&copy; Copyright - Fotobazaar</p>
                             <br/>
+
                             <p><a href="http://translate.yandex.com">Powered by Yandex.Translator</a></p>
                         </div>
                     </div>

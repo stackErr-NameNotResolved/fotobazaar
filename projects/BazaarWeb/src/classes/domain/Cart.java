@@ -24,18 +24,16 @@ import java.util.List;
 public class Cart implements Serializable {
 
     private List<Order> orders;
-    private int orderId;
 
     private DecimalFormat df;
 
     public Cart() {
         orders = new ArrayList();
-        orderId = 0;
     }
 
-    public void addOrder(Item item, Picture picture, int aantal) {
-        orders.add(new Order(orderId, picture, item, aantal));
-        orderId++;
+    public int addOrder(Item item, Picture picture, int aantal) {
+        orders.add(new Order(orders.size(), picture, item, aantal));
+        return orders.get(orders.size() -1).getId();
     }
 
     public void removeOrder(int id) {
@@ -246,16 +244,17 @@ public class Cart implements Serializable {
         return null;
     }
 
-    public static HttpServletResponse addItemToCart(Item item, Picture picture, HttpServletRequest request, HttpServletResponse response) {
+    public static int addItemToCart(Item item, Picture picture, HttpServletRequest request, HttpServletResponse response) {
         Cart cart = Cart.readCartFromCookies(request);
         if (cart == null) {
             cart = new Cart();
         }
-        cart.addOrder(item, picture, 1);
-        return cart.saveCart(request, response);
+        int id = cart.addOrder(item, picture, 1);
+        cart.saveCart(request, response);
+        return id;
     }
 
-    public static HttpServletResponse addItemToCart(int itemId, Picture picture, HttpServletRequest request, HttpServletResponse response) {
+    public static int addItemToCart(int itemId, Picture picture, HttpServletRequest request, HttpServletResponse response) {
         return addItemToCart(Item.getItemFromId(itemId), picture, request, response);
     }
     
@@ -265,6 +264,15 @@ public class Cart implements Serializable {
         Order o = cart.getOrder(orderId);
         
         o.setPicture(picture);
+        return cart.saveCart(request, response);
+    }
+    
+    public static HttpServletResponse updateProductInCart(int orderId, int productId, HttpServletRequest request, HttpServletResponse response)
+    {
+        Cart cart = Cart.readCartFromCookies(request);
+        Order o = cart.getOrder(orderId);
+        
+        o.setItem(Item.getItemFromId(productId));
         return cart.saveCart(request, response);
     }
 }

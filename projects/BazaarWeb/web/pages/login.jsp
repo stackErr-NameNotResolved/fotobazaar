@@ -19,7 +19,17 @@
 
 
 <t:MasterPageContent title="${title}">
-    
+
+    <jsp:attribute name="script">
+        <c:if test="${not empty authmessage}">
+            <script>
+                $('#redirectMessage').modal('show');
+            </script>
+        </c:if>
+        <c:remove var="authresult" />
+        <c:remove var="authmessage" />
+    </jsp:attribute>
+
     <jsp:body>
         <div class="login-bg">
             <div class="container">
@@ -62,7 +72,6 @@
                                     <div class="modal-body">
                                         <p><fmt:message key="login.text.forgotten" /></p>
                                         <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
-
                                     </div>
                                     <div class="modal-footer">
                                         <button data-dismiss="modal" class="btn btn-default" type="button"><fmt:message key="login.button.cancel" /></button>
@@ -72,8 +81,40 @@
                             </div>
                         </div>
                         <!-- modal -->
-
                     </form>
+
+                    <!-- Message to user -->
+                    <c:set var="authmessage">
+                        <c:choose>
+                            <c:when test="${authresult.id == 1}">
+                                <fmt:message key="login.auth.messages.insufficientrights" />
+                            </c:when>
+                            <c:when test="${authresult.id == 2}">
+                                <fmt:message key="login.auth.messages.notloggedin" />
+                            </c:when>
+                        </c:choose>
+                    </c:set>
+
+                    <div id="redirectMessage" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title"><fmt:message key="login.auth.header" /></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>${authmessage}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><fmt:message key="lang.close" /></button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- End message to user -->
                 </div>
             </div>
         </div>
