@@ -113,7 +113,7 @@ public class Order implements Serializable {
         ArrayList<DBOrder> result = new ArrayList<>();
         try {
             //Select the orders
-            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM fotobazaar.Order");
+            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM fotobazaar.Order ORDER BY ORDERDATE DESC");
 
             //Iterate trough orders
             Iterator<DataRow> iterator = dbResult.iterator();            
@@ -129,9 +129,6 @@ public class Order implements Serializable {
                 //create the row
                 DBOrder order = new DBOrder(id, customer_id, orderdate, isPaid);
                 result.add(order);
-                
-                //Remove the row
-                iterator.remove();
             }
 
         } catch (Exception ex) {
