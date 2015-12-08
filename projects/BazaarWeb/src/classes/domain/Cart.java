@@ -24,18 +24,15 @@ import java.util.List;
 public class Cart implements Serializable {
 
     private List<Order> orders;
-    private int orderId;
 
     private DecimalFormat df;
 
     public Cart() {
         orders = new ArrayList();
-        orderId = 0;
     }
 
     public void addOrder(Item item, Picture picture, int aantal) {
-        orders.add(new Order(orderId, picture, item, aantal));
-        orderId++;
+        orders.add(new Order(orders.size(), picture, item, aantal));
     }
 
     public void removeOrder(int id) {
