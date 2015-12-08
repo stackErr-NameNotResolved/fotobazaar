@@ -7,6 +7,9 @@
 <c:set var="title"> <fmt:message key="payment.title" /></c:set>
 
 <%
+    if (request.getParameter("toegang") == null) {
+        response.sendRedirect("payment.jsp");
+    }
     Cart cart = Cart.readCartFromCookies(request);
     if (cart != null) {
         request.setAttribute("orders", cart.getOverview());
@@ -68,7 +71,7 @@
         <div class="col-md-10 col-md-offset-1"><hr/></div>
         <div class="col-md-8"></div>
         <div class="col-md-4">
-            <button class="btn btn-info disabled col-md-5" onclick="GoNext('payment1.jsp')">Vorige</button>
+            <button class="btn btn-info col-md-5" onclick="GoNext('payment1.jsp')">Vorige</button>
             <div class="col-md-1"></div>
             <button class="btn btn-info col-md-5 disabled" onclick="GoNext('paymentProcess.jsp')">Volgende</button>
         </div>

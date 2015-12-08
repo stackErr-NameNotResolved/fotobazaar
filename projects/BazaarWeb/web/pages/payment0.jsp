@@ -7,6 +7,9 @@
 <c:set var="title"> <fmt:message key="payment.title" /></c:set>
 
 <%
+    if (request.getParameter("toegang") == null) {
+        response.sendRedirect("payment.jsp");
+    }
     Cart cart = Cart.readCartFromCookies(request);
     if (cart != null) {
         request.setAttribute("orders", cart.getOverview());
@@ -17,8 +20,6 @@
         request.setAttribute("orderCount", 0);
         request.setAttribute("cart", new Cart());
     }
-
-
 %>
 
 <t:EmptyMasterPage title="${title}">
@@ -27,6 +28,7 @@
     </jsp:attribute>
 
     <jsp:body>
+
         <c:if test="${orderCount < 1}">
             <table width="100%">
                 <tr>

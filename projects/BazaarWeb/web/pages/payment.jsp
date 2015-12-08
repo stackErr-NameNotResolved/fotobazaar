@@ -27,10 +27,10 @@
     <jsp:attribute name="script">
         <script>
             function GoNext(pagina) {
-                $("#test1").load(pagina);
+                $("#test1").load(pagina + "?toegang");
             }
             $(function () {
-                $("#test1").load("payment0.jsp");
+                $("#test1").load("payment0.jsp?toegang");
             });
         </script>
     </jsp:attribute>
