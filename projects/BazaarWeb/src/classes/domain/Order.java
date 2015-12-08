@@ -5,8 +5,14 @@
  */
 package classes.domain;
 
+import classes.database.DataRow;
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -77,7 +83,7 @@ public class Order implements Serializable {
 
     public String generateEditLine() {
         StringBuilder sb = new StringBuilder();
-        sb.append("imageCode=").append(this.picture.getCode());        
+        sb.append("imageCode=").append(this.picture.getCode());
         sb.append("&orderId=").append(this.getId());
 
         sb.append("&startX=").append(this.picture.getStartX());
@@ -92,9 +98,46 @@ public class Order implements Serializable {
         sb.append("&Blur=").append(this.picture.getBlur());
         sb.append("&Noise=").append(this.picture.getNoise());
         sb.append("&Hue=").append(this.picture.getHue());
-        
+
         sb.append("&Update=").append(1);
 
         return sb.toString();
+    }
+
+    /**
+     * Gets all the current orders from the database
+     *
+     * @return All the dbOrders
+     */
+    public static ArrayList<DBOrder> getAllOrders() {
+        ArrayList<DBOrder> result = new ArrayList<>();
+        try {
+            //Select the orders
+            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM fotobazaar.Order");
+
+            //Iterate trough orders
+            Iterator<DataRow> iterator = dbResult.iterator();            
+            while (iterator.hasNext()) {
+                //Take the next row
+                DataRow row = iterator.next();
+
+                int id = (int) row.getData("ID");
+                int customer_id = (int) row.getData("CUSTOMER_ID");
+                Timestamp orderdate = (Timestamp) row.getData("ORDERDATE");                
+                boolean isPaid = (int) row.getData("PAID") == 1;
+                
+                //create the row
+                DBOrder order = new DBOrder(id, customer_id, orderdate, isPaid);
+                result.add(order);
+                
+                //Remove the row
+                iterator.remove();
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
     }
 }
