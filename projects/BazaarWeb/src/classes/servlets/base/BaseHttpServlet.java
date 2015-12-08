@@ -1,16 +1,27 @@
 package classes.servlets.base;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "BaseHttpServlet")
 public abstract class BaseHttpServlet extends HttpServlet {
+    private HttpSession session;
+    public HttpSession getSession(HttpServletRequest request) {
+        if (session == null) session = request.getSession(false);
+        return session;
+    }
+    
+    public HttpSession getSession() {
+        return session;
+    }
+    
     public enum ResponseStatusCodes {
 
         /**

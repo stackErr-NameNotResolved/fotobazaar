@@ -10,7 +10,6 @@
 <c:set var="title"><fmt:message key="pictureManage.title" /></c:set>
 <t:MasterPageContent title="${title}">
     <jsp:body>
-
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
