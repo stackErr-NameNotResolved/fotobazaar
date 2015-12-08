@@ -6,14 +6,13 @@
 package classes.servlets;
 
 import classes.domain.models.Account;
-
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * @author sjorsvanmierlo
@@ -38,7 +37,7 @@ public class RegisterAccountServlet extends HttpServlet {
         String password2 = request.getParameter("password2");
 
         if (password1.equals(password2)) {
-            final int RIGHT = 4;
+            final int RIGHT = 3;
             Account.registerNewAccount(username, password2, Account.Rights.Photographer);
             response.sendRedirect("pages/login.jsp");
         } else {
