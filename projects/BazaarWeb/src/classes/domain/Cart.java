@@ -31,8 +31,9 @@ public class Cart implements Serializable {
         orders = new ArrayList();
     }
 
-    public void addOrder(Item item, Picture picture, int aantal) {
+    public int addOrder(Item item, Picture picture, int aantal) {
         orders.add(new Order(orders.size(), picture, item, aantal));
+        return orders.get(orders.size() -1).getId();
     }
 
     public void removeOrder(int id) {
@@ -243,16 +244,17 @@ public class Cart implements Serializable {
         return null;
     }
 
-    public static HttpServletResponse addItemToCart(Item item, Picture picture, HttpServletRequest request, HttpServletResponse response) {
+    public static int addItemToCart(Item item, Picture picture, HttpServletRequest request, HttpServletResponse response) {
         Cart cart = Cart.readCartFromCookies(request);
         if (cart == null) {
             cart = new Cart();
         }
-        cart.addOrder(item, picture, 1);
-        return cart.saveCart(request, response);
+        int id = cart.addOrder(item, picture, 1);
+        cart.saveCart(request, response);
+        return id;
     }
 
-    public static HttpServletResponse addItemToCart(int itemId, Picture picture, HttpServletRequest request, HttpServletResponse response) {
+    public static int addItemToCart(int itemId, Picture picture, HttpServletRequest request, HttpServletResponse response) {
         return addItemToCart(Item.getItemFromId(itemId), picture, request, response);
     }
     
