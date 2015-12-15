@@ -80,17 +80,24 @@ public class PhotoUploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        boolean succes = false;//if images are uploaded correctly
+        boolean singlePartNotFail = true;//if one image did fail
 
         try {
             if (request.getPart("PicturePrice") != null && request.getParts() != null) {
                 String value = getValueFromPart(request.getPart("PicturePrice"));
                 Double price = Double.parseDouble(value);
-                Collection<Part> filePart = request.getParts(); // Retrieves <input type="file" name="file">
+                Collection<Part> filePart = request.getParts(); // Retrieves <input type="file" name="file">                
 
                 for (Part part : filePart) {
                     if (part.getContentType() != null) {//true if is image
-                        Picture.uploadPicture(part, 1, price, 200);//will return false if failed
+                        if (part.getSize() != 0L) {
+                            succes = Picture.uploadPicture(part, 1, price, 200);//will return false if failed
+
+                            if (succes == false) {
+                                singlePartNotFail = false;
+                            }
+                        }
                     }
                 }
             }
@@ -99,9 +106,15 @@ public class PhotoUploadServlet extends HttpServlet {
             System.out.println(e.getMessage());
         }
 
+        if (!singlePartNotFail) {
+            succes = false;
+        }
+
+        request.setAttribute("status", succes);
+        request.getRequestDispatcher("pages/pictureUpload.jsp").forward(request, response);
     }
 
-       /**
+    /**
      * Will return the String content of a part.
      *
      * @param part servlet response
