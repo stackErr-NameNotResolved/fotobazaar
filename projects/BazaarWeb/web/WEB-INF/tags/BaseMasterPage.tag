@@ -42,12 +42,12 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="${pageContext.servletContext.contextPath}/index.jsp">Home</a></li>
-                        <c:if test="${order_count > 0}">
+                            <c:if test="${order_count > 0}">
                             <li><a href="${pageContext.servletContext.contextPath}/pages/cart.jsp"><fmt:message
-                                    key="master.menu.cart"/> [${order_count}]</a></li>
-                        </c:if>
+                                        key="master.menu.cart"/> [${order_count}]</a></li>
+                                </c:if>
                         <li>
-                                <%--Check if user is logged in.--%>
+                            <%--Check if user is logged in.--%>
                             <c:choose>
                                 <c:when test="${account != null}">
                                     <c:set var="loginButtonText"><fmt:message key="master.menu.logout"/></c:set>
@@ -64,40 +64,69 @@
                             <form name="submitForm" method="post" action="${loginButtonAction}"></form>
                         </li>
                         <c:if test="${account != null}">
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-close-others="false" data-delay="0"
-                                   data-hover="dropdown"
-                                   data-toggle="dropdown" href="#"><fmt:message key="master.menu.admin"/>
-                                    <i class="fa fa-angle-down"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="${pageContext.servletContext.contextPath}/pages/admin/createAccount.jsp"><fmt:message
-                                                key="master.menu.admin.createAccount"/></a></li>
-                                </ul>
-                            </li>
+                            <c:if test="${account.getRight() == 1}">
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-close-others="false" data-delay="0"
+                                       data-hover="dropdown"
+                                       data-toggle="dropdown" href="#"><fmt:message key="master.menu.admin"/>
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="${pageContext.servletContext.contextPath}/pages/admin/createAccount.jsp"><fmt:message
+                                                    key="master.menu.admin.createAccount"/></a>
+                                        </li>
+                                        <li>
+                                            <a href="${pageContext.servletContext.contextPath}/pages/admin/deleteAccount.jsp"><fmt:message
+                                                    key="master.menu.admin.deleteAccount"/></a>
+                                        </li>
+                                        <li>
+                                            <a href="ItemViewServlet"><fmt:message
+                                                    key="master.menu.admin.editProducts"/></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </c:if>
+                            <c:if test="${account.getRight() == 2}">
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-close-others="false" data-delay="0"
+                                       data-hover="dropdown"
+                                       data-toggle="dropdown" href="#"><fmt:message key="master.menu.photographer"/>
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="${pageContext.servletContext.contextPath}/pages/pictureUpload.jsp"><fmt:message
+                                                    key="master.menu.photographer.addPhoto"/></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </c:if>
                         </c:if>
                         <li>
                             <a>
                                 <form action="${requestScope['javax.servlet.forward.query_string']}">
                                     <select id="language" name="language" onchange="submit()">
-                                        <c:set var="langStr">${fn:substring(language.class.name.equals('Locale') ? language.language : language, 0, 2)}</c:set>
+                                        <c:set var="langStr">${fn:substring(language.class.name.equals('Locale') ? language.language : language, 0, 3)}</c:set>
                                         ${langStr}
                                         <option value="en" <c:if test="${langStr eq 'en'}">selected</c:if>>
-                                            English
+                                                English
+                                            </option>
+                                            <option value="nl" <c:if test="${langStr eq 'nl'}">selected</c:if>>
+                                                Nederlands
                                         </option>
-                                        <option value="nl" <c:if test="${langStr eq 'nl'}">selected</c:if>>
-                                            Nederlands
-                                        </option>
-                                    </select>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
+                                        <option value="tr" <c:if test="${langStr eq 'tr'}">selected</c:if>>
+                                            Türkçe
+                                            </option>
+                                        </select>
+                                    </form>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </header>
-        <!--header end-->
+            </header>
+            <!--header end-->
 
         <jsp:doBody/>
 

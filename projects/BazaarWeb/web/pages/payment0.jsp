@@ -28,7 +28,6 @@
     </jsp:attribute>
 
     <jsp:body>
-
         <c:if test="${orderCount < 1}">
             <table width="100%">
                 <tr>
@@ -130,9 +129,9 @@
             <div class="col-md-10 col-md-offset-1"><hr/></div>
             <div class="col-md-8"></div>
             <div class="col-md-4">
-                <button class="btn btn-info disabled col-md-5" onclick="GoNext('payment0.jsp')">Vorige</button>
+                <button class="btn btn-info disabled col-md-5" onclick="GoNext('payment0.jsp')"><fmt:message key="payment.back"/></button>
                 <div class="col-md-1"></div>
-                <button class="btn btn-info col-md-5" onclick="GoNext('payment1.jsp')">Volgende</button>
+                <button class="btn btn-info col-md-5" onclick="GoNext('payment1.jsp')"><fmt:message key="payment.next"/></button>
             </div>
 
         </c:if>

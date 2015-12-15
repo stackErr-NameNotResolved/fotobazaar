@@ -6,17 +6,12 @@ package classes.servlets;
  * and open the template in the editor.
  */
 import classes.domain.Picture;
-import classes.domain.Picture;
-import java.io.ByteArrayOutputStream;
 import java.io.BufferedReader;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;

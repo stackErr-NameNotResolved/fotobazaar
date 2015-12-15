@@ -18,10 +18,6 @@ public abstract class BaseHttpServlet extends HttpServlet {
         return session;
     }
     
-    public HttpSession getSession() {
-        return session;
-    }
-    
     public enum ResponseStatusCodes {
 
         /**

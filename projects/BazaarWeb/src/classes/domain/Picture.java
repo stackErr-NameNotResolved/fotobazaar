@@ -261,7 +261,7 @@ public class Picture implements Serializable {
         }
     }
 
-    public static byte[] downloadImage(String imageCode, String iType) {
+    public static byte[] downloadImage(String imageCode, String iType, boolean isAdmin) {
         DataTable result = null;
         byte[] blobbytes = null;
         String imageType = "";
@@ -269,7 +269,7 @@ public class Picture implements Serializable {
         //map input to query
         if (iType.equals("big")) {
             imageType = "DATA_BIG";
-            if (false) {//TODO: if the user is not admin
+            if (!isAdmin) {
                 imageType = "DATA_SMALL";
             }
         } else {
@@ -485,17 +485,9 @@ public class Picture implements Serializable {
         if (dt != null && dt.containsData()) {
             if ((long) dt.getDataFromRow(0, "COUNT") != 0) {
                 total = classes.domain.Picture.generateNewID();
-                //System.out.println("code was already used");
+                System.out.println("code was already used");
             }
-            //        else {
-            //            try {
-            //                DatabaseConnector.Instance.executeNonQuery("INSERT INTO `photo`(`ID`, `CODE`, `PHOTOGRAPHER_ID`, `PRICE`, `DATA_BIG`) VALUES (?,?,?,?,?)", nextId, total, 1, 1, "data");
-            //            } catch (Exception ex) {
-            //            }
-            //        }
         }
-
-        //System.out.println(total);
         return total;
     }
 

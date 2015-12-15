@@ -6,6 +6,8 @@
 package classes.servlets;
 
 import classes.domain.Picture;
+import classes.domain.models.Account;
+import classes.servlets.base.BaseHttpServlet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +19,7 @@ import java.io.IOException;
  * @author Jip
  */
 @WebServlet(name = "ShowPictureServlet", urlPatterns = {"/ShowPictureServlet"})
-public class ShowPictureServlet extends HttpServlet {
+public class ShowPictureServlet extends BaseHttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,7 +56,15 @@ public class ShowPictureServlet extends HttpServlet {
             }
 
             if (Picture.isPicturePublished(imageCode)) {
-                byte[] image = Picture.downloadImage(imageCode, imageSize);
+                boolean admin = false;
+                if (getSession(request).getAttribute("account")!=null) {
+                    Account tempAccount = (Account)getSession(request).getAttribute("account");
+                    if (tempAccount.getRight()==1) {
+                        admin = true;
+                    }
+                }
+                
+                byte[] image = Picture.downloadImage(imageCode, imageSize, admin);
                 if (image != null) {
                     response.getOutputStream().write(image);
                 }

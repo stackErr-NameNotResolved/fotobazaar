@@ -43,7 +43,7 @@ public class ImageDownloadServlet extends BaseHttpServlet {
             }
             
             if (Picture.isPicturePublished(imageCode)) {
-                byte[] image = Picture.downloadImage(imageCode, imageSize);
+                byte[] image = Picture.downloadImage(imageCode, imageSize, true);
                 if (image != null) {
                     response.setContentType("Image/JPG");
                     response.setHeader("Content-disposition", "attachment; filename="+ imageCode +".jpg");
