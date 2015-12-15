@@ -10,7 +10,6 @@ package classes.domain;
  * @author Bas
  */
 public enum ELoginTypes {
-    ADMINISTRATOR,
     PRODUCER,
     PHOTOGRAPHER,
     CUSTOMER
