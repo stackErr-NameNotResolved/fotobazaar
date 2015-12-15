@@ -5,6 +5,7 @@
  */
 package classes.domain;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -13,10 +14,13 @@ import org.junit.Test;
  */
 public class TranslateTest {
 
+    @Before
+    public void cleanBeforeTest()
+    {
+    }
+    
     @Test
     public void testTranslator() {
-        System.out.println(Translate.translate("mok, wit, met handvat", "nl", "en"));
         
-        System.out.println(Translate.translate("", "nl", "en"));
     }
 }
