@@ -74,13 +74,12 @@ public class Account extends DataModel {
             if (data < 0) {
                 return false;
             }
-            if (data == 1 && type == ELoginTypes.ADMINISTRATOR) {
+
+            if (data == 1 && type == ELoginTypes.PRODUCER) {
                 return true;
-            } else if (data == 2 && type == ELoginTypes.PRODUCER) {
+            } else if (data == 2 && type == ELoginTypes.PHOTOGRAPHER) {
                 return true;
-            } else if (data == 3 && type == ELoginTypes.PHOTOGRAPHER) {
-                return true;
-            } else if (data == 4 && type == ELoginTypes.CUSTOMER) {
+            } else if (data == 3 && type == ELoginTypes.CUSTOMER) {
                 return true;
             } else {
                 return false;
@@ -102,24 +101,24 @@ public class Account extends DataModel {
                 ex.printStackTrace();
             }
 
-            if (dbResult.equals(StatementResult.ERROR) || dbResult.equals(StatementResult.NO_ROWS_UPDATED)) {
-                return false;
+            if (dbResult != null) {
+                if (dbResult.equals(StatementResult.ROWS_UPDATED)) {
+                    return true;
+                }
             }
 
-            result = true;
+            return false;
         } else {
-            result = false;
+            return false;
         }
-
-        return result;
     }
 
     public enum Rights {
+
         // Banned.
         BannedCustomer(-3),
         BannedPhotographer(-2),
         BannedProducer(-1),
-
         // Active.
         Producer(1),
         Photographer(2),

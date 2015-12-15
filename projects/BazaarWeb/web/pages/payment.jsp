@@ -1,4 +1,4 @@
-<%@page import="classes.domain.Order"%>
+<%@page import="classes.domain.OrderItem"%>
 <%@page import="classes.domain.Cart"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
@@ -13,7 +13,7 @@
         request.setAttribute("orderCount", cart.getOverview().length);
         request.setAttribute("cart", cart);
     } else {
-        request.setAttribute("orders", new Order[]{});
+        request.setAttribute("orders", new OrderItem[]{});
         request.setAttribute("orderCount", 0);
         request.setAttribute("cart", new Cart());
     }
@@ -47,6 +47,11 @@
     </jsp:attribute>
 
     <jsp:body>
+        <c:if test="${pageContext.session.getAttribute('payment_message') == 1}">
+            <c:set var="paymentMessage"><fmt:message key="payment.message"/></c:set>
+            <c:set var="payment_message" value="${0}" scope="session"></c:set>
+        </c:if>
+        <font style="color: red;">${paymentMessage}</font>
         <c:if test="${orderCount < 1}">
             <table width="100%">
                 <tr>

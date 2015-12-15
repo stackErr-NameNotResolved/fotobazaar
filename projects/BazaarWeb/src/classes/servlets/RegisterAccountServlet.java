@@ -42,8 +42,7 @@ public class RegisterAccountServlet extends BaseHttpServlet {
         if (!username.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
 
             if (password1.equals(password2)) {
-                final int RIGHT = 3;
-                Account.registerNewAccount(username, password2, Account.Rights.Photographer);
+            Account.registerNewAccount(username, password2, Account.Rights.Customer);
 
                 HttpSession session = request.getSession(false);
                 String encrypted = Session.generateSessionData(username, request.getRemoteAddr());
