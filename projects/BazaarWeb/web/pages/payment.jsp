@@ -36,6 +36,11 @@
     </jsp:attribute>
 
     <jsp:body>
+        <c:if test="${pageContext.session.getAttribute('payment_message') == 1}">
+            <c:set var="paymentMessage"><fmt:message key="payment.message"/></c:set>
+            <c:set var="payment_message" value="${0}" scope="session"></c:set>
+        </c:if>
+        <font style="color: red;">${paymentMessage}</font>
         <c:if test="${orderCount < 1}">
             <table width="100%">
                 <tr>
@@ -64,3 +69,6 @@
         </c:if>
     </jsp:body>
 </t:MasterPageContent>
+<%
+    session.setAttribute("payment_message", 0);
+%>
