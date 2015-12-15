@@ -9,6 +9,14 @@
 <%@include file="/pages/langInclude.jsp" %>
 
 <c:set var="title"> <fmt:message key="registration.title" /></c:set>
+<%
+    Object o = request.getParameter("toegang");
+    if(o != null)
+    {
+        request.setAttribute("redirect", "true");
+    }
+%>
+
 <t:EmptyMasterPage title="${title}">
     <c:set var="head"><fmt:message key="registration.head" /></c:set>
     <c:set var="details"><fmt:message key="registration.details" /></c:set>
@@ -18,16 +26,17 @@
     <c:set var="submit"><fmt:message key="registration.submit" /></c:set>
     <c:set var="alreadyregistered"><fmt:message key="registration.alreadyregistered" /></c:set>
     <c:set var="login"><fmt:message key="registration.login" /></c:set>
-    <div class="registration-bg">
-        <div class="container">
+        <div class="registration-bg">
+            <div class="container">
 
-            <form class="form-signin wow fadeInUp" role="form" action="../RegisterAccountServlet" method="post" enctype="multipart/form-data">
-                <h2 class="form-signin-heading">${head}</h2>
+                <form class="form-signin wow fadeInUp" role="form" action="../RegisterAccountServlet" method="post" enctype="multipart/form-data">
+                    <h2 class="form-signin-heading">${head}</h2>
                 <div class="login-wrap">
                     <p> ${details}</p>
                     <input type="text" name="username" class="form-control" placeholder="${username}" autofocus="">
                     <input type="password" name="password1" class="form-control" placeholder="${password}">
                     <input type="password" name="password2" class="form-control" placeholder="${retypepassword}">
+                    <input type="hidden" name="redirect" value="${redirect}">
                     <button class="btn btn-lg btn-login btn-block" type="submit">${submit}</button>
 
                     <div class="registration">
@@ -40,6 +49,6 @@
             </form>
 
         </div>
-     </div>
-    
+    </div>
+
 </t:EmptyMasterPage> 

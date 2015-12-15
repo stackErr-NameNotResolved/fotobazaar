@@ -28,7 +28,6 @@
     </jsp:attribute>
 
     <jsp:body>
-
         <c:if test="${orderCount < 1}">
             <table width="100%">
                 <tr>

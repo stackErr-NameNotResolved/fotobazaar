@@ -9,7 +9,6 @@ import classes.database.DataRow;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,22 +19,32 @@ import java.util.Iterator;
  */
 public class OrderItem implements Serializable {
 
-    private int id;
+    private int orderId;
     private Picture picture;
     private Item item;
     private int amount;
 
     private DecimalFormat df;
 
-    public OrderItem(int id, Picture picture, Item item, int amount) {
+    public OrderItem(){}
+    
+    public OrderItem(int orderId, Picture picture, Item item, int amount) {
         this.picture = picture;
         this.item = item;
         this.amount = amount;
-        this.id = id;
+        this.orderId = orderId;
+    }
+    
+     public OrderItem(int orderId, int itemId, int itemAmount, int photoId, int startX, int startY, int endX, int endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip) {
+        this.orderId = orderId;        
+        this.item = Item.getItemFromId(itemId);
+        this.amount = itemAmount;        
+        this.picture = new Picture(startX, startY, endX, endY, brightness, sepia, noise, blur, saturation, hue, clip);
+        this.picture.setId(photoId);
     }
 
     public int getId() {
-        return id;
+        return orderId;
     }
 
     public int getAmount() {
@@ -105,36 +114,46 @@ public class OrderItem implements Serializable {
     }
 
     /**
-     * Gets all the current orders from the database
-     *
-     * @return All the dbOrders
+     * Get all the items and picture for the specified order
+     * @param orderId The order id
+     * @return List with items
      */
-    public static ArrayList<Order> getAllOrders() {
-        ArrayList<Order> result = new ArrayList<>();
-        try {
+    public static ArrayList<OrderItem> getItemsForOrder(int orderId){
+        ArrayList<OrderItem> result = new ArrayList<>();
+        
+         try {
             //Select the orders
-            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM fotobazaar.Order ORDER BY ORDERDATE DESC");
+            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM fotobazaar.item_per_order WHERE ORDER_ID = ?", orderId);
 
             //Iterate trough orders
             Iterator<DataRow> iterator = dbResult.iterator();            
             while (iterator.hasNext()) {
                 //Take the next row
                 DataRow row = iterator.next();
-
-                int id = (int) row.getData("ID");
-                int customer_id = (int) row.getData("CUSTOMER_ID");
-                Timestamp orderdate = (Timestamp) row.getData("ORDERDATE");                
-                boolean isPaid = (int) row.getData("PAID") == 1;
+                 
+                int itemId = (int) row.getData("ITEM_ID");        
+                int itemAmount = (int) row.getData("AMOUNT");    
+                int photoId = (int) row.getData("PHOTO_ID");    
+                int startX = (int) row.getData("START_X");    
+                int startY = (int) row.getData("START_Y");    
+                int endX = (int) row.getData("END_X");    
+                int endY = (int) row.getData("END_Y");    
+                int brightness = (int) row.getData("BRIGHTNESS");    
+                int sepia = (int) row.getData("SEPIA");    
+                int noise = (int) row.getData("NOISE");    
+                int blur = (int) row.getData("BLUR");    
+                int saturation = (int) row.getData("SATURATION");    
+                int hue = (int) row.getData("HUE");    
+                int clip = (int) row.getData("CLIP");    
                 
                 //create the row
-                Order order = new Order(id, customer_id, orderdate, isPaid);
+                OrderItem order = new OrderItem(orderId, itemId, itemAmount, photoId, startX, startY, endX, endY, brightness, sepia, noise, blur, saturation, hue, clip);
                 result.add(order);
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
         return result;
     }
 }

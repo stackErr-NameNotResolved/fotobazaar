@@ -43,7 +43,12 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td style="vertical-align: middle;"><button class="btn bg-blue btn-block"><i class="fa fa-info-circle"></i> ${btnDetails}</button></td>
+                                <td style="vertical-align: middle;">
+                                    <form role="form" action="../OrderDetailOverviewServlet" method="GET" enctype="multipart/form-data" >
+                                        <input type="hidden" name="orderId" value="${order.getId()}"/> 
+                                        <button class="btn bg-blue btn-block"><i class="fa fa-info-circle"></i> ${btnDetails}</button>
+                                    </form>
+                                </td>
                             </tr>                        
                         </c:forEach>
                     </tbody>

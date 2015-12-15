@@ -17,6 +17,17 @@
         request.setAttribute("orderCount", 0);
         request.setAttribute("cart", new Cart());
     }
+    
+    Object data = session.getAttribute("PaymentPage");
+    if(data == null)
+    {
+        request.setAttribute("PaymentPage", "payment0.jsp");
+    }
+    else
+    {
+        request.setAttribute("PaymentPage", session.getAttribute("PaymentPage"));
+        session.removeAttribute("PaymentPage"); 
+    }
 %>
 
 <t:MasterPageContent title="${title}">
@@ -27,15 +38,20 @@
     <jsp:attribute name="script">
         <script>
             function GoNext(pagina) {
-                $("#test1").load(pagina + "?toegang");
+                $("#payment").load(pagina + "?toegang");
             }
             $(function () {
-                $("#test1").load("payment0.jsp?toegang");
+                $("#payment").load("${PaymentPage}?toegang");
             });
         </script>
     </jsp:attribute>
 
     <jsp:body>
+        <c:if test="${pageContext.session.getAttribute('payment_message') == 1}">
+            <c:set var="paymentMessage"><fmt:message key="payment.message"/></c:set>
+            <c:set var="payment_message" value="${0}" scope="session"></c:set>
+        </c:if>
+        <font style="color: red;">${paymentMessage}</font>
         <c:if test="${orderCount < 1}">
             <table width="100%">
                 <tr>
@@ -58,8 +74,8 @@
         </c:if>
 
         <c:if test="${orderCount > 0}">
-            <input type="hidden" onload="GoNext('payment0.jsp')"/>
-            <div class="col-md-12" id="test1">
+            <input type="hidden" onload="GoNext(${PaymentPage})"/>
+            <div class="col-md-12" id="payment">
             </div>
         </c:if>
     </jsp:body>

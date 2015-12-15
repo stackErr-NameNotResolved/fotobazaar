@@ -8,10 +8,9 @@ package classes.domain;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
-
-import javax.imageio.ImageIO;
-import javax.servlet.http.Part;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,6 +24,8 @@ import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.servlet.http.Part;
 
 /**
  * @author Jip
@@ -78,6 +79,21 @@ public class Picture implements Serializable {
         }
     }
 
+    public Picture(float startX, float startY, float endX, float endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip) {
+        this.code = "";
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+        this.brightness = brightness;
+        this.sepia = sepia;
+        this.noise = noise;
+        this.blur = blur;
+        this.saturation = saturation;
+        this.hue = hue;
+        this.clip = clip;
+    }
+    
     public float getStartX() {
         return startX;
     }
@@ -556,7 +572,7 @@ public class Picture implements Serializable {
 
         return sb.toString();
     }
-
+   
     private String formatDouble(double value) {
         if (df == null) {
             df = new DecimalFormat();
