@@ -1,8 +1,7 @@
 package classes.servlets.fragments;
 
 import classes.domain.Cart;
-import classes.domain.Item;
-import classes.domain.Order;
+import classes.domain.OrderItem;
 import classes.domain.Picture;
 import classes.servlets.base.BaseHttpServlet;
 
@@ -31,7 +30,7 @@ public class CartServletFragment extends BaseHttpServlet {
         {
             data = request.getParameter("id_amount");
             if (!data.equals("")) {
-                Order o = cart.getOrder(Integer.parseInt(data)); 
+                OrderItem o = cart.getOrder(Integer.parseInt(data));
                 data = request.getParameter("amount");
                 o.setAmount(Integer.parseInt(data));
             }
@@ -97,7 +96,7 @@ public class CartServletFragment extends BaseHttpServlet {
 
             writer.append("<tbody>");
 
-            for (Order o : crt.getOverview()) {
+            for (OrderItem o : crt.getOverview()) {
 
                 writer.append("<tr>"
                         + "<td" + styletag + ">" + o.getItem().toString() + " + " + getLocal(request, "cart.foto") + "</td>"

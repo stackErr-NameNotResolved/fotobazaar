@@ -9,7 +9,7 @@
     <jsp:attribute name="script">
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>  
         <script>
-            function printDiv(divName) {
+            function plotDiv(divName) {
                 var printContents = document.getElementById(divName).innerHTML;
                 var originalContents = document.body.innerHTML;
 
@@ -24,7 +24,7 @@
     <jsp:body>
         <div class="container">
             <div class="row">
-                <button onclick = "printDiv('indexChart')" class="btn bg-green margin btn pull-right"><i class="fa fa-save pr-5"></i><fmt:message key="indexChart.print"/></button>
+                <button onclick = "plotDiv('indexChart')" class="btn bg-green margin btn pull-right"><i class="fa fa-save pr-5"></i><fmt:message key="indexChart.print"/></button>
             </div>
             <div class="row">
                 <div id="indexChart">

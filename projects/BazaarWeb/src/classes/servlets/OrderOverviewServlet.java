@@ -5,7 +5,7 @@
  */
 package classes.servlets;
 
-import classes.domain.Order;
+import classes.domain.OrderItem;
 import classes.servlets.base.BaseHttpServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -59,7 +59,7 @@ public class OrderOverviewServlet extends BaseHttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        getSession(request).setAttribute("orders", Order.getAllOrders());
+        getSession(request).setAttribute("orders", OrderItem.getAllOrders());
         response.sendRedirect("pages/orderOverview.jsp");
 
     }

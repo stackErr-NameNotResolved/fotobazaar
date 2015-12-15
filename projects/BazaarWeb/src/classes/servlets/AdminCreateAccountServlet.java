@@ -5,15 +5,12 @@ import classes.domain.models.Account;
 import classes.servlets.base.JsonServlet;
 
 import javax.json.JsonObjectBuilder;
-import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "AdminCreateAccountServlet", urlPatterns = {"/AdminCreateAccountServlet"}, initParams = {
-        @WebInitParam(name = "rights", value = "1")
-})
+@WebServlet(name = "AdminCreateAccountServlet", urlPatterns = {"/AdminCreateAccountServlet"})
 public class AdminCreateAccountServlet extends JsonServlet {
 
     @Override

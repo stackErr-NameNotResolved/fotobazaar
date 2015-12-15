@@ -161,7 +161,31 @@ public class DatabaseConnector {
             }
             return (statement.executeUpdate() == 0 ? StatementResult.NO_ROWS_UPDATED : StatementResult.ROWS_UPDATED);
         } catch (SQLException ex) {
+            ex.printStackTrace();
             return StatementResult.ERROR;
         }
+    }
+
+    public long executeInsert(String command, Object... params) {
+        if (!this.isOpen()) throw new IllegalStateException("The connection to the database is not open.");
+
+        PreparedStatement statement;
+        try {
+            statement = connection.prepareStatement(command, Statement.RETURN_GENERATED_KEYS);
+            for (int i = 0; i < params.length; i++) {
+                Object parm = params[i];
+                statement.setObject(i + 1, parm);
+            }
+            statement.executeUpdate();
+
+            try (ResultSet genKeys = statement.getGeneratedKeys()) {
+                if (genKeys.next()) {
+                    return genKeys.getLong(1);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
     }
 }

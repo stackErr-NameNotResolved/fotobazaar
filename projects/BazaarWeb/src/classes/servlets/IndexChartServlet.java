@@ -80,11 +80,6 @@ public class IndexChartServlet extends HttpServlet {
 
             IndexChartItem tempItem = new IndexChartItem((String) photoIdArray[0], (int) row[0], (int) row[1],(String)costumerInfoArray[0],(String)costumerInfoArray[1],(String)costumerInfoArray[2],(String)costumerInfoArray[3],(String)costumerInfoArray[4]);
             items.add(tempItem);
-            items.add(tempItem);
-            items.add(tempItem);
-            items.add(tempItem);
-            items.add(tempItem);
-            items.add(tempItem);
         }
 
         request.setAttribute("items", items);
