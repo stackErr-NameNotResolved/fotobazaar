@@ -81,13 +81,16 @@
                             <a>
                                 <form action="${requestScope['javax.servlet.forward.query_string']}">
                                     <select id="language" name="language" onchange="submit()">
-                                        <c:set var="langStr">${fn:substring(language.class.name.equals('Locale') ? language.language : language, 0, 2)}</c:set>
+                                        <c:set var="langStr">${fn:substring(language.class.name.equals('Locale') ? language.language : language, 0, 3)}</c:set>
                                         ${langStr}
                                         <option value="en" <c:if test="${langStr eq 'en'}">selected</c:if>>
                                             English
                                         </option>
                                         <option value="nl" <c:if test="${langStr eq 'nl'}">selected</c:if>>
                                             Nederlands
+                                        </option>
+                                        <option value="tr" <c:if test="${langStr eq 'tr'}">selected</c:if>>
+                                            Türkçe
                                         </option>
                                     </select>
                                 </form>
