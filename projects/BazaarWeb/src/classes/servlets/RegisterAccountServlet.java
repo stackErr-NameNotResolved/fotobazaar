@@ -37,8 +37,7 @@ public class RegisterAccountServlet extends HttpServlet {
         String password2 = request.getParameter("password2");
 
         if (password1.equals(password2)) {
-            final int RIGHT = 3;
-            Account.registerNewAccount(username, password2, Account.Rights.Photographer);
+            Account.registerNewAccount(username, password2, Account.Rights.Customer);
             response.sendRedirect("pages/login.jsp");
         } else {
             response.sendRedirect("pages/registration.jsp");
