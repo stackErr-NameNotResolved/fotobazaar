@@ -35,6 +35,7 @@
     <filter-mapping>
         <filter-name>auth_producer</filter-name>
         <url-pattern>/pages/admin/*</url-pattern>
+        <url-pattern>/pages/json/account/*</url-pattern>
         <url-pattern>/pages/orderOverview.jsp</url-pattern>
     </filter-mapping>
     

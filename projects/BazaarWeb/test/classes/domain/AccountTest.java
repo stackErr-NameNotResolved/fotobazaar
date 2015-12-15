@@ -86,6 +86,11 @@ public class AccountTest extends TestCase {
         Assert.assertEquals("Should return false", expected4, actual4);       
         
     }
+
+    @Test
+    public void testCreateAccount() {
+        Account.registerNewAccount("a@test.nl", "a", Account.Rights.Producer);
+    }
     
     
     

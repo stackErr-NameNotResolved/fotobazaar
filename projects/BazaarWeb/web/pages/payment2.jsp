@@ -21,7 +21,7 @@
         request.setAttribute("cart", new Cart());
     }
     
-    session.setAttribute("bank_confirmed", false); 
+    session.setAttribute("bankFlow", "choice");
 %>
 
 <t:EmptyMasterPage title="${title}">
@@ -46,7 +46,7 @@
                     &nbsp;
                 </td>
                 <td>
-                    <a href="paymentProcess.jsp" style="text-decoration:none">
+                    <a href="paymentService.jsp" style="text-decoration:none">
                         <img src="https://static.webshopapp.com/shops/084012/files/035267280/ideal-logo-png.png" width="75px" />
                     </a>
                 </td>

@@ -5,24 +5,21 @@
  */
 package classes.servlets;
 
-import classes.database.DataTable;
-import classes.database.DatabaseConnector;
-import classes.domain.IndexChartItem;
+import classes.domain.OrderItem;
+import classes.servlets.base.BaseHttpServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Jip
+ * @author sjorsvanmierlo
  */
-@WebServlet(name = "IndexChartServlet", urlPatterns = {"/IndexChartServlet"})
-public class IndexChartServlet extends HttpServlet {
+@WebServlet(name = "OrderDetailOverviewServlet", urlPatterns = {"/OrderDetailOverviewServlet"})
+public class OrderDetailOverviewServlet extends BaseHttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +38,10 @@ public class IndexChartServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet IndexChartServlet</title>");
+            out.println("<title>Servlet OrderDetailOverviewServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet IndexChartServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet OrderDetailOverviewServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,32 +59,17 @@ public class IndexChartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int orderId = 1;
+        //processRequest(request, response);
+
+        int orderId;
         try {
             orderId = Integer.parseInt(request.getParameter("orderId"));
         } catch (NumberFormatException ex) {
             orderId = 0;
         }
-        DataTable results = DatabaseConnector.getInstance().executeQuery("SELECT ITEM_ID,AMOUNT,PHOTO_ID FROM item_per_order WHERE ORDER_ID = ?", orderId);
-
-        ArrayList<IndexChartItem> items = new ArrayList<>();
-
-        while (true) {
-            Object[] row = results.getNextRow();
-            if (row.length == 0) {
-                break;
-            }
-            DataTable photoId = DatabaseConnector.getInstance().executeQuery("SELECT CODE FROM PHOTO WHERE ID = ?", row[2]);
-            Object[] photoIdArray = photoId.getNextRow();
-            DataTable costumerInfo = DatabaseConnector.getInstance().executeQuery("SELECT NAME, ADDRESS, ZIPCODE,CITY,EMAIL FROM CUSTOMER WHERE ID = (SELECT CUSTOMER_ID FROM `ORDER` WHERE ID = ?)", orderId);
-            Object[] costumerInfoArray = costumerInfo.getNextRow();
-
-            IndexChartItem tempItem = new IndexChartItem((String) photoIdArray[0], (int) row[0], (int) row[1],(String)costumerInfoArray[0],(String)costumerInfoArray[1],(String)costumerInfoArray[2],(String)costumerInfoArray[3],(String)costumerInfoArray[4]);
-            items.add(tempItem);
-        }
-
-        request.setAttribute("items", items);
-        request.getRequestDispatcher("pages/indexChart.jsp").forward(request, response);
+        getSession(request).setAttribute("orderId", orderId);
+        getSession(request).setAttribute("orderItems", OrderItem.getItemsForOrder(orderId));
+        response.sendRedirect("pages/orderDetailOverview.jsp");
     }
 
     /**
@@ -101,7 +83,8 @@ public class IndexChartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+
     }
 
     /**

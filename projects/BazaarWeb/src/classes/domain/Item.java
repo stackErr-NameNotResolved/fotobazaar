@@ -24,6 +24,8 @@ public class Item implements Serializable {
     private boolean active;
     private double price;
     private String description;
+
+   
     private DecimalFormat df;
 
     public Item() {
@@ -62,6 +64,10 @@ public class Item implements Serializable {
     public boolean getActive() {
         return this.active;
     }
+     public String getDescription() {
+        return description;
+    }
+    
 
     @Override
     public String toString() {

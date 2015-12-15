@@ -8,8 +8,15 @@ import classes.database.orm.annotations.Column;
 import classes.database.orm.annotations.Id;
 import classes.database.orm.annotations.Table;
 import classes.domain.AESEncryption;
-import classes.domain.LoginStatus;
 import classes.domain.ELoginTypes;
+import classes.domain.LoginStatus;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Table(name = "ACCOUNT")
 public class Account extends DataModel {
@@ -26,6 +33,36 @@ public class Account extends DataModel {
     @Column(name = "ACCESS")
     private int right;
 
+    /**
+     * Gets all the {@link Account accounts} in the database.
+     *
+     * @return All the {@link Account accounts} in the database.
+     */
+    public static List<Account> getAll() {
+        DataTable table = DatabaseConnector.getInstance().executeQuery("SELECT id, username, password, access FROM account");
+        ResultSet resultSet = table.getResultSet();
+        if (table.containsData()) {
+            try {
+                List<Account> result = new ArrayList<>(table.getRowCount());
+                while (resultSet.next()) {
+                    Account a = new Account();
+
+                    a.id = resultSet.getInt(1);
+                    a.username = resultSet.getString(2);
+                    a.password = resultSet.getString(3);
+                    a.right = resultSet.getInt(4);
+
+                    result.add(a);
+                }
+                return result;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
     public int getId() {
         return id;
     }
@@ -40,6 +77,12 @@ public class Account extends DataModel {
 
     public int getRight() {
         return right;
+    }
+
+    public String getRightName() {
+        Rights right = Rights.valueOf(getRight());
+        if (right == null) return "";
+        return right.toString();
     }
 
     public void setUsername(String username) {
@@ -96,7 +139,7 @@ public class Account extends DataModel {
 
             String encryptedPassword = AESEncryption.encrypt(password, username);
             try {
-                dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO account (USERNAME, PASSWORD, ACCESS) VALUES (?,?,?) ", username, encryptedPassword, right.toString());
+                dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO account (USERNAME, PASSWORD, ACCESS) VALUES (?,?,?) ", username, encryptedPassword, right.right);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -119,10 +162,23 @@ public class Account extends DataModel {
         BannedCustomer(-3),
         BannedPhotographer(-2),
         BannedProducer(-1),
+
         // Active.
         Producer(1),
         Photographer(2),
         Customer(3);
+
+        private static Map<Integer, Rights> map = new HashMap<>();
+
+        static {
+            for (Rights rights : Rights.values()) {
+                map.put(rights.getRight(), rights);
+            }
+        }
+
+        public static Rights valueOf(int right) {
+            return map.get(right);
+        }
 
         public int getRight() {
             return right;
@@ -136,7 +192,9 @@ public class Account extends DataModel {
 
         @Override
         public String toString() {
-            return String.valueOf(right);
+            Rights rights = valueOf(right);
+            if (rights == null) return "";
+            return rights.name();
         }
     }
 }
