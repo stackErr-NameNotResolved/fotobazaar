@@ -6,12 +6,10 @@
 package classes.servlets;
 
 import classes.domain.Cart;
-import classes.domain.Order;
+import classes.domain.OrderItem;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -84,7 +82,7 @@ public class CartServlet extends HttpServlet {
             return;
 
         Cart cart = Cart.readCartFromCookies(request);
-        Order o = cart.getOrder(iId);
+        OrderItem o = cart.getOrder(iId);
         o.setAmount(iNewAantal);
         
         cart.saveCart(request, response);

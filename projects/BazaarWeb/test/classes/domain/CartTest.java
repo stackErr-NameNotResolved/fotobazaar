@@ -42,7 +42,7 @@ public class CartTest {
         cart.addOrder(Item.getItemFromId(1), new Picture(), 1);
         
         // Edit the item from the cart
-        Order o = cart.getOrder(0);
+        OrderItem o = cart.getOrder(0);
         o.setAmount(3);
         
         assertEquals(3, cart.getOrder(0).getAmount());
