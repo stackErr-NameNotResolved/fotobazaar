@@ -91,21 +91,13 @@
                                 <li class="dropdown">
                                     <a class="dropdown-toggle" data-close-others="false" data-delay="0"
                                        data-hover="dropdown"
-                                       data-toggle="dropdown" href="#"><fmt:message key="master.menu.admin"/>
+                                       data-toggle="dropdown" href="#"><fmt:message key="master.menu.photographer"/>
                                         <i class="fa fa-angle-down"></i>
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="${pageContext.servletContext.contextPath}/pages/admin/createAccount.jsp"><fmt:message
-                                                    key="master.menu.admin.createAccount"/></a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.servletContext.contextPath}/pages/admin/deleteAccount.jsp"><fmt:message
-                                                    key="master.menu.admin.deleteAccount"/></a>
-                                        </li>
-                                        <li>
-                                            <a href="ItemViewServlet"><fmt:message
-                                                    key="master.menu.admin.editProducts"/></a>
+                                            <a href="${pageContext.servletContext.contextPath}/pages/pictureUpload.jsp"><fmt:message
+                                                    key="master.menu.photographer.addPhoto"/></a>
                                         </li>
                                     </ul>
                                 </li>
