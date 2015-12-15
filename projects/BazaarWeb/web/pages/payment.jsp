@@ -69,6 +69,3 @@
         </c:if>
     </jsp:body>
 </t:MasterPageContent>
-<%
-    session.setAttribute("payment_message", 0);
-%>

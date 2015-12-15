@@ -73,7 +73,6 @@
         <div class="col-md-4">
             <button class="btn btn-info col-md-5" onclick="GoNext('payment1.jsp')"><fmt:message key="payment.back"/></button>
             <div class="col-md-1"></div>
-            <button class="btn btn-info col-md-5 disabled" onclick="GoNext('paymentService.jsp')">Volgende</button>
             <button class="btn btn-info col-md-5 disabled" onclick="GoNext('paymentProcess.jsp')"><fmt:message key="payment.next"/></button>
         </div>
     </jsp:body>
