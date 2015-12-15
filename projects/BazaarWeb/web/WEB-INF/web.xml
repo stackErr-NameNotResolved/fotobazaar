@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+    <!-- Filters -->
     <filter>
         <filter-name>auth_producer</filter-name>
         <filter-class>classes.filters.AuthenticationFilter</filter-class>
@@ -11,12 +12,15 @@
             <param-value>1</param-value>
         </init-param>
     </filter>
+
+    <!-- Filter mappings -->
     <filter-mapping>
         <filter-name>auth_producer</filter-name>
         <url-pattern>/pages/admin/*</url-pattern>
         <url-pattern>/pages/orderOverview.jsp</url-pattern>
     </filter-mapping>
 
+    <!-- Error pages -->
     <error-page>
         <error-code>500</error-code>
         <location>/WEB-INF/pages/error.jsp</location>
