@@ -5,8 +5,13 @@
  */
 package classes.domain;
 
+import classes.database.DataRow;
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -76,6 +81,40 @@ public class Order implements Serializable {
      */
     public boolean isPaid() {
         return isPaid;
+    }
+    
+    /**
+     * Gets all the current orders from the database
+     *
+     * @return All the dbOrders
+     */
+    public static ArrayList<Order> getAllOrders() {
+        ArrayList<Order> result = new ArrayList<>();
+        try {
+            //Select the orders
+            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM fotobazaar.Order ORDER BY ORDERDATE DESC");
+
+            //Iterate trough orders
+            Iterator<DataRow> iterator = dbResult.iterator();            
+            while (iterator.hasNext()) {
+                //Take the next row
+                DataRow row = iterator.next();
+
+                int id = (int) row.getData("ID");
+                int customer_id = (int) row.getData("CUSTOMER_ID");
+                Timestamp orderdate = (Timestamp) row.getData("ORDERDATE");                
+                boolean isPaid = (int) row.getData("PAID") == 1;
+                
+                //create the row
+                Order order = new Order(id, customer_id, orderdate, isPaid);
+                result.add(order);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        return result;
     }
 
 }
