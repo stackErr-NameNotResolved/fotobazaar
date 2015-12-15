@@ -15,6 +15,8 @@
             <fmt:message key="login.response.empty"/>
         </c:when>
     </c:choose>
+    
+    <c:remove var="login_message" scope="session" />
 </c:set>
 
 

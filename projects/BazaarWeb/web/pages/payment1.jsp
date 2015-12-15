@@ -10,6 +10,7 @@
     if (request.getParameter("toegang") == null) {
         response.sendRedirect("payment.jsp");
     }
+    
     Cart cart = Cart.readCartFromCookies(request);
     if (cart != null) {
         request.setAttribute("orders", cart.getOverview());
@@ -20,9 +21,25 @@
         request.setAttribute("orderCount", 0);
         request.setAttribute("cart", new Cart());
     }
-
-
+    
+    Object acc = request.getAttribute("account");
 %>
+
+<c:set var="login_message">
+    <c:choose>
+        <c:when test="${pageContext.session.getAttribute('login_message') == 1}">
+            <fmt:message key="login.response.invalid"/>
+        </c:when>
+        <c:when test="${pageContext.session.getAttribute('login_message') == 2}">
+            <fmt:message key="login.response.disabled"/>
+        </c:when>
+        <c:when test="${pageContext.session.getAttribute('login_message') == 3}">
+            <fmt:message key="login.response.empty"/>
+        </c:when>
+    </c:choose>
+    
+    <c:remove var="login_message" scope="session" />
+</c:set>
 
 <t:EmptyMasterPage title="${title}">
     <jsp:attribute name="style">
@@ -37,7 +54,9 @@
             </div>
 
             <c:if test="${account != null}">
-                gebruiker is ingelogd
+                <div class="col-md-12">
+                    <h3>Welkom terug, 
+                </div>
             </c:if>
             <c:if test="${account == null}">
                 <div class="col-md-6">
@@ -47,7 +66,7 @@
                     <div class="col-md-6">
                         <center>
                             <br/>
-                            U kunt op deze pagina niet driect een nieuw account aanmaken. Klik op de knop hieronder om een account aan te maken
+                            Als u nog geen account heeft aangemaakt op deze website dan kunt u die aanmaken via de onderstaande knop
                             <br/>
                             <br/>
                             <br/>
@@ -66,22 +85,18 @@
                         <center>
                             Log hier in met uw account als u al eerder een bestelling heeft geplaatst of als u al op een eerder moment een account heeft aangemaakt op deze website
                         </center>
-                        <br/>
-                        <br/>
-                        <input class="form-control" type="text" placeholder="Gebruikersnaam"/>
-                        <br/>
-                        <input class="form-control" type="password" placeholder="Wachtwoord"/>
-                        <br/>
-                        <button class="form-control btn btn-info">Inloggen</button>
-                        <br/>
-                        <br/>
+                        <form class="form-signin" role="form" action="${pageContext.servletContext.contextPath}/LoginServlet?payment" method="post" enctype="multipart/form-data">
+                            <center><font style="color: red;">${login_message}</font></center>
+                            <br/>
+                            <input class="form-control" type="text" placeholder="Gebruikersnaam" name="Username"/>
+                            <input class="form-control" type="password" placeholder="Wachtwoord" name="Password"/>
+                            <button class="col-md-12 btn btn-info">Inloggen</button>
+                        </form>
+
                     </div>
                 </div>
 
             </c:if>
-
-
-
         </c:if>
 
         <div class="col-md-10 col-md-offset-1"><hr/></div>
@@ -89,7 +104,12 @@
         <div class="col-md-4">
             <button class="btn btn-info col-md-5" onclick="GoNext('payment0.jsp')"><fmt:message key="payment.back"/></button>
             <div class="col-md-1"></div>
-            <button class="btn btn-info col-md-5" onclick="GoNext('payment2.jsp')"><fmt:message key="payment.next"/></button>
+            <c:if test="${account == null}">
+                <button class="btn btn-info col-md-5 disabled" onclick="GoNext('payment1.jsp')"><fmt:message key="payment.next"/></button>
+            </c:if>
+            <c:if test="${account != null}">
+                <button class="btn btn-info col-md-5" onclick="GoNext('payment2.jsp')"><fmt:message key="payment.next"/></button>
+            </c:if>
         </div>
     </jsp:body>
 </t:EmptyMasterPage>
