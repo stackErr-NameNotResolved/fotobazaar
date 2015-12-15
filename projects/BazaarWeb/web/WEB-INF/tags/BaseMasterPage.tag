@@ -77,8 +77,8 @@
                                                     key="master.menu.admin.createAccount"/></a>
                                         </li>
                                         <li>
-                                            <a href="${pageContext.servletContext.contextPath}/pages/admin/deleteAccount.jsp"><fmt:message
-                                                    key="master.menu.admin.deleteAccount"/></a>
+                                            <a href="${pageContext.servletContext.contextPath}/AccountViewServlet"><fmt:message
+                                                    key="master.menu.admin.accountView"/></a>
                                         </li>
                                         <li>
                                             <a href="ItemViewServlet"><fmt:message
