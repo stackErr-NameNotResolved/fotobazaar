@@ -135,10 +135,8 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="copyright">
-                            <p>&copy; Copyright - Fotobazaar</p>
-                            <br/>
-
-                            <p><a href="http://translate.yandex.com">Powered by Yandex.Translator</a></p>
+                            <p>&copy; Copyright - Fotobazaar & <a style="color:white;" href="http://translate.yandex.com">Powered by Yandex.Translator</a></p>
+                            
                         </div>
                     </div>
                 </div>
