@@ -8,20 +8,22 @@ public class Customer {
 
     private int id;
     private String initials;
+    private String lastname;
     private String address;
     private String number;
     private String zipcode;
     private String city;
     private String email;
     private int account_id;
-    private int sex;
+    private EGender gender;
 
     private Customer() {
     }
 
-    public Customer(String initials, int sex, String address, String number, String zipcode, String city, String email, int account_id) {
+    public Customer(String initials, String lastname, int sex, String address, String number, String zipcode, String city, String email, int account_id) {
         this.initials = initials;
-        this.sex = sex;
+        this.lastname = lastname;
+        this.gender = (sex == 0 ? EGender.MALE : EGender.FEMALE);
         this.address = address;
         this.number = number;
         this.zipcode = zipcode;
@@ -33,21 +35,47 @@ public class Customer {
     /**
      * Loads the Customer data with data from the database. Returns null if no
      * Customer was found.
+     *
+     * @param id
+     * @return
      */
     public static Customer fromId(int id) {
-        DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT ID, INITIALS, SEX, ADDRESS, NUMBER, ZIPCODE, CITY, EMAIL, ACCOUNT_ID FROM Customer WHERE ID = ?", id);
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT ID, INITIALS, GENDER, ADDRESS, NUMBER, ZIPCODE, CITY, EMAIL, ACCOUNT_ID, LASTNAME FROM Customer WHERE ID = ?", id);
         if (dt.containsData()) {
             Customer customer = new Customer();
             Object[] row = dt.getRow(0);
             customer.id = (int) row[0];
             customer.initials = (String) row[1];
-            customer.sex = (int) row[2];
+            customer.gender = ((int) row[2]) == 0 ? EGender.MALE : EGender.FEMALE;
             customer.address = (String) row[3];
             customer.number = (String) row[4];
             customer.zipcode = (String) row[5];
             customer.city = (String) row[6];
             customer.email = (String) row[7];
             customer.account_id = (int) row[8];
+            customer.lastname = (String) row[9];
+            return customer;
+        }
+
+        return null;
+    }
+
+    public static Customer fromUsername(String username) {
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT CUSTOMER.ID, INITIALS, GENDER, ADDRESS, NUMBER, ZIPCODE, CITY, EMAIL, ACCOUNT_ID, LASTNAME FROM Customer "
+                + "JOIN ACCOUNT ON ACCOUNT.ID = CUSTOMER.ACCOUNT_ID WHERE USERNAME=?", username);
+        if (dt.containsData()) {
+            Customer customer = new Customer();
+            Object[] row = dt.getRow(0);
+            customer.id = (int) row[0];
+            customer.initials = (String) row[1];
+            customer.gender = ((int) row[2]) == 0 ? EGender.MALE : EGender.FEMALE;
+            customer.address = (String) row[3];
+            customer.number = (String) row[4];
+            customer.zipcode = (String) row[5];
+            customer.city = (String) row[6];
+            customer.email = (String) row[7];
+            customer.account_id = (int) row[8];
+            customer.lastname = (String) row[9];
             return customer;
         }
 
@@ -62,8 +90,12 @@ public class Customer {
         return initials;
     }
 
-    public int getSex() {
-        return sex;
+    public String getLastname() {
+        return lastname;
+    }
+
+    public EGender getGender() {
+        return gender;
     }
 
     public String getAddress() {
@@ -99,7 +131,7 @@ public class Customer {
         queryBuilder.append("INSERT INTO Customer");
         queryBuilder.append("(INITIALS, SEX, ADDRESS, NUMBER, ZIPCODE, CITY, EMAIL, ACCOUNT_ID)");
         queryBuilder.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-        id = (int) DatabaseConnector.getInstance().executeInsert(queryBuilder.toString(), initials, sex, address, number, zipcode, city, email, account_id);
+        id = (int) DatabaseConnector.getInstance().executeInsert(queryBuilder.toString(), initials, gender, address, number, zipcode, city, email, account_id);
     }
 
     public boolean delete() {
