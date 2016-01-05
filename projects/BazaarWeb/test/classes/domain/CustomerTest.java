@@ -22,7 +22,7 @@ public class CustomerTest {
     @Test
     public void testInsert() {
         // Insert.
-        Customer customer = new Customer("Testing", 0, "teststreet", "2", "6371TR", "Eindhoven", "unit@test.nl", 1);
+        Customer customer = new Customer("Testing", "Lastname", 0, "teststreet", "2", "6371TR", "Eindhoven", "unit@test.nl", 1);
         customer.insert();
 
         // Find.
