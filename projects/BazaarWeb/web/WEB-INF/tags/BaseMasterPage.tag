@@ -42,12 +42,12 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="${pageContext.servletContext.contextPath}/index.jsp"><fmt:message key="master.menu.home"/></a></li>
-                        <c:if test="${order_count > 0}">
+                            <c:if test="${order_count > 0}">
                             <li><a href="${pageContext.servletContext.contextPath}/pages/cart.jsp"><fmt:message
-                                    key="master.menu.cart"/> [${order_count}]</a></li>
-                        </c:if>
+                                        key="master.menu.cart"/> [${order_count}]</a></li>
+                                </c:if>
                         <li>
-                                <%--Check if user is logged in.--%>
+                            <%--Check if user is logged in.--%>
                             <c:choose>
                                 <c:when test="${account != null}">
                                     <c:set var="loginButtonText"><fmt:message key="master.menu.logout"/></c:set>
@@ -81,7 +81,7 @@
                                                     key="master.menu.admin.accountView"/></a>
                                         </li>
                                         <li>
-                                            <a href="ItemViewServlet"><fmt:message
+                                            <a href="PhotoViewServlet"><fmt:message
                                                     key="master.menu.admin.editProducts"/></a>
                                         </li>
                                     </ul>
@@ -99,6 +99,10 @@
                                             <a href="${pageContext.servletContext.contextPath}/pages/pictureUpload.jsp"><fmt:message
                                                     key="master.menu.photographer.addPhoto"/></a>
                                         </li>
+                                        <li>
+                                            <a href="${pageContext.servletContext.contextPath}/PhotoViewServlet"><fmt:message
+                                                    key="master.menu.photographer.editPhotos"/></a>
+                                        </li>
                                     </ul>
                                 </li>
                             </c:if>
@@ -109,23 +113,23 @@
                                     <select id="language" name="language" onchange="submit()">
                                         <c:set var="langStr">${fn:substring(language.class.name.equals('Locale') ? language.language : language, 0, 2)}</c:set>
                                         <option value="en" <c:if test="${langStr eq 'en'}">selected</c:if>>
-                                            English
-                                        </option>
-                                        <option value="nl" <c:if test="${langStr eq 'nl'}">selected</c:if>>
-                                            Nederlands
-                                        </option>
-                                        <option value="tr" <c:if test="${langStr eq 'tr'}">selected</c:if>>
-                                            Türkçe
-                                        </option>
-                                    </select>
-                                </form>
-                            </a>
-                        </li>
-                    </ul>
+                                                English
+                                            </option>
+                                            <option value="nl" <c:if test="${langStr eq 'nl'}">selected</c:if>>
+                                                Nederlands
+                                            </option>
+                                            <option value="tr" <c:if test="${langStr eq 'tr'}">selected</c:if>>
+                                                Türkçe
+                                            </option>
+                                        </select>
+                                    </form>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </header>
-        <!--header end-->
+            </header>
+            <!--header end-->
 
         <jsp:doBody/>
 
