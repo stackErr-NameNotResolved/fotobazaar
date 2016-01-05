@@ -35,14 +35,14 @@
                 var Hue = (("${param.Hue}") ? parseInt(${param.Hue}) : 0);            
 
                 Caman("#editor", "../ShowPictureServlet?imageCode=${param.imageCode}&imageSize=small", function () {
-                    this.brightness(Brightness);
+                   
                     this.saturation(Saturation);
                     this.sepia(Sepia);
                     this.clip(Clip);
                     this.stackBlur(Blur);
                     this.noise(Noise);
                     this.hue(Hue);
-                    this.render();
+                    this.brightness(Brightness);
                     this.render();
                 });
 
