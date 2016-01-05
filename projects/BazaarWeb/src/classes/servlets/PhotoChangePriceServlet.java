@@ -39,8 +39,9 @@ public class PhotoChangePriceServlet extends HttpServlet {
         int photoId = Integer.parseInt(photoIDValue);
         String newPriceValue = request.getParameter("photoPrice");
         double newPrice = Double.parseDouble(newPriceValue);
-                
-        processRequest(request, response, Picture.updatePrice(newPrice,photoId));
+
+        Picture.updatePrice(newPrice, photoId);
+        response.sendRedirect("PhotoViewServlet");
     }
 
     /**
@@ -64,12 +65,12 @@ public class PhotoChangePriceServlet extends HttpServlet {
             out.println("<title>Servlet fotoUpload</title>");
             out.println("</head>");
             out.println("<body>");
-            if(result){
+            if (result) {
                 out.println("<h1>Price changed to " + request.getParameter("photoPrice") + " for photoId = " + request.getParameter("photoId") + "</h1>");
-            }else{
+            } else {
                 out.println("<h1>Price did not update!</h1>");
             }
-            
+
             out.println("</body>");
             out.println("</html>");
         }

@@ -58,6 +58,16 @@ public class Picture implements Serializable {
         this.price = 1.0;
     }
 
+    public Picture(String code) {    
+        this.code = code;
+        
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("select id,price from photo where code=?", code);
+        if (dt.getRowCount() > 0) {
+            this.price = ((BigDecimal) dt.getDataFromRow(0, "price")).doubleValue();
+            this.id = (int) dt.getDataFromRow(0, "id");
+        }
+    }
+
     public Picture(String code, float startX, float startY, float endX, float endY, int brightness, int sepia, int noise, int blur, int saturation, int hue, int clip) {
         this.code = code;
         this.startX = startX;
@@ -93,7 +103,7 @@ public class Picture implements Serializable {
         this.hue = hue;
         this.clip = clip;
     }
-    
+
     public float getStartX() {
         return startX;
     }
@@ -572,7 +582,7 @@ public class Picture implements Serializable {
 
         return sb.toString();
     }
-   
+
     private String formatDouble(double value) {
         if (df == null) {
             df = new DecimalFormat();

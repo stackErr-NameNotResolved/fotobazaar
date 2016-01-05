@@ -5,21 +5,28 @@
  */
 package classes.servlets;
 
-import classes.domain.Order;
+import classes.database.DataTable;
+import classes.database.DatabaseConnector;
+import classes.domain.Item;
+import classes.domain.Picture;
+import classes.domain.Session;
+import classes.domain.models.Account;
 import classes.servlets.base.BaseHttpServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author sjorsvanmierlo
+ * @author Jip
  */
-@WebServlet(name = "OrderOverviewServlet", urlPatterns = {"/OrderOverviewServlet"})
-public class OrderOverviewServlet extends BaseHttpServlet {
+@WebServlet(name = "PhotoViewServlet", urlPatterns = {"/PhotoViewServlet"})
+public class PhotoViewServlet extends BaseHttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +45,10 @@ public class OrderOverviewServlet extends BaseHttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrderOverviewServlet</title>");
+            out.println("<title>Servlet PhotoViewServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OrderOverviewServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PhotoViewServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,9 +66,19 @@ public class OrderOverviewServlet extends BaseHttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        getSession(request).setAttribute("orders", Order.getAllOrders());
-        response.sendRedirect("pages/orderOverview.jsp");
+        ArrayList<Picture> items = new ArrayList<>();
 
+        DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT CODE FROM photo WHERE PHOTOGRAPHER_ID = ? AND ACTIVE=1", ((Account) getSession(request).getAttribute("account")).getId());
+        while (true) {
+            Object[] itemRow = result.getNextRow();
+            if (itemRow.length == 0) {
+                break;
+            }
+            items.add(new Picture((String)itemRow[0]));
+        }
+
+        request.setAttribute("items", items);
+        request.getRequestDispatcher("pages/pictureManager.jsp").forward(request, response);
     }
 
     /**
@@ -75,7 +92,7 @@ public class OrderOverviewServlet extends BaseHttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
+        processRequest(request, response);
     }
 
     /**
