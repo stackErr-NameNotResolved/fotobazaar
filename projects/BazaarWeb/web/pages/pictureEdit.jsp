@@ -1,7 +1,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@include file="/pages/langInclude.jsp" %>
 
-<t:MasterPageContent title="picture editor">
+<c:set var="title"><fmt:message key="pcitureEdit.title" /></c:set>
+<c:set var="back"><fmt:message key="pcitureEdit.back" /></c:set>
+<c:set var="next"><fmt:message key="pcitureEdit.next" /></c:set>
+<c:set var="finish"><fmt:message key="pcitureEdit.finish" /></c:set>
+<c:set var="filters"><fmt:message key="pcitureEdit.filters" /></c:set>
+<c:set var="resize"><fmt:message key="pcitureEdit.resize" /></c:set>
+<c:set var="reset"><fmt:message key="pcitureEdit.reset" /></c:set>
+<t:MasterPageContent title="${title}">
     <jsp:attribute name="script">
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
         <script type="text/javascript" src="/BazaarWeb/js/CamanJS/caman.full.4.2.1.js"></script>        
@@ -326,6 +334,11 @@
                 bodyTag: "section",
                 contentContainerTag: "div",
                 transitionEffect: "slideLeft",
+                labels: {
+                    finish: "${finish}",
+                    next: "${next}",
+                    previous: "${back}"
+                },
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
                     // set div background with same x,y as canvas
@@ -448,7 +461,7 @@
             <input type="hidden" name="Update" value="${param.Update}"/>
 
             <div>
-                <h3>Filters</h3>
+                <h3>${filters}</h3>
                 <section>
                     <div class="row" style="text-align:center;">
                         <input type="hidden" id="Brightness" name="Brightness">
@@ -462,7 +475,7 @@
 
                         <canvas id="editor" style="height:500px; max-width: 100%;"></canvas>
                         <a class="btn btn-app" >
-                            <i class="fa fa-repeat" id="reset"></i> Reset
+                            <i class="fa fa-repeat" id="reset"></i>${reset}
                         </a> 
                     </div>
                     <div class="row">
@@ -504,7 +517,7 @@
 
                     </div>
                 </section>
-                <h3>Resize</h3>
+                <h3>${resize}</h3>
                 <section>
                     <div class="row" style="text-align:center; ;">
 
