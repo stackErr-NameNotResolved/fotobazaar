@@ -336,7 +336,6 @@
             });
         </script>
         <script>
-
             var form = $("#example-form");
             form.children("div").steps({
                 headerTag: "h3",
@@ -344,9 +343,9 @@
                 contentContainerTag: "div",
                 transitionEffect: "slideLeft",
                 labels: {
-                    finish: "${finish}",
-                    next: "${next}",
-                    previous: "${back}"
+                    finish: '<c:out value="${finish}"></c:out>',
+                    next: '<c:out value="${next}"></c:out>',
+                    previous: '<c:out value="${back}"></c:out>'
                 },
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
@@ -491,34 +490,34 @@
 
                         <table>
                             <tr>
-                                <td><label>${Brightness}</label> </td>
+                                <td><label>${brightness}</label> </td>
                                 <td><div id="slider-Brightness" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Brightness-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
 
-                                <td><label>${Saturation}</label> </td>
+                                <td><label>${saturation}</label> </td>
                                 <td><div id="slider-Saturation" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Saturation-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
                             </tr>
                             <tr>
-                                <td><label>${Sepia}</label> </td>
+                                <td><label>${sepia}</label> </td>
                                 <td><div id="slider-Sepia" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Sepia-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
 
-                                <td><label>${Clip}</label> </td>
+                                <td><label>${clip}</label> </td>
                                 <td><div id="slider-Clip" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Clip-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
                             </tr>
                             <tr>
-                                <td><label${Noise}</label> </td>
+                                <td><label>${noise}</label> </td>
                                 <td><div id="slider-Noise" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Noise-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
 
-                                <td><label>${Blur}</label> </td>
+                                <td><label>${blur}</label> </td>
                                 <td><div id="slider-Blur" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Blur-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
                             </tr>
                             <tr>
-                                <td><label>${Hue}</label> </td>
+                                <td><label>${hue}</label> </td>
                                 <td><div id="slider-Hue" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Hue-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
                             </tr>
