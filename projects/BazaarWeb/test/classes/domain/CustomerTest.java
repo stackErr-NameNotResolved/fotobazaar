@@ -16,13 +16,13 @@ public class CustomerTest {
 
         assertThat(customer, notNullValue());
         assertThat(customer.getId(), is(1));
-        assertThat(customer.getName(), is(not("")));
+        assertThat(customer.getInitials(), is(not("")));
     }
 
     @Test
     public void testInsert() {
         // Insert.
-        Customer customer = new Customer("Testing", "teststreet", "2", "6371TR", "Eindhoven", "unit@test.nl", 1);
+        Customer customer = new Customer("Testing", "Lastname", 0, "teststreet", "2", "6371TR", "Eindhoven", "unit@test.nl", 1);
         customer.insert();
 
         // Find.

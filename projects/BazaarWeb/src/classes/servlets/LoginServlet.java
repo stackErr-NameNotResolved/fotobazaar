@@ -36,16 +36,22 @@ public class LoginServlet extends BaseHttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {              
+            throws ServletException, IOException {
         HttpSession session = request.getSession(false);
 
         try {
             String username = request.getParameter("Username");
             String password = request.getParameter("Password");
+            boolean payment = request.getParameter("payment") != null;
 
-            if(username.equals("") || password.equals(""))
-            {
+            if (username.equals("") || password.equals("")) {
                 request.getSession().setAttribute("login_message", "3");
+
+                if (payment) {
+                    session.setAttribute("PaymentPage", "payment1.jsp");
+                    response.sendRedirect("pages/payment.jsp");
+                    return;
+                }
                 response.sendRedirect("pages/login.jsp");
                 return;
             }
@@ -58,11 +64,22 @@ public class LoginServlet extends BaseHttpServlet {
                 // Redirect.
                 String url = ((String) session.getAttribute("redirecturl"));
                 url = url != null && !url.isEmpty() ? url : "index.jsp";
+
+                if (payment) {
+                    session.setAttribute("PaymentPage", "payment1.jsp");
+                    response.sendRedirect("pages/payment.jsp");
+                    return;
+                }
                 response.sendRedirect(url);
             } else if (Account.validateCredentials(username, password) == LoginStatus.FAILED) {
                 request.getSession().setAttribute("login_message", "1");
             } else if (Account.validateCredentials(username, password) == LoginStatus.DISABLED) {
                 request.getSession().setAttribute("login_message", "2");
+            }
+            
+            if (payment) {
+                session.setAttribute("PaymentPage", "payment1.jsp");
+                response.sendRedirect("pages/payment.jsp");
             }
         } finally {
             // Clear redirect data.

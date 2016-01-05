@@ -29,7 +29,7 @@
             <div class="row">
                 <div id="indexChart">
                     <c:forEach items="${items}" var="item">
-                        <div class="col-md-6" style = "border:1px solid black;">
+                        <div class="col-md-6" style = "border:1px solid lightgray;">
                             <fmt:message key="indexChart.name" />: ${item.getName()}<br>
                             <fmt:message key="indexChart.address" />: ${item.getAddress()}<br>
                             <fmt:message key="indexChart.zipcode" />: ${item.getZipcode()}<br>

@@ -8,6 +8,10 @@ package classes.servlets;
 import classes.domain.BankAccount;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +25,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "PaymentServlet", urlPatterns = {"/PaymentServlet"})
 public class PaymentServlet extends HttpServlet {
-    
+
     BankAccount testBank;
 
     /**
@@ -76,26 +80,48 @@ public class PaymentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession(false);
-        testBank = new BankAccount("user", "pass", 150.00);
-        String username = request.getParameter("Username");
-        String password = request.getParameter("Password");
-        
-        if(username.equals("") || password.equals("")){
-            session.setAttribute("login_message", "3");
-            session.setAttribute("bank_confirmed", false);
-            response.sendRedirect("pages/paymentProcess.jsp");
-            return;
-        }
-        
-        if(username.equals(testBank.getUsername()) && testBank.checkPassword(password)) {
-            session.setAttribute("bank_confirmed", true);
-            response.sendRedirect("pages/paymentProcess.jsp");
-        } else {
-            session.setAttribute("login_message", "1");
-            session.setAttribute("bank_confirmed", false);
-            response.sendRedirect("pages/paymentProcess.jsp");
+        testBank = new BankAccount("user", "pass", 10.00);
+        String bankFlow = String.valueOf(session.getAttribute("bankFlow"));
+
+        switch (bankFlow) {
+            case "choice":
+                session.setAttribute("bankFlow", "login");
+                response.sendRedirect("pages/paymentService.jsp");
+                break;
+            case "login":
+                if (request.getParameter("username").equals(testBank.getUsername()) && testBank.checkPassword(request.getParameter("password"))) {
+                    session.setAttribute("bankFlow", "pay");
+                    session.setAttribute("login_message", 0);
+                    response.sendRedirect("pages/paymentService.jsp");
+                } else {
+                    session.setAttribute("login_message", 1);
+                    response.sendRedirect("pages/paymentService.jsp");
+                }
+                break;
+            case "pay":
+                NumberFormat format = NumberFormat.getInstance();
+                Number number = 0;
+                try {
+                    number = format.parse(request.getParameter("amount"));
+                } catch (ParseException ex) {
+                    Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                double amount = number.doubleValue();
+                if(amount != 0 && testBank.checkBalance(amount)) {
+                    System.out.println(testBank.getBalance());
+                    testBank.pay(amount);
+                    System.out.println(testBank.getBalance());
+                    session.setAttribute("bankFlow", "choice");
+                    session.setAttribute("payment_message", 0);
+                    response.sendRedirect("pages/paymentSucces.jsp");
+                } else {
+                    session.setAttribute("bankFlow", "choice");
+                    session.setAttribute("payment_message", 1);
+                    response.sendRedirect("pages/payment.jsp");
+                }
+                break;
         }
     }
 

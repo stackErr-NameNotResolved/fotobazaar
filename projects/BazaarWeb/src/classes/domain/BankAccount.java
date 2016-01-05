@@ -36,7 +36,7 @@ public class BankAccount {
         }
     }
     
-    public boolean checkBalance(Long amount) {
+    public boolean checkBalance(double amount) {
         if (this.balance > amount) {
             return true;
         } else {
@@ -44,7 +44,7 @@ public class BankAccount {
         }
     }
     
-    public void pay(Long amount) {
+    public void pay(double amount) {
         this.balance = this.balance - amount;
     }
 }
