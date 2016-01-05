@@ -25,7 +25,7 @@
     </title>
 
     <!-- Bootstrap core CSS -->
-    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/theme.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/bootstrap-reset.css" rel="stylesheet">
     <!-- <link href="css/bootstrap.min.css" rel="stylesheet">-->

@@ -24,6 +24,11 @@
     <jsp:body>
         <div class="container">
             <div class="row">
+                <form role="form" action="OrderDetailOverviewServlet" method="GET" enctype="multipart/form-data">
+                    <input type="hidden" name="orderId" value="${orderId}"/>
+                    <button type="submit" class="btn btn-primary btn-md pull-left">Terug</button>
+                </form>   
+                
                 <button onclick = "plotDiv('indexChart')" class="btn bg-green margin btn pull-right"><i class="fa fa-save pr-5"></i><fmt:message key="indexChart.print"/></button>
             </div>
             <div class="row">
