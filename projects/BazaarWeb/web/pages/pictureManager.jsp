@@ -9,63 +9,22 @@
 
 <c:set var="title"><fmt:message key="pictureManage.title" /></c:set>
 <t:MasterPageContent title="${title}">
-    <jsp:attribute name="script">
-        <script>
-            (function ($) {
-                $('.spinner .btn:first-of-type').on('click', function () {
-                    $('.spinner input').val(parseInt($('.spinner input').val(), 10) + 1);
-                });
-                $('.spinner .btn:last-of-type').on('click', function () {
-                    $('.spinner input').val(parseInt($('.spinner input').val(), 10) - 1);
-                });
-            })(jQuery);
-        </script>
-    </jsp:attribute>
-
-
     <jsp:body>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div style="text-align: center; background-color: #f8f8f8;">
-                        <img src="../ShowPictureServlet?imageId=${param.imageId}&imageSize=big" alt="" style="height: 500px; max-width: 100%; ">
-                    </div>
-                </div>
+        <c:forEach items="${items}" var="item">
+            <div class="col-md-4" style="border: 1px solid #E5E2E2;">
+                <img src="${pageContext.servletContext.contextPath}/ShowPictureServlet?imageCode=${item.code}" alt="" style="height: 350px; max-width: 100%; ">        
+                <form action="PhotoChangePriceServlet" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="photoId" value="${item.getId()}"/>
+                    <fmt:message key="pictureManage.header.price"/>: <input type="number" class="form-control" name="photoPrice"  id="photoPrice" min="0" max="99999" step="0.01" value="${item.getPrice()}">
+                    <br>
+                    <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i><fmt:message key="pictureManage.button.save" /></button>
+                </form>
+                <form action="DeletePictureServlet" method="post" enctype="multipart/form-data">
+                    <input type="hidden" value="${item.getId()}" name="photoId"/>
+                    <button class="btn bg-maroon margin"><i class="fa fa-trash-o pr-5"></i><fmt:message key="pictureManage.button.delete" /></button> 
+                </form>
             </div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-9 ">
-                    <div class="title">
-                        <h3><fmt:message key="pictureManage.header.preview" /></h3>
-                        <hr>
-                    </div>
-                    <p>
-                    <form action="../DeletePictureServlet" method="post" enctype="multipart/form-data">
-                        <input type="hidden" value="${param.imageId}" name="photoId"/>
-                        <button class="btn bg-maroon margin"><i class="fa fa-trash-o pr-5"></i><fmt:message key="pictureManage.button.delete" /></button> 
-                    </form>
-                    </p>
-                    
-                </div>
-                <div class="col-lg-3">
-                    <div class="title">
-                        <h3><fmt:message key="pictureManage.header.price" /></h3>
-                        <hr>
-                    </div>
-                    <p>
-                    <form action="../PhotoChangePriceServlet" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="photoId" value="${param.imageId}"/>
-                        <input type="number" class="form-control" name="photoPrice"  id="photoPrice" min="0" max="99999" step="0.01" value="${imagePrice}">
-                        <br>
-                        <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i><fmt:message key="pictureManage.button.save" /></button>
-                    </form>
-                    </p>
-                </div>
-            </div>
-        </div>
+        </c:forEach>
 
     </jsp:body>
 

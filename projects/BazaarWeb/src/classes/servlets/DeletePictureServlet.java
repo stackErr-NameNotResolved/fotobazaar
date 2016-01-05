@@ -63,8 +63,7 @@ public class DeletePictureServlet extends HttpServlet {
         String photoIDValue = request.getParameter("photoId");
         int photoId = Integer.parseInt(photoIDValue);
 
-        //Let it process the request
-        proccesRequest(request, response, Picture.deletePicture(photoId));
-
+        Picture.deletePicture(photoId);
+        response.sendRedirect("PhotoViewServlet");
     }
 }
