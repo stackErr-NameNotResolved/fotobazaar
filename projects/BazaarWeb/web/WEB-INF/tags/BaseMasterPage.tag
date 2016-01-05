@@ -105,7 +105,7 @@
                         </c:if>
                         <li>
                             <a>
-                                <form action="${requestScope['javax.servlet.forward.query_string']}">
+                                <form action="${requestScope['javax.servlet.forward.request_uri']}">
                                     <select id="language" name="language" onchange="submit()">
                                         <c:set var="langStr">${fn:substring(language.class.name.equals('Locale') ? language.language : language, 0, 2)}</c:set>
                                         <option value="en" <c:if test="${langStr eq 'en'}">selected</c:if>>
