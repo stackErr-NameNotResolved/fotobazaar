@@ -14,14 +14,14 @@ public class Customer {
     private String city;
     private String email;
     private int account_id;
-    private int sex;
+    private EGender gender;
 
     private Customer() {
     }
 
     public Customer(String initials, int sex, String address, String number, String zipcode, String city, String email, int account_id) {
         this.initials = initials;
-        this.sex = sex;
+        this.gender = (sex == 0 ? EGender.MALE : EGender.FEMALE);
         this.address = address;
         this.number = number;
         this.zipcode = zipcode;
@@ -41,7 +41,7 @@ public class Customer {
             Object[] row = dt.getRow(0);
             customer.id = (int) row[0];
             customer.initials = (String) row[1];
-            customer.sex = (int) row[2];
+            customer.gender = ((int) row[2]) == 0 ? EGender.MALE : EGender.FEMALE;
             customer.address = (String) row[3];
             customer.number = (String) row[4];
             customer.zipcode = (String) row[5];
@@ -62,8 +62,8 @@ public class Customer {
         return initials;
     }
 
-    public int getSex() {
-        return sex;
+    public EGender getGender() {
+        return gender;
     }
 
     public String getAddress() {
@@ -99,7 +99,7 @@ public class Customer {
         queryBuilder.append("INSERT INTO Customer");
         queryBuilder.append("(INITIALS, SEX, ADDRESS, NUMBER, ZIPCODE, CITY, EMAIL, ACCOUNT_ID)");
         queryBuilder.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-        id = (int) DatabaseConnector.getInstance().executeInsert(queryBuilder.toString(), initials, sex, address, number, zipcode, city, email, account_id);
+        id = (int) DatabaseConnector.getInstance().executeInsert(queryBuilder.toString(), initials, gender, address, number, zipcode, city, email, account_id);
     }
 
     public boolean delete() {
