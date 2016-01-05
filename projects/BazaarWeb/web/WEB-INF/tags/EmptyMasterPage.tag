@@ -167,6 +167,7 @@
 
 
 </script>
+<script src="${pageContext.servletContext.contextPath}/js/disableContextMenu.js"></script>
 
 <%-- Javascript from each view are loaded after whole page building is done. --%>
 <jsp:invoke fragment="script"/>
