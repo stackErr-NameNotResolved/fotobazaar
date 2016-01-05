@@ -104,7 +104,8 @@ public class FinishEditServlet extends HttpServlet {
         if (update) {
             Cart.updateItemToCart(orderId, p, request, response);
         } else {
-            Cart.addItemToCart(1, p, request, response);
+            // update orderid(-1) to the newly generated orderid
+            orderId = Cart.addItemToCart(1, p, request, response);
         }
 
         ////////////////////////////////////

@@ -41,7 +41,7 @@
 
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="${pageContext.servletContext.contextPath}/index.jsp">Home</a></li>
+                        <li><a href="${pageContext.servletContext.contextPath}/index.jsp"><fmt:message key="master.menu.home"/></a></li>
                             <c:if test="${order_count > 0}">
                             <li><a href="${pageContext.servletContext.contextPath}/pages/cart.jsp"><fmt:message
                                         key="master.menu.cart"/> [${order_count}]</a></li>
