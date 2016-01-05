@@ -75,7 +75,7 @@ public class Session {
         try {
             int id = Integer.parseInt(values[0]);
             String user = (String) DatabaseConnector.getInstance().executeQuery("select username from account where id=?", id).getDataFromRow(0, "username");
-            if (user.equals(username)) {
+            if (user.equalsIgnoreCase(username)) {
                 return Account.fromId(Account.class, id);
             }
         } catch (Exception ignored) {

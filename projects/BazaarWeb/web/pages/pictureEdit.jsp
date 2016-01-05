@@ -1,7 +1,24 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@include file="/pages/langInclude.jsp" %>
 
-<t:MasterPageContent title="picture editor">
+<c:set var="title"><fmt:message key="pictureEdit.title" /></c:set>
+<c:set var="back"><fmt:message key="pictureEdit.back" /></c:set>
+<c:set var="next"><fmt:message key="pictureEdit.next" /></c:set>
+<c:set var="finish"><fmt:message key="pictureEdit.finish" /></c:set>
+<c:set var="filters"><fmt:message key="pictureEdit.filters" /></c:set>
+<c:set var="resize"><fmt:message key="pictureEdit.resize" /></c:set>
+<c:set var="reset"><fmt:message key="pictureEdit.reset" /></c:set>
+
+<c:set var="brightness"><fmt:message key="pictureEdit.brightness" /></c:set>
+<c:set var="sepia"><fmt:message key="pictureEdit.sepia" /></c:set>
+<c:set var="noise"><fmt:message key="pictureEdit.noise" /></c:set>
+<c:set var="blur"><fmt:message key="pictureEdit.blur" /></c:set>
+<c:set var="saturation"><fmt:message key="pictureEdit.saturation" /></c:set>
+<c:set var="hue"><fmt:message key="pictureEdit.hue" /></c:set>   
+<c:set var="clip"><fmt:message key="pictureEdit.clip" /></c:set>
+    
+<t:MasterPageContent title="${title}">
     <jsp:attribute name="script">
         <%-- Include your Javascript here specific for this view only ( including the <script> tags ) --%>
         <script type="text/javascript" src="/BazaarWeb/js/CamanJS/caman.full.4.2.1.js"></script>        
@@ -18,14 +35,14 @@
                 var Hue = (("${param.Hue}") ? parseInt(${param.Hue}) : 0);            
 
                 Caman("#editor", "../ShowPictureServlet?imageCode=${param.imageCode}&imageSize=small", function () {
-                    this.brightness(Brightness);
+                   
                     this.saturation(Saturation);
                     this.sepia(Sepia);
                     this.clip(Clip);
                     this.stackBlur(Blur);
                     this.noise(Noise);
                     this.hue(Hue);
-                    this.render();
+                    this.brightness(Brightness);
                     this.render();
                 });
 
@@ -319,13 +336,17 @@
             });
         </script>
         <script>
-
             var form = $("#example-form");
             form.children("div").steps({
                 headerTag: "h3",
                 bodyTag: "section",
                 contentContainerTag: "div",
                 transitionEffect: "slideLeft",
+                labels: {
+                    finish: '<c:out value="${finish}"></c:out>',
+                    next: '<c:out value="${next}"></c:out>',
+                    previous: '<c:out value="${back}"></c:out>'
+                },
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
                     // set div background with same x,y as canvas
@@ -448,7 +469,7 @@
             <input type="hidden" name="Update" value="${param.Update}"/>
 
             <div>
-                <h3>Filters</h3>
+                <h3>${filters}</h3>
                 <section>
                     <div class="row" style="text-align:center;">
                         <input type="hidden" id="Brightness" name="Brightness">
@@ -462,41 +483,41 @@
 
                         <canvas id="editor" style="height:500px; max-width: 100%;"></canvas>
                         <a class="btn btn-app" >
-                            <i class="fa fa-repeat" id="reset"></i> Reset
+                            <i class="fa fa-repeat" id="reset"></i>${reset}
                         </a> 
                     </div>
                     <div class="row">
 
                         <table>
                             <tr>
-                                <td><label>Brightness</label> </td>
+                                <td><label>${brightness}</label> </td>
                                 <td><div id="slider-Brightness" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Brightness-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
 
-                                <td><label>Saturation</label> </td>
+                                <td><label>${saturation}</label> </td>
                                 <td><div id="slider-Saturation" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Saturation-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
                             </tr>
                             <tr>
-                                <td><label>Sepia</label> </td>
+                                <td><label>${sepia}</label> </td>
                                 <td><div id="slider-Sepia" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Sepia-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
 
-                                <td><label>Clip</label> </td>
+                                <td><label>${clip}</label> </td>
                                 <td><div id="slider-Clip" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Clip-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
                             </tr>
                             <tr>
-                                <td><label>Noise</label> </td>
+                                <td><label>${noise}</label> </td>
                                 <td><div id="slider-Noise" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Noise-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
 
-                                <td><label>Blur</label> </td>
+                                <td><label>${blur}</label> </td>
                                 <td><div id="slider-Blur" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Blur-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
                             </tr>
                             <tr>
-                                <td><label>Hue</label> </td>
+                                <td><label>${hue}</label> </td>
                                 <td><div id="slider-Hue" style="width:300px; margin: 0px 10px 0px 10px;"></div></td>
                                 <td><input type="text" id="Hue-level" readonly style="border:0; color:#f6931f; font-weight:bold;"></td>
                             </tr>
@@ -504,9 +525,9 @@
 
                     </div>
                 </section>
-                <h3>Resize</h3>
+                <h3>${resize}</h3>
                 <section>
-                    <div class="row" style="text-align:center; ;">
+                    <div class="row" style="text-align:center;">
 
                         <div id="container" class="picture">
 
