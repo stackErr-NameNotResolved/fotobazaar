@@ -14,14 +14,16 @@
 
 <c:set var="lang_close"><fmt:message key="lang.close"/></c:set>
 <c:set var="admin_accountView_deleteAccount"><fmt:message key="admin.accountView.deleteAccount"/></c:set>
-<c:set var="admin_accountView_deleteAccount_confirm_title"><fmt:message key="admin.accountView.deleteAccount.confirm.title"/></c:set>
-<c:set var="admin_accountView_deleteAccount_confirm_message"><fmt:message key="admin.accountView.deleteAccount.confirm.message"/></c:set>
+<c:set var="admin_accountView_deleteAccount_confirm_title"><fmt:message
+        key="admin.accountView.deleteAccount.confirm.title"/></c:set>
+<c:set var="admin_accountView_deleteAccount_confirm_message"><fmt:message
+        key="admin.accountView.deleteAccount.confirm.message"/></c:set>
 
 <t:MasterPageContent title="${title}">
     <jsp:attribute name="script">
         <script>
-            $(function() {
-                $('[id^=acc_delete').on('click', function() {
+            $(function () {
+                $('[id^=acc_delete').on('click', function () {
                     var elem = $(this);
                     var acc_id = elem.attr('data-account-id');
 
@@ -31,7 +33,7 @@
                         width: 500,
                         modal: true,
                         buttons: {
-                            '${admin_accountView_deleteAccount}': function() {
+                            '${admin_accountView_deleteAccount}': function () {
                                 $(this).dialog('close');
                                 $.ajax({
                                     type: 'POST',
@@ -39,18 +41,18 @@
                                     data: {
                                         id: acc_id
                                     },
-                                    success: function(data, status, xhr) {
+                                    success: function (data, status, xhr) {
                                         if (data.result == 'ROWS_UPDATED') {
-                                            elem.closest('tr').fadeOut(300, function() {
+                                            elem.closest('tr').fadeOut(300, function () {
                                                 $(this).remove();
                                             });
                                         } else {
-                                            alert('ERROR');
+                                            alert('<fmt:message key="login.auth.messages.insufficientrights"/>');
                                         }
                                     }
                                 });
                             },
-                            '${lang_close}': function() {
+                            '${lang_close}': function () {
                                 $(this).dialog('close');
                             }
                         }
@@ -86,10 +88,11 @@
                             ${acc.username}
                     </td>
                     <td>
-                            <fmt:message key="rights.${fn:toLowerCase(acc.getRightName())}" />
+                        <fmt:message key="rights.${fn:toLowerCase(acc.getRightName())}"/>
                     </td>
                     <td style="text-align: center;">
-                        <input id="acc_delete_${acc.id}" data-account-id="${acc.id}" type="button" class="btn btn-white" value="Verwijderen"/>
+                        <input id="acc_delete_${acc.id}" data-account-id="${acc.id}" type="button" class="btn btn-white"
+                               value="Verwijderen"/>
                     </td>
                 </tr>
             </c:forEach>

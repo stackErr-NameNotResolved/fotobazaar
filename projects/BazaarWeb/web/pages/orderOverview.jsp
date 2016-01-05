@@ -19,7 +19,7 @@
     <jsp:body>
         <div class="container">
             <div class="row">
-                <table class="table table-hover">
+                <table class="table table-hover ">
                     <thead>
                         <tr>
                             <th width="7%">${tableID}</th>
@@ -30,7 +30,15 @@
                     </thead>               
                     <tbody>
                         <c:forEach items="${orders}" var="order">
-                            <tr>
+                            <c:choose>
+                                <c:when test="${order.isPaid()}">
+                                    <tr class="success">
+                                    </c:when>
+                                    <c:otherwise>
+                                    <tr class="danger">
+                                    </c:otherwise>
+                                </c:choose>
+
                                 <td style="vertical-align: middle;">${order.getId()}</td>
                                 <td style="vertical-align: middle;">${order.getOrderDateString()}</td>
                                 <td style="vertical-align: middle;">

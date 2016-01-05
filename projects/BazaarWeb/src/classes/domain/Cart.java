@@ -33,7 +33,7 @@ public class Cart implements Serializable {
 
     public int addOrder(Item item, Picture picture, int aantal) {
         orders.add(new OrderItem(orders.size(), picture, item, aantal));
-        return orders.get(orders.size() -1).getId();
+        return orders.get(orders.size() - 1).getId();
     }
 
     public void removeOrder(int id) {
@@ -161,7 +161,7 @@ public class Cart implements Serializable {
                     DataTable dt = DatabaseConnector.getInstance().executeQuery("select price, code from photo where id=?", pic.getId());
                     if (dt.getRowCount() != 0) {
                         pic.setPrice(((BigDecimal) dt.getDataFromRow(0, "price")).doubleValue());
-                        pic.setCode((String)dt.getDataFromRow(0, "code"));
+                        pic.setCode((String) dt.getDataFromRow(0, "code"));
                     }
                 }
 
@@ -176,8 +176,7 @@ public class Cart implements Serializable {
 
     public static int readCartItemCountFromCookies(HttpServletRequest request) {
         Cart cart = readCartFromCookies(request);
-        if(cart != null)
-        {
+        if (cart != null) {
             return cart.getOverview().length;
         }
         return 0;
@@ -195,6 +194,15 @@ public class Cart implements Serializable {
     }
 
     public HttpServletResponse saveCart(HttpServletRequest request, HttpServletResponse response) {
+
+        // Clear cookies
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().startsWith("order")) {
+                cookie.setValue("");
+                response.addCookie(cookie);
+            }
+        }
 
         // Write the orders
         for (int i = 0; i < orders.size(); i++) {
@@ -215,21 +223,19 @@ public class Cart implements Serializable {
             response.addCookie(cookie);
         }
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies.length > orders.size()) {
-            for (int i = orders.size(); i < cookies.length; i++) {
-                if (cookies[i].getName().startsWith("order")) {
-                    cookies[i].setValue("");
-                    response.addCookie(cookies[i]);
-                }
-            }
-        }
-
+//        Cookie[] cookies = request.getCookies();
+//        if (cookies.length > orders.size()) {
+//            for (int i = orders.size(); i < cookies.length; i++) {
+//                if (cookies[i].getName().startsWith("order")) {
+//                    cookies[i].setValue("");
+//                    response.addCookie(cookies[i]);
+//                }
+//            }
+//        }
         return response;
     }
-    
-    public OrderItem getOrder(int id)
-    {
+
+    public OrderItem getOrder(int id) {
         return this.orders.get(id);
     }
 
@@ -257,21 +263,19 @@ public class Cart implements Serializable {
     public static int addItemToCart(int itemId, Picture picture, HttpServletRequest request, HttpServletResponse response) {
         return addItemToCart(Item.getItemFromId(itemId), picture, request, response);
     }
-    
-    public static HttpServletResponse updateItemToCart(int orderId, Picture picture, HttpServletRequest request, HttpServletResponse response)
-    {
+
+    public static HttpServletResponse updateItemToCart(int orderId, Picture picture, HttpServletRequest request, HttpServletResponse response) {
         Cart cart = Cart.readCartFromCookies(request);
         OrderItem o = cart.getOrder(orderId);
-        
+
         o.setPicture(picture);
         return cart.saveCart(request, response);
     }
-    
-    public static HttpServletResponse updateProductInCart(int orderId, int productId, HttpServletRequest request, HttpServletResponse response)
-    {
+
+    public static HttpServletResponse updateProductInCart(int orderId, int productId, HttpServletRequest request, HttpServletResponse response) {
         Cart cart = Cart.readCartFromCookies(request);
         OrderItem o = cart.getOrder(orderId);
-        
+
         o.setItem(Item.getItemFromId(productId));
         return cart.saveCart(request, response);
     }

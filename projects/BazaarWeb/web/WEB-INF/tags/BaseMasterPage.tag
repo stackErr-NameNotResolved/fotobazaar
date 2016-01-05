@@ -41,7 +41,7 @@
 
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="${pageContext.servletContext.contextPath}/index.jsp">Home</a></li>
+                        <li><a href="${pageContext.servletContext.contextPath}/index.jsp"><fmt:message key="master.menu.home"/></a></li>
                             <c:if test="${order_count > 0}">
                             <li><a href="${pageContext.servletContext.contextPath}/pages/cart.jsp"><fmt:message
                                         key="master.menu.cart"/> [${order_count}]</a></li>
@@ -139,10 +139,8 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="copyright">
-                            <p>&copy; Copyright - Fotobazaar</p>
-                            <br/>
-
-                            <p><a href="http://translate.yandex.com">Powered by Yandex.Translator</a></p>
+                            <p>&copy; Copyright - Fotobazaar & <a style="color:white;" href="http://translate.yandex.com">Powered by Yandex.Translator</a></p>
+                            
                         </div>
                     </div>
                 </div>

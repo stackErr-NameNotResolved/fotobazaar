@@ -79,7 +79,7 @@ public class Customer {
             return customer;
         }
 
-        return null;
+        return new Customer();
     }
 
     public int getId() {
