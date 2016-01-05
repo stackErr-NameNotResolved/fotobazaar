@@ -59,7 +59,6 @@ public class OrderOverviewServlet extends BaseHttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         getSession(request).setAttribute("orders", Order.getAllOrders());
         response.sendRedirect("pages/orderOverview.jsp");
 

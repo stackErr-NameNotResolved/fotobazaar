@@ -79,13 +79,13 @@ public class IndexChartServlet extends HttpServlet {
             }
             DataTable photoId = DatabaseConnector.getInstance().executeQuery("SELECT CODE FROM PHOTO WHERE ID = ?", row[2]);
             Object[] photoIdArray = photoId.getNextRow();
-            DataTable costumerInfo = DatabaseConnector.getInstance().executeQuery("SELECT NAME, ADDRESS, ZIPCODE,CITY,EMAIL FROM CUSTOMER WHERE ID = (SELECT CUSTOMER_ID FROM `ORDER` WHERE ID = ?)", orderId);
+            DataTable costumerInfo = DatabaseConnector.getInstance().executeQuery("SELECT INITIALS, ADDRESS, ZIPCODE,CITY,EMAIL FROM CUSTOMER WHERE ID = (SELECT CUSTOMER_ID FROM `ORDER` WHERE ID = ?)", orderId);
             Object[] costumerInfoArray = costumerInfo.getNextRow();
 
             IndexChartItem tempItem = new IndexChartItem((String) photoIdArray[0], (int) row[0], (int) row[1],(String)costumerInfoArray[0],(String)costumerInfoArray[1],(String)costumerInfoArray[2],(String)costumerInfoArray[3],(String)costumerInfoArray[4]);
             items.add(tempItem);
         }
-
+        request.setAttribute("orderId", orderId);
         request.setAttribute("items", items);
         request.getRequestDispatcher("pages/indexChart.jsp").forward(request, response);
     }
