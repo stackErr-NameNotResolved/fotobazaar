@@ -84,6 +84,10 @@
                                             <a href="PhotoViewServlet"><fmt:message
                                                     key="master.menu.admin.editProducts"/></a>
                                         </li>
+                                                                                <li>
+                                            <a href="OrderOverviewServlet"><fmt:message
+                                                key="master.menu.admin.orders"/></a>
+                                        </li>
                                     </ul>
                                 </li>
                             </c:if>
