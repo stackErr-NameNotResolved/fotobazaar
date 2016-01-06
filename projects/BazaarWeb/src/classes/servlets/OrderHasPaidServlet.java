@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author sjorsvanmierlo
  */
-@WebServlet(name = "OrderDetailOverviewServlet", urlPatterns = {"/OrderDetailOverviewServlet"})
-public class OrderDetailOverviewServlet extends BaseHttpServlet {
+@WebServlet(name = "OrderHasPaidServlet", urlPatterns = {"/OrderHasPaidServlet"})
+public class OrderHasPaidServlet extends BaseHttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +39,10 @@ public class OrderDetailOverviewServlet extends BaseHttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrderDetailOverviewServlet</title>");
+            out.println("<title>Servlet OrderHasPaidServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OrderDetailOverviewServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet OrderHasPaidServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,21 +57,22 @@ public class OrderDetailOverviewServlet extends BaseHttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-
         int orderId;
         try {
             orderId = Integer.parseInt(request.getParameter("orderId"));
         } catch (NumberFormatException ex) {
             orderId = 0;
         }
+        Order.isPaid(orderId);
         Order order = Order.get(orderId);
         getSession(request).setAttribute("orderIsDone", order.isDone());
         getSession(request).setAttribute("orderHasPaid", order.isPaid());
-        getSession(request).setAttribute("orderIdPaid", orderId);
+        
+        getSession(request).setAttribute("orderId", orderId);
         getSession(request).setAttribute("orderItems", OrderItem.getItemsForOrder(orderId));
         response.sendRedirect("pages/orderDetailOverview.jsp");
     }
@@ -87,8 +88,7 @@ public class OrderDetailOverviewServlet extends BaseHttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-
+        
     }
 
     /**

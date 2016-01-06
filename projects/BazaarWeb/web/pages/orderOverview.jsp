@@ -11,9 +11,14 @@
 <c:set var="tableID"><fmt:message key="orderOverview.tableID" /></c:set>
 <c:set var="tableOrderDate"><fmt:message key="orderOverview.tableOrderDate" /></c:set>
 <c:set var="tableIsPaid"><fmt:message key="orderOverview.tableIsPaid" /></c:set>
+<c:set var="tableIsDone"><fmt:message key="orderOverview.tableIsDone" /></c:set>
 <c:set var="btnDetails"><fmt:message key="orderOverview.btnDetails" /></c:set>
 <c:set var="isPaidTrue"><fmt:message key="orderOverview.isPaidTrue" /></c:set>
 <c:set var="isPaidFalse"><fmt:message key="orderOverview.isPaidFalse" /></c:set>
+<c:set var="isDoneTrue"><fmt:message key="orderOverview.isDoneTrue" /></c:set>
+<c:set var="isDoneFalse"><fmt:message key="orderOverview.isDoneFalse" /></c:set>
+
+
 
 <t:MasterPageContent title="${title}">
     <jsp:body>
@@ -23,8 +28,9 @@
                     <thead>
                         <tr>
                             <th width="7%">${tableID}</th>
-                            <th width="70%">${tableOrderDate}</th>
+                            <th width="60%">${tableOrderDate}</th>
                             <th width="10%">${tableIsPaid}</th>
+                            <th width="10%">${tableIsDone}</th>
                             <th width="13%"></th>
                         </tr>
                     </thead>               
@@ -32,8 +38,15 @@
                         <c:forEach items="${orders}" var="order">
                             <c:choose>
                                 <c:when test="${order.isPaid()}">
-                                    <tr class="success">
-                                    </c:when>
+                                        <c:choose>
+                                            <c:when test="${order.isDone()}">
+                                                <tr class="success">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr class="warning">
+                                            </c:otherwise>
+                                        </c:choose>
+                                </c:when>                                
                                     <c:otherwise>
                                     <tr class="danger">
                                     </c:otherwise>
@@ -48,6 +61,16 @@
                                         </c:when>
                                         <c:otherwise>
                                             ${isPaidFalse}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <c:choose>
+                                        <c:when test="${order.isDone()}">
+                                            ${isDoneTrue}
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${isDoneFalse}
                                         </c:otherwise>
                                     </c:choose>
                                 </td>

@@ -57,25 +57,31 @@ public class LoginServlet extends BaseHttpServlet {
                 return;
             }
 
-            if (Account.validateCredentials(username, password) == LoginStatus.SUCCESS) {
-                String encrypted = Session.generateSessionData(username, request.getRemoteAddr());
-                session.setAttribute("account", Session.getAccountFromSession(username, encrypted, request.getRemoteAddr()));
-                session.removeAttribute("login_message");
+            LoginStatus loginStatus = Account.validateCredentials(username, password);
+            switch (loginStatus)
+            {
+                case SUCCESS:
+                    String encrypted = Session.generateSessionData(username, request.getRemoteAddr());
+                    session.setAttribute("account", Session.getAccountFromSession(username, encrypted, request.getRemoteAddr()));
+                    session.removeAttribute("login_message");
 
-                // Redirect.
-                String url = ((String) session.getAttribute("redirecturl"));
-                url = url != null && !url.isEmpty() ? url : "index.jsp";
+                    // Redirect.
+                    String url = ((String) session.getAttribute("redirecturl"));
+                    url = url != null && !url.isEmpty() ? url : "index.jsp";
 
-                if (payment) {
-                    session.setAttribute("PaymentPage", "payment1.jsp");
-                    response.sendRedirect("pages/payment.jsp");
-                    return;
-                }
-                response.sendRedirect(url);
-            } else if (Account.validateCredentials(username, password) == LoginStatus.FAILED) {
-                request.getSession().setAttribute("login_message", "1");
-            } else if (Account.validateCredentials(username, password) == LoginStatus.DISABLED) {
-                request.getSession().setAttribute("login_message", "2");
+                    if (payment) {
+                        session.setAttribute("PaymentPage", "payment1.jsp");
+                        response.sendRedirect("pages/payment.jsp");
+                        return;
+                    }
+                    response.sendRedirect(url);
+                    break;
+                case FAILED:
+                    request.getSession().setAttribute("login_message", "1");
+                    break;
+                case DISABLED:
+                    request.getSession().setAttribute("login_message", "2");
+                    break;
             }
             
             if (payment) {

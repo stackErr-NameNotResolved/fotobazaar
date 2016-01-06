@@ -28,6 +28,8 @@
 <c:set var="saturation"><fmt:message key="orderDetailOverview.saturation" /></c:set>
 <c:set var="hue"><fmt:message key="orderDetailOverview.hue" /></c:set>
 <c:set var="clip"><fmt:message key="orderDetailOverview.clip" /></c:set>
+<c:set var="btnHasPaid"><fmt:message key="orderDetailOverview.btnHasPaid" /></c:set>
+<c:set var="btnIsDone"><fmt:message key="orderDetailOverview.btnIsDone" /></c:set>
 
 <t:MasterPageContent title="${title}">
     <jsp:attribute name="script">
@@ -35,15 +37,18 @@
             $("button").click(function (event) {
                 if ($("#orderItem" + event.target.id).css('display') === 'none') {
                     $("#orderItem" + event.target.id).show();
-                    $("#"+event.target.id).html('<c:out value="${lessInfo}"/>');
-                    
+                    $("#" + event.target.id).html('<c:out value="${lessInfo}"/>');
+
                 }
                 else {
                     $("#orderItem" + event.target.id).hide();
-                    $("#"+event.target.id).html('<c:out value="${moreInfo}"/>');
-                    
+                    $("#" + event.target.id).html('<c:out value="${moreInfo}"/>');
+
                 }
             });
+          
+            
+            
         </script>
 
     </jsp:attribute>
@@ -52,11 +57,11 @@
         <div class="container">
             <div class="row">
                 <form role="form" action="../OrderOverviewServlet" method="GET" enctype="multipart/form-data">
-                    <button type="submit" class="btn btn-primary btn-md pull-left">${goBack}</button>
+                    <button type="submit" class="btn btn-info btn-md pull-left">${goBack}</button>
                 </form>                
                 <form role="form" action="../IndexChartServlet" method="GET" enctype="multipart/form-data" >
-                    <input type="hidden" name="orderId" value="${orderId}"/>
-                    <button type="submit" class="btn btn-success btn-lg pull-right">${indexChart}</button>
+                    <input type="hidden" name="orderId" value="${orderIdPaid}"/>
+                    <button type="submit" class="btn btn-info btn-lg pull-right">${indexChart}</button>
                 </form>
             </div>
             <div class="row">
@@ -115,6 +120,32 @@
                         </c:forEach>
                     </tbody>
                 </table>
+            </div>
+            <div class="row">
+                <c:choose>
+                    <c:when test="${orderIsDone}">
+                       
+                    </c:when>
+                    <c:otherwise>
+                         <form role="form" action="../OrderIsDoneServlet" method="GET" enctype="multipart/form-data">
+                            <input type="hidden" name="orderId" value="${orderIdPaid}"/>
+                            <input type="submit" id="btnIsDone" class="btn btn-info btn-md pull-right" value="${btnIsDone}" style="margin-left:10px;"/>                    
+                        </form>
+                    </c:otherwise>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${orderHasPaid}">                    
+                    
+                    </c:when>
+                    <c:otherwise>
+                        <form role="form" action="../OrderHasPaidServlet" method="GET" enctype="multipart/form-data">
+                        <input type="hidden" name="orderId" value="${orderIdPaid}"/>
+                        <input type="submit" id="btnHasPaid" class="btn btn-info btn-md pull-right" value="${btnHasPaid}" />                    
+                    </form>   
+                    </c:otherwise>
+                 </c:choose>
+                
+                
             </div>
         </div>
     </jsp:body>
