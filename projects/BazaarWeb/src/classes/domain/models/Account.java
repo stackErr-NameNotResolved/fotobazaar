@@ -142,10 +142,12 @@ public class Account extends DataModel {
         return false;
     }
 
-    public static boolean registerNewAccount(String username, String password, Rights right) {
+    public static boolean registerNewAccount(String username, String password, Rights right) throws Exception {
         StatementResult dbResult = null;
         if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
-
+            if(DatabaseConnector.getInstance().executeQuery("SELECT * FROM ACCOUNT WHERE USERNAME=?", username).containsData())
+                throw new Exception("0");
+            
             String encryptedPassword = AESEncryption.encrypt(password, username);
             try {
                 long accountId = DatabaseConnector.getInstance().executeInsert("INSERT INTO account (USERNAME, PASSWORD, ACCESS) VALUES (?,?,?) ", username, encryptedPassword, right.right);
