@@ -156,8 +156,7 @@ public abstract class DataModel {
         for (int i = 0; i < columns.size(); i++) {
             ORMColumn column = columns.get(i);
             try {
-                column.getField().setAccessible(true);
-                column.getField().set(model, sqlObjectToJava(row[i]));
+                setField(model, column.getField(), sqlObjectToJava(row[i]));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -186,6 +185,20 @@ public abstract class DataModel {
         if (object == null) return null;
         else if (object instanceof BigDecimal) return ((BigDecimal) object).toBigInteger().intValueExact();
         else return object;
+    }
+
+    public static void setField(Object object, Field field, Object value) throws IllegalAccessException {
+        if (field == null) return;
+        field.setAccessible(true);
+        Class<?> fieldType = field.getType();
+        Class<?> valueType = value.getClass();
+
+        if (fieldType.equals(boolean.class)) {
+            if (valueType.equals(int.class)) field.set(object, ((int) value) > 0);
+            else if (valueType.equals(Integer.class)) field.set(object, ((Integer) value) > 0);
+        } else {
+            field.set(object, value);
+        }
     }
 
     /**
