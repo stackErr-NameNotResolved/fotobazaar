@@ -19,7 +19,7 @@ public class JsonAccountDeleteServlet extends JsonServlet {
         int id = Integer.valueOf(idStr);
         if (id <= 0) return;
 
-        DatabaseConnector.getInstance().executeNonQuery("DELETE FROM PHOTOGRAPHER WHERE ACCOUNT_ID = ?", id);
+        // account
         builder.add("result", DatabaseConnector.getInstance().executeNonQuery("DELETE FROM ACCOUNT WHERE ID = ?", id).name());
     }
 }

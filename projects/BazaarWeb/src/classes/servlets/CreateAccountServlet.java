@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "AdminCreateAccountServlet", urlPatterns = {"/AdminCreateAccountServlet"})
-public class AdminCreateAccountServlet extends JsonServlet {
+@WebServlet(name = "CreateAccountServlet", urlPatterns = {"/CreateAccountServlet"})
+public class CreateAccountServlet extends JsonServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, JsonObjectBuilder builder) throws IOException {

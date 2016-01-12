@@ -63,7 +63,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '${pageContext.servletContext.contextPath}/AdminCreateAccountServlet',
+                    url: '${pageContext.servletContext.contextPath}/CreateAccountServlet',
                     data: $(this).serialize(),
                     success: function (data) {
                         infoDiv.removeClass('alert-danger');
