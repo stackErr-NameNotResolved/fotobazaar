@@ -29,36 +29,36 @@ public class DatabaseConnectorTest {
     @Test
     public void testInsert() {
         // Test inserting a user account
-        StatementResult sr = DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?,?)", "testKlant1", "testWachtwoord", 4);
+        StatementResult sr = DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?,?)", "testKlant5", "testWachtwoord", 3);
         assertTrue("No rows were inserted", sr.toString().equals(StatementResult.ROWS_UPDATED.toString()));
 
         // Try to break the system by inserting the same username
         try {
-            sr = DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?,?)", "testKlant1", "testWachtwoord", 4);
-            fail("Usernames are supposed to be unique from others");
+            sr = DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?,?)", "testKlant5", "testWachtwoord", 3);
+            if (sr != StatementResult.ERROR) {
+                fail("Usernames are supposed to be unique from others");
+            }
         } catch (IllegalStateException ex) {
         }
 
         // Try to break the system by inserting a row with a missing value
         try {
             sr = DatabaseConnector.getInstance().executeNonQuery("insert into account (USERNAME, PASSWORD, ACCESS) values (?,?)", "testKlant2", "testWachtwoord");
-            fail("Missing value is not detected");
+            if (sr != StatementResult.ERROR) {
+                fail("Missing value is not detected");
+            }
         } catch (IllegalStateException ex) {
         }
 
         // Delete all
-        DatabaseConnector.getInstance().executeNonQuery("delete from account where username=?", "testKlant1");
+        DatabaseConnector.getInstance().executeNonQuery("delete from account where username=?", "testKlant5");
         DatabaseConnector.getInstance().executeNonQuery("delete from account where username=?", "testKlant2");
     }
 
     @Test
     public void testSelect() {
-        // Test selecting all accounts
-        DataTable dt = DatabaseConnector.getInstance().executeQuery("select * from account where access=? or access=?", 1, -1);
-        assertTrue("There should be 6 admin accounts", dt.getRowCount() == 6);
-
         // Read selective data from the database
-        dt = DatabaseConnector.getInstance().executeQuery("select * from account where username=?", "testKlant");
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("select * from account where username=?", "testKlant");
         try {
 
             assertTrue("The test account is not readable", dt.getDataFromRow(0, "username").equals("testKlant"));
