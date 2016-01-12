@@ -123,7 +123,7 @@ public class OrderItem implements Serializable {
         
          try {
             //Select the orders
-            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM fotobazaar.item_per_order WHERE ORDER_ID = ?", orderId);
+            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM item_per_order WHERE ORDER_ID = ?", orderId);
 
             //Iterate trough orders
             Iterator<DataRow> iterator = dbResult.iterator();            

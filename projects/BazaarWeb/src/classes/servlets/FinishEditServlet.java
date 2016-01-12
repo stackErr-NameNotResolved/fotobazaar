@@ -112,7 +112,7 @@ public class FinishEditServlet extends HttpServlet {
         // Redirect to Choose product view with items from db
         ArrayList<Item> items = new ArrayList<>();
 
-        DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT ID FROM item");
+        DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT ID FROM item WHERE active = 1");
         while (true) {
             Object[] itemRow = result.getNextRow();
             if (itemRow.length == 0) {
