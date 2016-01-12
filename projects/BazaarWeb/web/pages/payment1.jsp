@@ -120,7 +120,7 @@
 
                         <div class="row">
                             <div class="form-group col-xs-4 ${initials_error}">
-                                <label class="control-label"><fmt:message key="payment1.initialen"/></label>
+                                <label class="control-label"><fmt:message key="payment1.initials"/></label>
                                 <input class="form-control" type="text" name="initials" value="${customer.getInitials()}"/>
                             </div>
                             <div class="form-group col-xs-8 ${lastname_error}">

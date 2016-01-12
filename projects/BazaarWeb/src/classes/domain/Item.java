@@ -80,7 +80,6 @@ public class Item implements Serializable {
      * @return if the item is deleted
      */
     public static boolean delete(int itemId) {
-
         boolean result = false;
         StatementResult dbResult = null;
 

@@ -177,6 +177,9 @@ public class Account extends DataModel {
         BannedPhotographer(-2),
         BannedProducer(-1),
 
+        // Inactive / No acccount.
+        Inactive(0),
+
         // Active.
         Producer(1),
         Photographer(2),
