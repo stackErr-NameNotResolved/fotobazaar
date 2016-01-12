@@ -5,6 +5,7 @@ import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -130,7 +131,9 @@ public abstract class DataModel {
         for (int i = 0; i < ids.length; i++) {
             Object id = ids[i];
             try {
-                keys.get(i).getField().set(model, id);
+                Field field = keys.get(i).getField();
+                field.setAccessible(true);
+                field.set(model, id);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
