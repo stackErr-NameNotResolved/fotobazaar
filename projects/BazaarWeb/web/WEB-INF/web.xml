@@ -73,8 +73,6 @@
     <filter-mapping>
         <filter-name>auth_customer</filter-name>
         
-        <url-pattern>/pages/payment0.jsp</url-pattern>
-        <url-pattern>/pages/payment1.jsp</url-pattern>
         <url-pattern>/pages/payment2.jsp</url-pattern>
         <url-pattern>/pages/paymentService.jsp</url-pattern>
         <url-pattern>/pages/paymentSucces.jsp</url-pattern>

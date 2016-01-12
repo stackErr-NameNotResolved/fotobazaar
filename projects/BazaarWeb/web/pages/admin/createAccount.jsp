@@ -69,7 +69,12 @@
                         infoDiv.removeClass('alert-danger');
                         infoDiv.addClass('alert-success');
                         infoDiv.html(data.response);
+                        
+                        $("#inputUsername").val("");
+                        $("#inputPassword").val("");
+                        $("#inputPasswordRedo").val("");
 
+                        
                         infoDiv.fadeIn();
                     },
                     error: function (xhr, status, error) {
