@@ -25,6 +25,10 @@ public class DatabaseConnector {
     private String password;
     private Connection connection;
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     private static DatabaseConnector instance;
 
     public static DatabaseConnector getInstance() {
