@@ -63,6 +63,17 @@ public class Account extends DataModel {
         return null;
     }
 
+    public Photographer getPhotographer() {
+        DataTable rows = DatabaseConnector.getInstance().executeQuery("SELECT ID FROM PHOTOGRAPHER WHERE ACCOUNT_ID = ?", getId());
+        if (!rows.containsData()) return null;
+        try {
+            return Photographer.fromId(Photographer.class, rows.getResultSet().getInt("ID"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public int getId() {
         return id;
     }
