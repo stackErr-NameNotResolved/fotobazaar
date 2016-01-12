@@ -37,7 +37,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="${pageContext.servletContext.contextPath}/ItemAdd" method="POST" enctype="multipart/form-data" id="addItem">
+                    <form action="${pageContext.servletContext.contextPath}/ItemAddServlet" method="POST" enctype="multipart/form-data" id="addItem">
                         <input type="file" name="PictureControl" id="PictureControlId" accept='image/*' class="form-control"><br>
                         <fmt:message key="item.active"/>
                         <input type="checkbox" name="active"

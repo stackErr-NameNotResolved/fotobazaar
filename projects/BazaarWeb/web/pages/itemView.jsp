@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
-                        <form action="${pageContext.servletContext.contextPath}/ItemAdd" method="GET">
+                        <form action="${pageContext.servletContext.contextPath}/pages/itemAdd.jsp" method="GET">
                             <button class="btn bg-green margin btn pull-right"><i class="fa fa-save pr-5"></i><fmt:message key="itemView.new"/></button>
                         </form>
                     </div>

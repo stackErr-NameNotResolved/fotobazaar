@@ -80,7 +80,7 @@
                                                     key="master.menu.admin.accountView"/></a>
                                         </li>
                                         <li>
-                                            <a href="PhotoViewServlet"><fmt:message
+                                            <a href="ItemViewServlet"><fmt:message
                                                     key="master.menu.admin.editProducts"/></a>
                                         </li>
                                                                                 <li>

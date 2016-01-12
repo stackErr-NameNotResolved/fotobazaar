@@ -17,6 +17,7 @@
                     <input type="hidden" name="photoId" value="${item.getId()}"/>
                     <fmt:message key="pictureManage.header.price"/>: <input type="number" class="form-control" name="photoPrice"  id="photoPrice" min="0" max="99999" step="0.01" value="${item.getPrice()}">
                     <br>
+                     <fmt:message key="pictureManage.header.code"/>: ${item.getCode()}<br><br>
                     <button class="btn bg-blue margin"><i class="fa fa-save pr-5"></i><fmt:message key="pictureManage.button.save" /></button>
                 </form>
                 <form action="DeletePictureServlet" method="post" enctype="multipart/form-data">
