@@ -91,7 +91,7 @@ public class PaymentServlet extends BaseHttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
-        testBank = new BankAccount("user", "pass", 1000.00);
+        testBank = new BankAccount("user", "pass", 100.00);
         String bankFlow = String.valueOf(session.getAttribute("bankFlow"));
 
         switch (bankFlow) {

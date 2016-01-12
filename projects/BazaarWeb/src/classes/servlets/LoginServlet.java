@@ -8,16 +8,14 @@ package classes.servlets;
 import classes.domain.LoginStatus;
 import classes.domain.Session;
 import classes.domain.models.Account;
-import classes.domain.models.Photographer;
 import classes.servlets.base.BaseHttpServlet;
-
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 /**
  *
@@ -79,6 +77,7 @@ public class LoginServlet extends BaseHttpServlet {
                     break;
                 case FAILED:
                     request.getSession().setAttribute("login_message", "1");
+                    response.sendRedirect("pages/login.jsp");
                     break;
                 case DISABLED:
                     request.getSession().setAttribute("login_message", "2");
@@ -91,7 +90,7 @@ public class LoginServlet extends BaseHttpServlet {
             }
         } finally {
             // Clear redirect data.
-            session.setAttribute("redirecturl", null);
+            session.setAttribute("redirecturl", null);            
         }
     }
 
