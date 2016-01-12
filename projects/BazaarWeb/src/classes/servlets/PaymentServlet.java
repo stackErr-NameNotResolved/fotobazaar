@@ -125,8 +125,8 @@ public class PaymentServlet extends BaseHttpServlet {
                     Account account = (Account) getSession(request).getAttribute("account");
                     Customer customer =  Customer.fromAccountId(account.getId());
                     Order order = new Order(0, customer.getId(), null, true, false);
-                    StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO order (CUSTOMER_ID, PAID, DONE) VALUES (?,?,?)", order.getCustomer_id(), order.isPaid(), order.isDone());
-                    DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT MAX(id) as lastID FROM order");
+                    StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO `order` (CUSTOMER_ID, PAID, DONE, ORDERDATE) VALUES (?,?,?,NOW())", order.getCustomer_id(), order.isPaid(), order.isDone());
+                    DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT MAX(id) as lastID FROM `order`");
                     if (dt.getRowCount() == 1) {
                         int orderId = (int)dt.getDataFromRow(0, "lastID");
                         OrderItem[] items = cart.getOverview();
