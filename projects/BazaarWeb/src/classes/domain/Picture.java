@@ -8,15 +8,12 @@ package classes.domain;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.Part;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.sql.SQLException;
@@ -24,8 +21,6 @@ import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.servlet.http.Part;
 
 /**
  * @author Jip
@@ -515,7 +510,7 @@ public class Picture implements Serializable {
 
         if (newPrice >= 0.00) {
             try {
-                StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery(String.format("UPDATE PHOTO SET PRICE = %s WHERE ID = %s", newPrice, photoId));
+                StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE PHOTO SET PRICE = ? WHERE ID = ?", newPrice, photoId);
 
                 if (dbResult == null || dbResult == StatementResult.ERROR || dbResult == StatementResult.NO_ROWS_UPDATED) {
                     result = false;
@@ -543,7 +538,7 @@ public class Picture implements Serializable {
         boolean result;
 
         try {
-            StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery(String.format("UPDATE fotobazaar.PHOTO SET ACTIVE = 0 WHERE ID = %s", photoId));
+            StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE PHOTO SET ACTIVE = 0 WHERE ID = ?", photoId);
             if (dbResult == null || dbResult == StatementResult.ERROR || dbResult == StatementResult.NO_ROWS_UPDATED) {
                 result = false;
             } else {

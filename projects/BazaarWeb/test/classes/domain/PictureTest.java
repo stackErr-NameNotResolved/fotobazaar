@@ -7,20 +7,17 @@ package classes.domain;
 
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
+import org.junit.*;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
+
 import static org.junit.Assert.fail;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  *
@@ -212,21 +209,21 @@ public class PictureTest {
 
         try {
 
-            DataTable dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT ACTIVE FROM PHOTO WHERE ID = %s", photoId1));
+            DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM PHOTO WHERE ID = ?", photoId1);
 
             if (dt != null || dt.containsData()) {
                 if ((int) dt.getDataFromRow(0, "ACTIVE") != expectedValue) {
                     Assert.fail("Active on photoId 1 did not update!");
                 }
             }
-            dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT ACTIVE FROM PHOTO WHERE ID = %s", photoId2));
+            dt = DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM PHOTO WHERE ID = ?", photoId2);
 
             if (dt != null || dt.containsData()) {
                 if ((int) dt.getDataFromRow(0, "ACTIVE") != expectedValue) {
                     Assert.fail("Active on photoId 2 did not update!");
                 }
             }
-            dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT ACTIVE FROM PHOTO WHERE ID = %s", photoId3));
+            dt = DatabaseConnector.getInstance().executeQuery("SELECT ACTIVE FROM PHOTO WHERE ID = ?", photoId3);
 
             if (dt != null || dt.containsData()) {
                 if ((int) dt.getDataFromRow(0, "ACTIVE") != expectedValue) {

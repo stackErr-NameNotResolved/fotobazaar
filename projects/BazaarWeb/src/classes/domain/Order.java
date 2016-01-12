@@ -100,7 +100,7 @@ public class Order implements Serializable {
      */
     public static void isPaid(int orderId) {
         try {
-            DatabaseConnector.getInstance().executeNonQuery("UPDATE fotobazaar.order SET PAID=? WHERE ID=?", 1, orderId);
+            DatabaseConnector.getInstance().executeNonQuery("UPDATE order SET PAID=? WHERE ID=?", 1, orderId);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -122,7 +122,7 @@ public class Order implements Serializable {
      */
     public static void isDone(int orderId) {
         try {
-            DatabaseConnector.getInstance().executeNonQuery("UPDATE fotobazaar.order SET DONE=? WHERE ID=?", 1, orderId);
+            DatabaseConnector.getInstance().executeNonQuery("UPDATE order SET DONE=? WHERE ID=?", 1, orderId);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -137,7 +137,7 @@ public class Order implements Serializable {
         ArrayList<Order> result = new ArrayList<>();
         try {
             //Select the orders
-            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM fotobazaar.Order ORDER BY ORDERDATE DESC");
+            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM Order ORDER BY ORDERDATE DESC");
 
             //Iterate trough orders
             Iterator<DataRow> iterator = dbResult.iterator();
@@ -167,7 +167,7 @@ public class Order implements Serializable {
         Order result = null;
         
         try{
-            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM fotobazaar.Order WHERE ID = ?", orderId);
+            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM Order WHERE ID = ?", orderId);
             
             Iterator<DataRow> iterator = dbResult.iterator();
             while (iterator.hasNext()) {
