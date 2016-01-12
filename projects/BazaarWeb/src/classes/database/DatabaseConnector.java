@@ -33,7 +33,7 @@ public class DatabaseConnector {
 
     public static DatabaseConnector getInstance() {
         if (instance == null) {
-            initialize("192.168.27.10", 3306, "fotobazaar", "admin", "Server01!");
+            initialize("192.168.27.10", 3306, "fotobazaartest", "admin", "Server01!");
         }
 
         return instance;

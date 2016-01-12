@@ -137,19 +137,21 @@ public class Order implements Serializable {
         ArrayList<Order> result = new ArrayList<>();
         try {
             //Select the orders
-            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT * FROM Order ORDER BY ORDERDATE DESC");
+            DataTable dbResult = DatabaseConnector.getInstance().executeQuery("SELECT ID,CUSTOMER_ID,ORDERDATE,PAID,DONE FROM `Order` ORDER BY ORDERDATE DESC");
 
-            //Iterate trough orders
-            Iterator<DataRow> iterator = dbResult.iterator();
-            while (iterator.hasNext()) {
+            while (true) {
                 //Take the next row
-                DataRow row = iterator.next();
+                Object[] row = dbResult.getNextRow();
+                
+                if (row.length==0) {
+                    break;
+                }
 
-                int id = (int) row.getData("ID");
-                int customer_id = (int) row.getData("CUSTOMER_ID");
-                Timestamp orderdate = (Timestamp) row.getData("ORDERDATE");
-                boolean isPaid = (int) row.getData("PAID") == 1;
-                boolean isDone = (int) row.getData("DONE") == 1;
+                int id = (int) row[0];
+                int customer_id = (int) row[1];
+                Timestamp orderdate = (Timestamp) row[2];
+                boolean isPaid = (int) row[3] == 1;
+                boolean isDone = (int) row[4] == 1;
 
                 //create the row
                 Order order = new Order(id, customer_id, orderdate, isPaid, isDone);
