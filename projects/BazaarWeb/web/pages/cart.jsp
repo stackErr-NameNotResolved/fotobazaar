@@ -151,7 +151,12 @@
 
             <div class="col-md-9"><fmt:message key="cart.payment"/></div>
             <div class="col-md-3">
-                <div class="col-md-8"></div>
+                <a href="../index.jsp">
+                    <div class="btn btn-info col-md-6">
+                        <fmt:message key="cart.continue"/>
+                    </div>
+                </a>
+                <div class="col-md-2"></div>
                 <a href="payment.jsp">
                     <div class="btn btn-info col-md-4">
                         <fmt:message key="cart.pay"/>
