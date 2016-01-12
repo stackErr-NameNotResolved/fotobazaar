@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     <!-- Filters -->
+    
     <filter>
         <filter-name>auth_producer</filter-name>
         <filter-class>classes.filters.AuthenticationFilter</filter-class>
@@ -36,23 +37,55 @@
         <filter-name>auth_producer</filter-name>
         
         <url-pattern>/pages/admin/*</url-pattern>
-
+        <url-pattern>/pages/orderOverview.jsp</url-pattern>
+        <url-pattern>/pages/orderDetailOverview.jsp</url-pattern>
+        <url-pattern>/pages/indexChart.jsp</url-pattern>
+        
         <servlet-name>AccountViewServlet</servlet-name>
         <servlet-name>AdminCreateAccountServlet</servlet-name>
         <servlet-name>JsonAccountDeleteServlet</servlet-name>
+        <servlet-name>ItemViewServlet</servlet-name>
+        <servlet-name>OrderDetailOverviewServlet</servlet-name>
+        <servlet-name>OrderHasPaidServlet</servlet-name>
+        <servlet-name>OrderIsDoneServlet</servlet-name>
+        <servlet-name>OrderOverviewServlet</servlet-name>
+        <servlet-name>IndexChartServlet</servlet-name>
+        
     </filter-mapping>
     
-    <!--<filter-mapping>-->
-        <!--<filter-name>auth_photographer</filter-name>-->
-
-        <!---->
-    <!--</filter-mapping>-->
+    <filter-mapping>
+        <filter-name>auth_photographer</filter-name>
+            <url-pattern>/pages/pictureUpload.jsp</url-pattern>
+            
+            <url-pattern>/pages/itemAdd.jsp</url-pattern>
+            <url-pattern>/pages/itemEdit.jsp</url-pattern>
+            <url-pattern>/pages/itemView.jsp</url-pattern>
+            
+            <servlet-name>PhotoChangePriceServlet</servlet-name>
+            <servlet-name>PhotoUploadServlet</servlet-name>
+            <servlet-name>ItemViewServlet</servlet-name>
+            <servlet-name>ItemEditServlet</servlet-name>
+            <servlet-name>ItemAddServlet</servlet-name>
+            <servlet-name>DeletePictureServlet</servlet-name>
+            <servlet-name>PhotoViewServlet</servlet-name>
+    </filter-mapping>
 
     <filter-mapping>
         <filter-name>auth_customer</filter-name>
-
-        <url-pattern>/pages/payment3.jsp</url-pattern>
+        
+        <url-pattern>/pages/payment0.jsp</url-pattern>
+        <url-pattern>/pages/payment1.jsp</url-pattern>
+        <url-pattern>/pages/payment2.jsp</url-pattern>
+        <url-pattern>/pages/paymentService.jsp</url-pattern>
+        <url-pattern>/pages/paymentSucces.jsp</url-pattern>
+        <url-pattern>/pages/paymentProcess.jsp</url-pattern>
+        
+        <servlet-name>PaymentServlet</servlet-name>
+        <servlet-name>LogOutServlet</servlet-name>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-name>PhotoUploadServlet</servlet-name>
     </filter-mapping>
+
 
     <!-- Error pages -->
     <error-page>
