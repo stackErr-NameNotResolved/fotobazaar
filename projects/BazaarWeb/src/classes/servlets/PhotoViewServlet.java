@@ -7,19 +7,17 @@ package classes.servlets;
 
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
-import classes.domain.Item;
 import classes.domain.Picture;
-import classes.domain.Session;
 import classes.domain.models.Account;
 import classes.servlets.base.BaseHttpServlet;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -68,7 +66,7 @@ public class PhotoViewServlet extends BaseHttpServlet {
             throws ServletException, IOException {
         ArrayList<Picture> items = new ArrayList<>();
 
-        DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT CODE FROM photo WHERE PHOTOGRAPHER_ID = ? AND ACTIVE=1", ((Account) getSession(request).getAttribute("account")).getId());
+        DataTable result = DatabaseConnector.getInstance().executeQuery("SELECT CODE FROM photo WHERE PHOTOGRAPHER_ID = ? AND ACTIVE=1", ((Account) getSession(request).getAttribute("account")).getPhotographer().getId());
         while (true) {
             Object[] itemRow = result.getNextRow();
             if (itemRow.length == 0) {

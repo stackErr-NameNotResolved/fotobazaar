@@ -8,17 +8,18 @@ package classes.servlets;
 import classes.domain.Picture;
 import classes.domain.models.Account;
 import classes.servlets.base.BaseHttpServlet;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.Collection;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.Collection;
 
 /**
  *
@@ -93,10 +94,9 @@ public class PhotoUploadServlet extends BaseHttpServlet {
                     if (part.getContentType() != null) {//true if is image
                         if (part.getSize() != 0L) {
                             Account tempAccount = (Account)getSession(request).getAttribute("account");
-                            
-                            succes = Picture.uploadPicture(part, tempAccount.getId(), price, 200);//will return false if failed
+                            succes = Picture.uploadPicture(part, tempAccount.getPhotographer().getId(), price, 200);//will return false if failed
 
-                            if (succes == false) {
+                            if (!succes) {
                                 singlePartNotFail = false;
                             }
                         }
