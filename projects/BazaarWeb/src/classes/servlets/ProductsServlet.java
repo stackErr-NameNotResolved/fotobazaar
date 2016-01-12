@@ -5,13 +5,9 @@
  */
 package classes.servlets;
 
-import classes.database.DataTable;
-import classes.database.DatabaseConnector;
 import classes.domain.Cart;
-import classes.domain.Item;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -68,7 +64,7 @@ public class ProductsServlet extends HttpServlet {
         int orderId = (request.getParameter("OrderId").equals("")) ? -1 : Integer.parseInt(request.getParameter("OrderId"));
         int productId = (request.getParameter("ProductId").equals("")) ? -1 : Integer.parseInt(request.getParameter("ProductId"));
         Cart.updateProductInCart(orderId, productId, request, response);
-
+        
         response.sendRedirect("pages/cart.jsp");
     }
 

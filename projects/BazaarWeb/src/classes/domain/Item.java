@@ -41,8 +41,7 @@ public class Item implements Serializable {
             i.active = false;
             if ((int)dt.getDataFromRow(0, "active")==1) {
                 i.active = true;
-            }
-
+            }            
             return i;
         }
 

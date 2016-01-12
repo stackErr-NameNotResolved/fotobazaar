@@ -48,7 +48,7 @@
                     </div>
                     <c:if test="${not empty status}">
                         <c:choose>
-                            <c:when test="${status == true}">
+                            <c:when test="${status}">
                                 <fmt:message key="photoUpload.uploadSuccessful"/>
                             </c:when>
                             <c:otherwise>
