@@ -77,6 +77,7 @@ public class LoginServlet extends BaseHttpServlet {
                     break;
                 case FAILED:
                     request.getSession().setAttribute("login_message", "1");
+                    response.sendRedirect("pages/login.jsp");
                     break;
                 case DISABLED:
                     request.getSession().setAttribute("login_message", "2");
@@ -89,8 +90,7 @@ public class LoginServlet extends BaseHttpServlet {
             }
         } finally {
             // Clear redirect data.
-            session.setAttribute("redirecturl", null);
-            response.sendRedirect("pages/login.jsp");
+            session.setAttribute("redirecturl", null);            
         }
     }
 
