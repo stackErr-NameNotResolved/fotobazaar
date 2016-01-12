@@ -5,6 +5,7 @@
  */
 package classes.servlets;
 
+import classes.domain.Cart;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -74,6 +75,9 @@ public class LogOutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
+
+        Cart cart = Cart.readCartFromCookies(request);
+        cart.clearCart();
 
         HttpSession session = request.getSession();
         session.removeAttribute("account");
