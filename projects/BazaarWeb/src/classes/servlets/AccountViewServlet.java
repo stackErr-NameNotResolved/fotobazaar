@@ -13,7 +13,7 @@ import java.io.IOException;
 public class AccountViewServlet extends BaseHttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        getSession(req).setAttribute("accounts", Account.getAll());
-        resp.sendRedirect("pages/admin/accountView.jsp");
+        req.setAttribute("accounts", Account.getAll());
+        req.getRequestDispatcher("pages/admin/accountView.jsp").forward(req, resp);
     }
 }

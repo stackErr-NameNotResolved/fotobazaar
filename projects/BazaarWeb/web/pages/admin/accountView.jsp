@@ -24,13 +24,13 @@
         <script>
             selectedId = 0;
 
-            function delete_account(acc_id) {
+            function update_account(acc_id) {
                 $.ajax({
                     type: 'POST',
                     url: '<c:out value="${pageContext.servletContext.contextPath}"/>/json/account/update',
                     data: {
                         id: acc_id,
-                        access: 0
+                        access: $('#accessSelect').val()
                     },
                     success: function (data, status, xhr) {
                         if (data.result == 'ROWS_UPDATED') {
@@ -75,7 +75,7 @@
                     </td>
                     <td style="text-align: center;">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="selectedId = <c:out value="${acc.id}"/>">
-                            Verwijderen
+                            <fmt:message key="lang.update"/>
                         </button>
                     </td>
                 </tr>
@@ -91,14 +91,20 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Account definitief verwijderen</h4>
+                        <h4 class="modal-title" id="myModalLabel"><fmt:message key="admin.accountView.updateAccount"/></h4>
                     </div>
                     <div class="modal-body">
-                        Weet u zeker dat u dit account wilt verwijderen?
+                        <fmt:message key="admin.accountView.updateAccount.description"/>
+                        <select id="accessSelect">
+                            <option value="0"><fmt:message key="rights.inactive"/></option>
+                            <option value="1"><fmt:message key="rights.producer"/></option>
+                            <option value="2"><fmt:message key="rights.photographer"/></option>
+                            <option value="3"><fmt:message key="rights.customer"/></option>
+                        </select>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" onclick="delete_account(selectedId)" data-dismiss="modal"><fmt:message
-                                key="admin.accountView.deleteAccount"/></button>
+                        <button type="button" class="btn btn-danger" onclick="update_account(selectedId);" data-dismiss="modal"><fmt:message
+                                key="admin.accountView.updateAccount"/></button>
                         <button type="button" class="btn btn-success" data-dismiss="modal"><fmt:message
                                 key="lang.close"/></button>
                     </div>
