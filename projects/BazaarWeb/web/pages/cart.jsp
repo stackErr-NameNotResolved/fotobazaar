@@ -38,18 +38,19 @@
                     var id = this.id;
                     $.ajax({
                         type: 'POST',
-                        url: '../CartServlet',
+                        url: '/BazaarWeb/CartServlet2',
                         data: {
                             p_newAantal: newAantal,
                             p_id: id
                         },
                         success: function (data) {
+                            
                             var dat = $.parseJSON(data);
-
                             $('#total' + dat.id).text(dat.total);
                             $('#subtotal').text(dat.subtotal);
                             $('#vat').text(dat.vat);
                             $('#final_total').text(dat.final_total);
+                         
                         }
                     });
 

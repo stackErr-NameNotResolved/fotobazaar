@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Bas
  */
-@WebServlet(name = "CartServlet", urlPatterns = {"/CartServlet"})
+@WebServlet(name = "CartServlet2", urlPatterns = {"/CartServlet2"})
 public class CartServlet extends HttpServlet {
 
     /**
@@ -63,6 +63,7 @@ public class CartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        
         response.setContentType("text/plain");
         response.setCharacterEncoding("utf-8");
 
