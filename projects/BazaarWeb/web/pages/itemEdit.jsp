@@ -13,7 +13,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="${pageContext.servletContext.contextPath}/ItemEdit" method="POST">
+                    <form action="${pageContext.servletContext.contextPath}/ItemEditServlet" method="POST">
                         <div style="text-align: center; background-color: #f8f8f8;"><img src="${pageContext.servletContext.contextPath}/ShowPictureServlet?imageCode=${item.getId()}" alt="" style="height: 500px; max-width: 100%; "></div><br>
                         <fmt:message key="item.active"/>
                         <input type="checkbox" name="active"
