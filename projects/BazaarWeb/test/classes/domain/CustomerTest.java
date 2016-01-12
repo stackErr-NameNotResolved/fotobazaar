@@ -1,12 +1,10 @@
 package classes.domain;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.core.Is.is;
-import org.junit.Assert;
 
 public class CustomerTest {
 

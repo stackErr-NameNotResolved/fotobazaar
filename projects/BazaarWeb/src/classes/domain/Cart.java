@@ -85,6 +85,10 @@ public class Cart implements Serializable {
     public String getTotalPriceAndBTWFormat(double percentage) {
         return formatDouble(getTotalPriceAndBTW(percentage));
     }
+    
+    public void clearCart() {
+        this.orders.clear();
+    }
 
     public static Cart readCartFromCookies(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();

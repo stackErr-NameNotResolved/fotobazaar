@@ -6,19 +6,20 @@ package classes.servlets;
  * and open the template in the editor.
  */
 import classes.domain.Picture;
-import java.io.BufferedReader;
+import classes.domain.models.Account;
+import classes.servlets.base.BaseHttpServlet;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Collection;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 /**
  *
@@ -26,7 +27,7 @@ import javax.servlet.http.Part;
  */
 @MultipartConfig
 @WebServlet(urlPatterns = {"/PhotoUploadServlet"})
-public class PhotoUploadServlet extends HttpServlet {
+public class PhotoUploadServlet extends BaseHttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -92,9 +93,10 @@ public class PhotoUploadServlet extends HttpServlet {
                 for (Part part : filePart) {
                     if (part.getContentType() != null) {//true if is image
                         if (part.getSize() != 0L) {
-                            succes = Picture.uploadPicture(part, 1, price, 200);//will return false if failed
+                            Account tempAccount = (Account)getSession(request).getAttribute("account");
+                            succes = Picture.uploadPicture(part, tempAccount.getPhotographer().getId(), price, 200);//will return false if failed
 
-                            if (succes == false) {
+                            if (!succes) {
                                 singlePartNotFail = false;
                             }
                         }

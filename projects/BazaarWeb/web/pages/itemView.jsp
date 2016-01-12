@@ -16,14 +16,14 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
-                        <form action="${pageContext.servletContext.contextPath}/ItemAdd" method="GET">
+                        <form action="${pageContext.servletContext.contextPath}/pages/itemAdd.jsp" method="GET">
                             <button class="btn bg-green margin btn pull-right"><i class="fa fa-save pr-5"></i><fmt:message key="itemView.new"/></button>
                         </form>
                     </div>
 
                     <c:forEach items="${items}" var="item">
                         <div class="col-md-4">
-                            <form action="${pageContext.servletContext.contextPath}/ItemEdit" method="POST">
+                            <form action="${pageContext.servletContext.contextPath}/ItemEditServlet" method="POST">
                                 <div style="text-align: center; background-color: #f8f8f8;"><img src="${pageContext.servletContext.contextPath}/ShowPictureServlet?imageCode=${item.getId()}" alt="" style="height: 350px; max-width: 100%; "></div><br>
                                 <fmt:message key="item.active"/>:
                                 <input type="checkbox" name="active" disabled="disabled"

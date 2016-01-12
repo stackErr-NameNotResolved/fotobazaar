@@ -8,6 +8,7 @@ package classes.servlets;
 import classes.domain.LoginStatus;
 import classes.domain.Session;
 import classes.domain.models.Account;
+import classes.domain.models.Photographer;
 import classes.servlets.base.BaseHttpServlet;
 
 import javax.servlet.ServletException;

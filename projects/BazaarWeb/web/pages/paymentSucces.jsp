@@ -9,12 +9,8 @@
 <%
     Cart cart = Cart.readCartFromCookies(request);
     if (cart != null) {
-        request.setAttribute("orders", cart.getOverview());
-        request.setAttribute("orderCount", cart.getOverview().length);
-        request.setAttribute("cart", cart);
-        request.setAttribute("orders", new OrderItem[]{});
-        request.setAttribute("orderCount", 0);
-        request.setAttribute("cart", new Cart());
+        cart.clearCart();
+        response = cart.saveCart(request, response);
     } else {
         request.setAttribute("orders", new OrderItem[]{});
         request.setAttribute("orderCount", 0);

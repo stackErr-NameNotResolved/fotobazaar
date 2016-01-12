@@ -5,11 +5,20 @@
  */
 package classes.servlets;
 
+import classes.database.DatabaseConnector;
+import classes.database.StatementResult;
 import classes.domain.BankAccount;
+import classes.domain.Cart;
+import classes.domain.Order;
+import classes.domain.OrderItem;
+import static classes.domain.Picture.generateNewID;
+import classes.domain.models.Account;
+import classes.servlets.base.BaseHttpServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -24,7 +33,7 @@ import javax.servlet.http.HttpSession;
  * @author Baya
  */
 @WebServlet(name = "PaymentServlet", urlPatterns = {"/PaymentServlet"})
-public class PaymentServlet extends HttpServlet {
+public class PaymentServlet extends BaseHttpServlet {
 
     BankAccount testBank;
 
@@ -82,7 +91,7 @@ public class PaymentServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
-        testBank = new BankAccount("user", "pass", 10.00);
+        testBank = new BankAccount("user", "pass", 1000.00);
         String bankFlow = String.valueOf(session.getAttribute("bankFlow"));
 
         switch (bankFlow) {
@@ -109,13 +118,26 @@ public class PaymentServlet extends HttpServlet {
                     Logger.getLogger(PaymentServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 double amount = number.doubleValue();
-                if(amount != 0 && testBank.checkBalance(amount)) {
+                if (amount != 0 && testBank.checkBalance(amount)) {
                     System.out.println(testBank.getBalance());
                     testBank.pay(amount);
                     System.out.println(testBank.getBalance());
                     session.setAttribute("bankFlow", "choice");
                     session.setAttribute("payment_message", 0);
-                    response.sendRedirect("pages/paymentSucces.jsp");
+                    Cart cart = Cart.readCartFromCookies(request);
+                    Account customer = (Account)getSession(request).getAttribute("account");
+                    
+                    Order order = new Order(0,customer.getId(),null,true,false);
+                    StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO fotobazaar.order (CUSTOMER_ID, PAID, DONE) VALUES (?,?,?)", order.getCustomer_id(), order.isPaid(), order.isDone());
+                    if (!dbResult.equals(StatementResult.ERROR) || !dbResult.equals(StatementResult.NO_ROWS_UPDATED)) {
+                        cart.clearCart();
+                        cart.saveCart(request, response);
+                        response.sendRedirect("pages/paymentSucces.jsp");
+                    } else {
+                        session.setAttribute("bankFlow", "choice");
+                        session.setAttribute("payment_message", 1);
+                        response.sendRedirect("pages/payment.jsp");
+                    }
                 } else {
                     session.setAttribute("bankFlow", "choice");
                     session.setAttribute("payment_message", 1);

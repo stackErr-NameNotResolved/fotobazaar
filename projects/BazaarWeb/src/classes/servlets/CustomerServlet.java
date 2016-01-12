@@ -93,7 +93,12 @@ public class CustomerServlet extends HttpServlet {
             accountId = Integer.parseInt(dt.getDataFromRow(0, "ID").toString());
         }
         int gen = gender == null ? 0 : gender.equals("man") ? 0 : 1;
-        new Customer(initials, lastname, gen, address, number, zip, city, email, accountId, country).update();
+        dt = DatabaseConnector.getInstance().executeQuery("SELECT * FROM CUSTOMER WHERE ACCOUNT_ID=?", accountId);
+        Customer c = new Customer(initials, lastname, gen, address, number, zip, city, email, accountId, country);
+        if(dt.containsData())
+            c.update();
+        else
+            c.insert();
 
         request.getSession().setAttribute("PaymentPage", goBack ? "payment1.jsp" : "payment2.jsp");
         response.sendRedirect("pages/payment.jsp");

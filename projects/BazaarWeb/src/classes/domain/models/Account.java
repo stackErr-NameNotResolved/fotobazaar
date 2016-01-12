@@ -63,6 +63,17 @@ public class Account extends DataModel {
         return null;
     }
 
+    public Photographer getPhotographer() {
+        DataTable rows = DatabaseConnector.getInstance().executeQuery("SELECT ID FROM PHOTOGRAPHER WHERE ACCOUNT_ID = ?", getId());
+        if (!rows.containsData()) return null;
+        try {
+            return Photographer.fromId(Photographer.class, rows.getResultSet().getInt("ID"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public int getId() {
         return id;
     }
@@ -132,14 +143,17 @@ public class Account extends DataModel {
     }
 
     public static boolean registerNewAccount(String username, String password, Rights right) {
-
-        boolean result = false;
         StatementResult dbResult = null;
         if (username != null && password != null && !username.isEmpty() && !password.isEmpty()) {
 
             String encryptedPassword = AESEncryption.encrypt(password, username);
             try {
-                dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO account (USERNAME, PASSWORD, ACCESS) VALUES (?,?,?) ", username, encryptedPassword, right.right);
+                long accountId = DatabaseConnector.getInstance().executeInsert("INSERT INTO account (USERNAME, PASSWORD, ACCESS) VALUES (?,?,?) ", username, encryptedPassword, right.right);
+                if (right == Rights.Photographer)
+                    dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO photographer (NAME, ACCOUNT_ID) VALUES (?,?) ", username, accountId);
+                else
+                    dbResult = accountId > 0 ? StatementResult.ROWS_UPDATED : StatementResult.NO_ROWS_UPDATED;
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

@@ -5,6 +5,7 @@ import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -129,6 +130,13 @@ public abstract class DataModel {
         List<ORMKey> keys = table.getKeys();
         for (int i = 0; i < ids.length; i++) {
             Object id = ids[i];
+            try {
+                Field field = keys.get(i).getField();
+                field.setAccessible(true);
+                field.set(model, id);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
             queryBuilder.append(keys.get(i).getName());
             queryBuilder.append(" = ");
             queryBuilder.append(objectToSQL(id));
