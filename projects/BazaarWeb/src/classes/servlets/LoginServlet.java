@@ -81,6 +81,7 @@ public class LoginServlet extends BaseHttpServlet {
                     break;
                 case DISABLED:
                     request.getSession().setAttribute("login_message", "2");
+                    response.sendRedirect("pages/login.jsp");
                     break;
             }
             

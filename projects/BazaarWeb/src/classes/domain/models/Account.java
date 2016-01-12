@@ -111,7 +111,7 @@ public class Account extends DataModel {
     public static LoginStatus validateCredentials(String username, String password) {
         DataTable dt = DatabaseConnector.getInstance().executeQuery("select * from account where username=? and password=?", username, AESEncryption.encrypt(password, username));
         if (dt.containsData()) {
-            if ((int) dt.getDataFromRow(0, "access") >= 0) {
+            if ((int) dt.getDataFromRow(0, "access") > 0) {
                 return LoginStatus.SUCCESS;
             } else {
                 return LoginStatus.DISABLED;
