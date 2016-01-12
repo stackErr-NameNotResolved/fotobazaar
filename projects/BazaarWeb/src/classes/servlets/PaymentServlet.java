@@ -5,10 +5,12 @@
  */
 package classes.servlets;
 
+import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
 import classes.domain.BankAccount;
 import classes.domain.Cart;
+import classes.domain.Customer;
 import classes.domain.Order;
 import classes.domain.OrderItem;
 import static classes.domain.Picture.generateNewID;
@@ -125,10 +127,21 @@ public class PaymentServlet extends BaseHttpServlet {
                     session.setAttribute("bankFlow", "choice");
                     session.setAttribute("payment_message", 0);
                     Cart cart = Cart.readCartFromCookies(request);
-                    Account customer = (Account)getSession(request).getAttribute("account");
-                    
-                    Order order = new Order(0,customer.getId(),null,true,false);
+                    OrderItem[] test = cart.getOverview();
+                    Account account = (Account) getSession(request).getAttribute("account");
+                    Customer customer =  Customer.fromAccountId(account.getId());
+                    Order order = new Order(0, customer.getId(), null, true, false);
                     StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO fotobazaar.order (CUSTOMER_ID, PAID, DONE) VALUES (?,?,?)", order.getCustomer_id(), order.isPaid(), order.isDone());
+                    DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT MAX(id) as lastID FROM fotobazaar.order");
+                    if (dt.getRowCount() == 1) {
+                        int orderId = (int)dt.getDataFromRow(0, "lastID");
+                        OrderItem[] items = cart.getOverview();
+                        for(int i=0; i<items.length; i++) {
+                            System.out.println(items[i].getId());
+                            dbResult = DatabaseConnector.getInstance().executeNonQuery("INSERT INTO fotobazaar.item_per_order (ORDER_ID, ITEM_ID, AMOUNT, PHOTO_ID, START_X, START_Y, END_X, END_Y, BRIGHTNESS, SEPIA, NOISE, BLUR, SATURATION, HUE, CLIP) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+                                    orderId, items[i].getItem().getId(), items[i].getAmount(), items[i].getPicture().getId(), items[i].getPicture().getStartX(), items[i].getPicture().getStartY(), items[i].getPicture().getEndX(), items[i].getPicture().getEndY(), items[i].getPicture().getBrightness(), items[i].getPicture().getSepia(), items[i].getPicture().getNoise(), items[i].getPicture().getBlur(), items[i].getPicture().getSaturation(), items[i].getPicture().getHue(), items[i].getPicture().getClip());
+                        }
+                    }
                     if (!dbResult.equals(StatementResult.ERROR) || !dbResult.equals(StatementResult.NO_ROWS_UPDATED)) {
                         cart.clearCart();
                         cart.saveCart(request, response);

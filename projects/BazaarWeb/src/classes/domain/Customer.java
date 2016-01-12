@@ -40,6 +40,29 @@ public class Customer {
         this.account_id = account_id;
     }
 
+    public static Customer fromAccountId(int id) {
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT ID, INITIALS, GENDER, ADDRESS, NUMBER, ZIPCODE, CITY, EMAIL, ACCOUNT_ID, LASTNAME, COUNTRY FROM Customer WHERE ACCOUNT_id = ?", id);
+        if (dt.containsData()) {
+            Customer customer = new Customer();
+            Object[] row = dt.getRow(0);
+            customer.id = (int) row[0];
+            customer.initials = (String) row[1];
+            customer.gender = ((int) row[2]) == 0 ? EGender.MALE : EGender.FEMALE;
+            customer.address = (String) row[3];
+            customer.number = (String) row[4];
+            customer.zipcode = (String) row[5];
+            customer.city = (String) row[6];
+            customer.email = (String) row[7];
+            customer.account_id = (int) row[8];
+            customer.lastname = (String) row[9];
+            customer.country = (String) row[10];
+            return customer;
+        }
+
+        return null;
+    }
+    
+    
     /**
      * Loads the Customer data with data from the database. Returns null if no
      * Customer was found.
