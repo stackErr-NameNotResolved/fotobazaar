@@ -9,6 +9,8 @@ import classes.domain.Session;
 import classes.domain.models.Account;
 import classes.servlets.base.BaseHttpServlet;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -42,7 +44,29 @@ public class RegisterAccountServlet extends BaseHttpServlet {
         if (!username.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
 
             if (password1.equals(password2)) {
-            Account.registerNewAccount(username, password2, Account.Rights.Customer);
+                try {
+                    boolean success = Account.registerNewAccount(username, password2, Account.Rights.Customer);
+                    if (!success) {
+                        if (redirect.equals("true")) {
+                            request.getSession().setAttribute("PaymentPage", "registration.jsp");
+                            response.sendRedirect("pages/payment.jsp");
+                            return;
+                        }
+
+                        response.sendRedirect("pages/registration.jsp");
+                    }
+                } catch (Exception ex) {
+                    request.getSession().setAttribute("fail_message", ex.getMessage());
+
+                    if (redirect.equals("true")) {
+                        request.getSession().setAttribute("PaymentPage", "registration.jsp");
+                        response.sendRedirect("pages/payment.jsp");
+                        return;
+                    }
+
+                    response.sendRedirect("pages/registration.jsp");
+                    return;
+                }
 
                 HttpSession session = request.getSession(false);
                 String encrypted = Session.generateSessionData(username, request.getRemoteAddr());
