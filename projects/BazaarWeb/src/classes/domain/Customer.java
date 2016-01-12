@@ -160,6 +160,8 @@ public class Customer {
                 if (name.toUpperCase().equals("GENDER")) {
                     queryBuilder.append("GENDER=?, ");
                     params.add(gender == EGender.MALE ? 0 : 1);
+                } else if (name.toUpperCase().equals("ID")) {
+                    continue;
                 } else if (!name.toUpperCase().equals("ACCOUNT_ID")) {
                     queryBuilder.append(f.getName()).append("=?, ");
                     params.add(value);
