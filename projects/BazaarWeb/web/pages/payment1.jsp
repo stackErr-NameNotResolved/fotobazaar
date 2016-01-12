@@ -76,6 +76,8 @@
     </jsp:attribute>
 
     <jsp:body>
+        <c:set var="ph_username"><fmt:message key="login.placeholder.username"/></c:set>
+        <c:set var="ph_password"><fmt:message key="login.placeholder.password"/></c:set>
         <c:if test="${orderCount > 0}">
             <div class="col-md-10 col-md-offset-1">
                 <hr/>
@@ -87,16 +89,16 @@
                         <center>
                             <h3>
                                 <c:if test="${customer.getLastname() != null}">
-                                    Welkom terug, 
+                                    <fmt:message key="payment1.welkomterug"/>
                                 </c:if>
                                 <c:if test="${customer.getLastname() == null}">
-                                    Welkom bij de fotobazaar 
+                                    <fmt:message key="payment1.welkom"/>
                                 </c:if>
                                 <c:if test="${customer.getGender().toString() == 'MALE'}">
-                                    dhr. 
+                                    <fmt:message key="payment1.man"/>
                                 </c:if>
                                 <c:if test="${customer.getGender().toString() == 'FEMALE'}">
-                                    mevr. 
+                                    <fmt:message key="payment1.vrouw"/>
                                 </c:if>
                                 ${customer.getInitials()} ${customer.getLastname()}
                             </h3>
@@ -106,10 +108,10 @@
                         <br/>
 
                         <c:if test="${customer.getLastname() != null}">
-                            Controleer de onderstaande gegevens voor de aflevering van de bestelling en druk op 'Volgende' om door te gaan
+                            <fmt:message key="payment1.controleer"/>
                         </c:if>
                         <c:if test="${customer.getLastname() == null}">
-                            Vul hieronder uw persoonlijke adres gegevens is waarom wij uw bestelling moeten bezorgen
+                            <fmt:message key="payment1.vulin"/>
                         </c:if>
 
                         <br/>
@@ -118,11 +120,11 @@
 
                         <div class="row">
                             <div class="form-group col-xs-4 ${initials_error}">
-                                <label class="control-label">Initialen</label>
+                                <label class="control-label"><fmt:message key="payment1.initialen"/></label>
                                 <input class="form-control" type="text" name="initials" value="${customer.getInitials()}"/>
                             </div>
                             <div class="form-group col-xs-8 ${lastname_error}">
-                                <label class="control-label">Achternaam</label>
+                                <label class="control-label"><fmt:message key="payment1.achternaam"/></label>
                                 <input class="form-control" type="text" name="lastname" value="${customer.getLastname()}"/>
                             </div>
                         </div>
@@ -132,16 +134,16 @@
                                 <table width="100%">
                                     <tr>
                                         <td width="30%">
-                                            <label class="control-label">Geslacht</label>
+                                            <label class="control-label"><fmt:message key="payment1.geslacht"/></label>
                                         </td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td width="30%">
-                                            <label class="radio-inline"><input type="radio" name="gender" value="man" ${gender_m}/>Man</label>
+                                            <label class="radio-inline"><input type="radio" name="gender" value="man" ${gender_m}/><fmt:message key="payment1.male"/></label>
                                         </td>
                                         <td width="30%">
-                                            <label class="radio-inline"><input type="radio" name="gender" value="vrouw" ${gender_f}/>Vrouw</label>
+                                            <label class="radio-inline"><input type="radio" name="gender" value="vrouw" ${gender_f}/><fmt:message key="payment1.female"/></label>
                                         </td>
                                     </tr>
                                 </table>
@@ -150,33 +152,33 @@
 
                         <div class="row">
                             <div class="form-group col-xs-9 ${address_error}">
-                                <label class="control-label">Adres</label>
+                                <label class="control-label"><fmt:message key="payment1.adres"/></label>
                                 <input class="form-control" name="address" value="${customer.getAddress()}"/>
                             </div>
                             <div class="form-group col-xs-3 ${number_error}">
-                                <label class="control-label">Huisnummer</label>
+                                <label class="control-label"><fmt:message key="payment1.huisnummer"/></label>
                                 <input class="form-control" name="number" value="${customer.getNumber()}"/>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-xs-3 ${zip_error}">
-                                <label class="control-label">Postcode</label>
+                                <label class="control-label"><fmt:message key="payment1.postcode"/></label>
                                 <input class="form-control" name="zip" value="${customer.getZipcode()}"/>
                             </div>
                             <div class="form-group col-xs-4 ${city_error}">
-                                <label class="control-label">Stad</label>
+                                <label class="control-label"><fmt:message key="payment1.stad"/></label>
                                 <input class="form-control" name="city" value="${customer.getCity()}"/>
                             </div>
                             <div class="form-group col-xs-5 ${country_error}">
-                                <label class="control-label">Land</label>
+                                <label class="control-label"><fmt:message key="payment1.land"/></label>
                                 <input class="form-control" name="country" value="${customer.getCountry()}"/>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-xs-12 ${email_error}">
-                                <label class="control-label">Email</label>
+                                <label class="control-label"><fmt:message key="payment1.email"/></label>
                                 <input class="form-control" name="email" value="${customer.getEmail()}"/>
                             </div>
                         </div>
@@ -185,7 +187,7 @@
                         <br/>
                         <br/>
 
-                        Als de gegevens hierboven kloppen kunt u op de knop 'Volgende' drukken om door te gaan.
+                        <fmt:message key="payment1.next"/>
                     </div>
 
                     <div class="col-md-10 col-md-offset-1"><hr/></div>
@@ -200,37 +202,37 @@
             </c:if>
             <c:if test="${account == null}">
                 <div class="col-md-6">
-                    <center><h4>Account aanmaken</h4></center>
+                    <center><h4><fmt:message key="payment1.create"/></h4></center>
 
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                         <center>
                             <br/>
-                            Als u nog geen account heeft aangemaakt op deze website dan kunt u die aanmaken via de onderstaande knop
+                            <fmt:message key="payment1.geen_account"/>
                             <br/>
                             <br/>
                             <br/>
                             <br/>
                             <button class="btn btn-info" onclick="GoNext('registration.jsp')">
-                                Maak een nieuw account aan
+                                <fmt:message key="payment1.new"/>
                             </button>
                         </center>
                     </div>
                     <div class="col-md-3"></div>
                 </div>
                 <div class="col-md-6">
-                    <center><h4>Inloggen</h4></center>
+                    <center><h4><fmt:message key="login.title"/></h4></center>
                     <br/>
                     <div class="col-md-8 col-md-offset-2">
                         <center>
-                            Log hier in met uw account als u al eerder een bestelling heeft geplaatst of als u al op een eerder moment een account heeft aangemaakt op deze website
+                            <fmt:message key="payment1.existing"/>
                         </center>
                         <form class="form-signin" role="form" action="${pageContext.servletContext.contextPath}/LoginServlet?payment" method="post" enctype="multipart/form-data">
                             <center><font style="color: red;">${login_message}</font></center>
                             <br/>
-                            <input class="form-control" type="text" placeholder="Gebruikersnaam" name="Username"/>
-                            <input class="form-control" type="password" placeholder="Wachtwoord" name="Password"/>
-                            <button class="col-md-12 btn btn-info">Inloggen</button>
+                            <input class="form-control" type="text" placeholder="${ph_username}" name="Username"/>
+                            <input class="form-control" type="password" placeholder="${ph_password}" name="Password"/>
+                            <button class="col-md-12 btn btn-info"><fmt:message key="login.title"/></button>
                         </form>
 
                     </div>

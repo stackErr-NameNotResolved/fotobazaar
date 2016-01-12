@@ -31,7 +31,7 @@
                     <br>
                     <br>
                     <fmt:message key="pictureManage.header.price"/>: <b>${item.getPrice()}</b>
-                    <button class="btn bg-blue margin pull-right"><i class="fa fa-save pr-5"></i><fmt:message key="cart.edit"/></button>
+                    <button class="btn bg-blue margin pull-right"><i class="fa fa-save pr-5"></i><fmt:message key="cart.choose"/></button>
                     <input type="hidden" value="${item.getId()}" name="ProductId"/>                    
                     <input type="hidden" value="${orderId}" name="OrderId"/>
 
