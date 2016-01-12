@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 public class CartTest {
     
     @Test
-    public void addToCartTest()
+    public void testAddToCartTest()
     {
         // set up the test parameters
         Cart cart = new Cart();
@@ -36,7 +36,7 @@ public class CartTest {
     }
     
     @Test
-    public void editItemInCart()
+    public void testEditItemInCart()
     {
         // Set up the test objects
         Cart cart = new Cart();
@@ -55,7 +55,7 @@ public class CartTest {
     }
     
     @Test
-    public void deleteItemFromCart()
+    public void testDeleteItemFromCart()
     {
         // Set up the test objects
         Cart cart = new Cart();
@@ -68,13 +68,13 @@ public class CartTest {
     }
     
     @Test
-    public void saveToCookies()
+    public void testSaveToCookies()
     {
        // unable to test... cannot save or read cookies offline
     }
     
     @Test
-    public void loadToCookies()
+    public void testLoadToCookies()
     {
        // unable to test... cannot save or read cookies offline
     }

@@ -6,6 +6,7 @@
 package classes.servlets;
 
 import classes.domain.BankAccount;
+import classes.domain.Cart;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.NumberFormat;
@@ -82,7 +83,7 @@ public class PaymentServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
-        testBank = new BankAccount("user", "pass", 10.00);
+        testBank = new BankAccount("user", "pass", 150.00);
         String bankFlow = String.valueOf(session.getAttribute("bankFlow"));
 
         switch (bankFlow) {
@@ -115,6 +116,9 @@ public class PaymentServlet extends HttpServlet {
                     System.out.println(testBank.getBalance());
                     session.setAttribute("bankFlow", "choice");
                     session.setAttribute("payment_message", 0);
+                    Cart cart = Cart.readCartFromCookies(request);
+                    cart.clearCart();
+                    cart.saveCart(request, response);
                     response.sendRedirect("pages/paymentSucces.jsp");
                 } else {
                     session.setAttribute("bankFlow", "choice");

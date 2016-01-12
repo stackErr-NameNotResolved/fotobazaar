@@ -129,6 +129,11 @@ public abstract class DataModel {
         List<ORMKey> keys = table.getKeys();
         for (int i = 0; i < ids.length; i++) {
             Object id = ids[i];
+            try {
+                keys.get(i).getField().set(model, id);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
             queryBuilder.append(keys.get(i).getName());
             queryBuilder.append(" = ");
             queryBuilder.append(objectToSQL(id));
