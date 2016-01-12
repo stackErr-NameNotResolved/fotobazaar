@@ -543,7 +543,7 @@ public class Picture implements Serializable {
         boolean result;
 
         try {
-            StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery(String.format("UPDATE fotobazaar.PHOTO SET ACTIVE = 0 WHERE ID = %s", photoId));
+            StatementResult dbResult = DatabaseConnector.getInstance().executeNonQuery("UPDATE PHOTO SET ACTIVE = 0 WHERE ID = ?", photoId);
             if (dbResult == null || dbResult == StatementResult.ERROR || dbResult == StatementResult.NO_ROWS_UPDATED) {
                 result = false;
             } else {
