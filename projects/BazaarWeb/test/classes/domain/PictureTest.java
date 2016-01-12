@@ -9,6 +9,7 @@ import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,6 +64,7 @@ public class PictureTest {
         BufferedImage imageToConvert3 = null;
 
         try {
+            Object image = getClass().getResource("image1.png");
             imageToConvert1 = ImageIO.read(getClass().getResource("image1.png"));
             imageToConvert2 = ImageIO.read(getClass().getResource("image2.jpg"));
             imageToConvert3 = ImageIO.read(getClass().getResource("image3.jpg"));
@@ -119,28 +121,28 @@ public class PictureTest {
         //Tests if the price are actually updated in the database
         //ID's 1 till 3 should exist in the database!
         try {
-            DataTable dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT PRICE FROM PHOTO WHERE CODE = %s", databaseId1));
+            DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT PRICE FROM PHOTO WHERE ID = ?", databaseId1);
 
             if (dt != null || dt.containsData()) {
-                if ((double) dt.getDataFromRow(0, "PRICE") != price1) {
+                if (((BigDecimal) dt.getDataFromRow(0, "PRICE")).doubleValue() != price1) {
                     Assert.fail("Price1 did not update!");
                 }
             }
 
             dt = null;
-            dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT PRICE FROM PHOTO WHERE CODE = %s", databaseId2));
+            dt = DatabaseConnector.getInstance().executeQuery("SELECT PRICE FROM PHOTO WHERE ID = ?", databaseId2);
 
             if (dt != null || dt.containsData()) {
-                if ((double) dt.getDataFromRow(0, "PRICE") == price2) {
+                if (((BigDecimal) dt.getDataFromRow(0, "PRICE")).doubleValue() == price2) {
                     Assert.fail("Price2 did update!");
                 }
             }
 
             dt = null;
-            dt = DatabaseConnector.getInstance().executeQuery(String.format("SELECT PRICE FROM PHOTO WHERE CODE = %s", databaseId3));
+            dt = DatabaseConnector.getInstance().executeQuery("SELECT PRICE FROM PHOTO WHERE ID = ?", databaseId3);
 
             if (dt != null || dt.containsData()) {
-                if ((double) dt.getDataFromRow(0, "PRICE") != price3) {
+                if (((BigDecimal) dt.getDataFromRow(0, "PRICE")).doubleValue() != price3) {
                     Assert.fail("Price3 did not update!");
                 }
             }

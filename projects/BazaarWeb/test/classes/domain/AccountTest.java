@@ -83,15 +83,12 @@ public class AccountTest extends TestCase {
         Assert.assertEquals("Should return true", expected1, actual1);
         Assert.assertEquals("Should return true", expected2, actual2);
         Assert.assertEquals("Should return false", expected3, actual3);
-        Assert.assertEquals("Should return false", expected4, actual4);       
+        Assert.assertEquals("Should return false", expected4, actual4);
         
-    }
-
-    @Test
-    public void testCreateAccount() {
-        Account.registerNewAccount("a@test.nl", "a", Account.Rights.Producer);
-    }
-    
-    
-    
+        // Delete the created data
+        DatabaseConnector.getInstance().executeNonQuery("DELETE FROM ACCOUNT WHERE USERNAME=?", username1);
+        DatabaseConnector.getInstance().executeNonQuery("DELETE FROM ACCOUNT WHERE USERNAME=?", username2);
+        DatabaseConnector.getInstance().executeNonQuery("DELETE FROM ACCOUNT WHERE USERNAME=?", username3);
+        DatabaseConnector.getInstance().executeNonQuery("DELETE FROM ACCOUNT WHERE USERNAME=?", username4);
+    }    
 }
