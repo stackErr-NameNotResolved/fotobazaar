@@ -22,23 +22,25 @@
 <t:MasterPageContent title="${title}">
     <jsp:attribute name="script">
         <script>
-            function delete_account(acc_id){
-            $.ajax({
-            type: 'POST',
-                    url: 'json/account/delete',
+            selectedId = 0;
+
+            function delete_account(acc_id) {
+                $.ajax({
+                    type: 'POST',
+                    url: '<c:out value="${pageContext.servletContext.contextPath}"/>/json/account/update',
                     data: {
-                    id: acc_id
+                        id: acc_id,
+                        access: 0
                     },
                     success: function (data, status, xhr) {
                         if (data.result == 'ROWS_UPDATED') {
-                            elem.closest('tr').fadeOut(300, function () {
-                                $(this).remove();
-                            });
+                            localStorage.setItem("focusAccount", acc_id);
+                            location.reload();
                         } else {
                             alert('<fmt:message key="login.auth.messages.insufficientrights"/>');
                         }
                     }
-            });
+                });
             }
         </script>
     </jsp:attribute>
@@ -52,36 +54,34 @@
 
         <table class="table table-hover">
             <thead>
-                <tr>
-                    <th width="5%">Id</th>
-                    <th width="45%">Naam</th>
-                    <th width="20%">Rechten</th>
-                    <th width="30%"></th>
-                </tr>
+            <tr>
+                <th width="5%">Id</th>
+                <th width="45%">Naam</th>
+                <th width="20%">Rechten</th>
+                <th width="30%"></th>
+            </tr>
             </thead>
             <tbody>
-                <c:forEach items="${accounts}" var="acc">
-                    <tr>
-                        <td>
+            <c:forEach items="${accounts}" var="acc">
+                <tr data-account-id="<c:out value="${acc.id}"/>">
+                    <td>
                             ${acc.id}
-                        </td>
-                        <td>
+                    </td>
+                    <td>
                             ${acc.username}
-                        </td>
-                        <td>
-                            <fmt:message key="rights.${fn:toLowerCase(acc.getRightName())}"/>
-                        </td>
-                        <td style="text-align: center;">
-                            <!--<input id="acc_delete_${acc.id}" data-account-id="${acc.id}" type="button" class="btn btn-white" value="Verwijderen"/>-->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                Verwijderen
-                            </button>
-                        </td>
-                    </tr>
-                </c:forEach>
+                    </td>
+                    <td>
+                        <fmt:message key="rights.${fn:toLowerCase(acc.getRightName())}"/>
+                    </td>
+                    <td style="text-align: center;">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="selectedId = <c:out value="${acc.id}"/>">
+                            Verwijderen
+                        </button>
+                    </td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
-
 
 
         <!-- Modal -->
@@ -89,15 +89,18 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">Account definitief verwijderen</h4>
                     </div>
                     <div class="modal-body">
                         Weet u zeker dat u dit account wilt verwijderen?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" onclick="delete_account(${acc_id})"><fmt:message key="admin.accountView.deleteAccount"/></button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal"><fmt:message key="lang.close"/></button>
+                        <button type="button" class="btn btn-danger" onclick="delete_account(selectedId)" data-dismiss="modal"><fmt:message
+                                key="admin.accountView.deleteAccount"/></button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal"><fmt:message
+                                key="lang.close"/></button>
                     </div>
                 </div>
             </div>

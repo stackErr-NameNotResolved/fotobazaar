@@ -23,6 +23,6 @@ public class JsonAccountUpdateServlet extends JsonServlet {
         if (accessStr == null) return;
 
         // Account.
-        builder.add("result", DatabaseConnector.getInstance().executeNonQuery("UPDATE ACCOUNT SET ACCESS = ? WHERE ID = ?", id, access).name());
+        builder.add("result", DatabaseConnector.getInstance().executeNonQuery("UPDATE ACCOUNT SET ACCESS = ? WHERE ID = ?", access, id).name());
     }
 }
