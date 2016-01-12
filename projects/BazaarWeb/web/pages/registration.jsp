@@ -11,9 +11,14 @@
 <c:set var="title"> <fmt:message key="registration.title" /></c:set>
 <%
     Object o = request.getParameter("toegang");
-    if(o != null)
-    {
+    if (o != null) {
         request.setAttribute("redirect", "true");
+    }
+
+    o = session.getAttribute("fail_message");
+    if (o != null && !o.toString().equals("")) {
+        request.setAttribute("fail_message", o.toString());
+        session.removeAttribute("fail_message");
     }
 %>
 
@@ -33,6 +38,9 @@
                     <h2 class="form-signin-heading">${head}</h2>
                 <div class="login-wrap">
                     <p> ${details}</p>
+                    <c:if test="${fail_message == '0'}">
+                        <span style="color: red;"><fmt:message key="registration.double"/></span>
+                    </c:if>
                     <input type="text" name="username" class="form-control" placeholder="${username}" autofocus="">
                     <input type="password" name="password1" class="form-control" placeholder="${password}">
                     <input type="password" name="password2" class="form-control" placeholder="${retypepassword}">
