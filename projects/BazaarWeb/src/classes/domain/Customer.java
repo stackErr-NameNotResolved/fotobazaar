@@ -3,6 +3,11 @@ package classes.domain;
 import classes.database.DataTable;
 import classes.database.DatabaseConnector;
 import classes.database.StatementResult;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Customer {
 
@@ -16,11 +21,12 @@ public class Customer {
     private String email;
     private int account_id;
     private EGender gender;
+    private String country;
 
     private Customer() {
     }
 
-    public Customer(String initials, String lastname, int sex, String address, String number, String zipcode, String city, String email, int account_id) {
+    public Customer(String initials, String lastname, int sex, String address, String number, String zipcode, String city, String email, int account_id, String country) {
         this.initials = initials;
         this.lastname = lastname;
         this.gender = (sex == 0 ? EGender.MALE : EGender.FEMALE);
@@ -29,6 +35,8 @@ public class Customer {
         this.zipcode = zipcode;
         this.city = city;
         this.email = email;
+        this.country = country;
+
         this.account_id = account_id;
     }
 
@@ -40,7 +48,7 @@ public class Customer {
      * @return
      */
     public static Customer fromId(int id) {
-        DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT ID, INITIALS, GENDER, ADDRESS, NUMBER, ZIPCODE, CITY, EMAIL, ACCOUNT_ID, LASTNAME FROM Customer WHERE ID = ?", id);
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT ID, INITIALS, GENDER, ADDRESS, NUMBER, ZIPCODE, CITY, EMAIL, ACCOUNT_ID, LASTNAME, COUNTRY FROM Customer WHERE ID = ?", id);
         if (dt.containsData()) {
             Customer customer = new Customer();
             Object[] row = dt.getRow(0);
@@ -54,6 +62,7 @@ public class Customer {
             customer.email = (String) row[7];
             customer.account_id = (int) row[8];
             customer.lastname = (String) row[9];
+            customer.country = (String) row[10];
             return customer;
         }
 
@@ -61,7 +70,7 @@ public class Customer {
     }
 
     public static Customer fromUsername(String username) {
-        DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT CUSTOMER.ID, INITIALS, GENDER, ADDRESS, NUMBER, ZIPCODE, CITY, EMAIL, ACCOUNT_ID, LASTNAME FROM Customer "
+        DataTable dt = DatabaseConnector.getInstance().executeQuery("SELECT CUSTOMER.ID, INITIALS, GENDER, ADDRESS, NUMBER, ZIPCODE, CITY, EMAIL, ACCOUNT_ID, LASTNAME, COUNTRY FROM Customer "
                 + "JOIN ACCOUNT ON ACCOUNT.ID = CUSTOMER.ACCOUNT_ID WHERE USERNAME=?", username);
         if (dt.containsData()) {
             Customer customer = new Customer();
@@ -76,6 +85,7 @@ public class Customer {
             customer.email = (String) row[7];
             customer.account_id = (int) row[8];
             customer.lastname = (String) row[9];
+            customer.country = (String) row[10];
             return customer;
         }
 
@@ -114,6 +124,10 @@ public class Customer {
         return city;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -129,9 +143,37 @@ public class Customer {
     public void insert() {
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append("INSERT INTO Customer");
-        queryBuilder.append("(INITIALS, SEX, ADDRESS, NUMBER, ZIPCODE, CITY, EMAIL, ACCOUNT_ID)");
-        queryBuilder.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
-        id = (int) DatabaseConnector.getInstance().executeInsert(queryBuilder.toString(), initials, gender, address, number, zipcode, city, email, account_id);
+        queryBuilder.append("(INITIALS, GENDER, LASTNAME, ADDRESS, NUMBER, ZIPCODE, CITY, COUNTRY, EMAIL, ACCOUNT_ID)");
+        queryBuilder.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        id = (int) DatabaseConnector.getInstance().executeInsert(queryBuilder.toString(), initials, gender == EGender.MALE ? 0 : 1, lastname, address, number, zipcode, city, country, email, account_id);
+    }
+
+    public void update() {
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("UPDATE Customer SET ");
+        List<Object> params = new ArrayList<>();
+
+        for (Field f : getClass().getDeclaredFields()) {
+            try {
+                Object value = f.get(this);
+                String name = f.getName();
+                if (name.toUpperCase().equals("GENDER")) {
+                    queryBuilder.append("GENDER=?, ");
+                    params.add(gender == EGender.MALE ? 0 : 1);
+                } else if (!name.toUpperCase().equals("ACCOUNT_ID")) {
+                    queryBuilder.append(f.getName()).append("=?, ");
+                    params.add(value);
+                }
+            } catch (IllegalArgumentException | IllegalAccessException ex) {
+                Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        queryBuilder.deleteCharAt(queryBuilder.length() - 2);
+        queryBuilder.append(" WHERE ACCOUNT_ID=?");
+        params.add(account_id);
+
+        DatabaseConnector.getInstance().executeInsert(queryBuilder.toString(), params.toArray());
     }
 
     public boolean delete() {
