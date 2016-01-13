@@ -35,8 +35,8 @@ public class BankTest {
 
     @Before
     public void setUp() {
-        bank1 = new BankAccount("user1", "pass1", 100.0);
-        bank2 = new BankAccount("user1", "pass2", 200.0);
+        bank1 = new BankAccount("veel", "geld", 100.0);
+        bank2 = new BankAccount("veel", "geld", 200.0);
     }
 
     @After

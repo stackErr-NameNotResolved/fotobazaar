@@ -76,8 +76,9 @@ public class LogOutServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html");
 
-        Cart cart = Cart.readCartFromCookies(request);
-        cart.clearCart();
+        Cart c = Cart.readCartFromCookies(request);
+        c.clearCart();
+        c.saveCart(request, response);
 
         HttpSession session = request.getSession();
         session.removeAttribute("account");
