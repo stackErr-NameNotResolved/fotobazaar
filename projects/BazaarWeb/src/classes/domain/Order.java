@@ -122,7 +122,7 @@ public class Order implements Serializable {
      */
     public static void isDone(int orderId) {
         try {
-            DatabaseConnector.getInstance().executeNonQuery("UPDATE `order` SET DONE=? WHERE ID=?", 1, orderId);
+            DatabaseConnector.getInstance().executeNonQuery("UPDATE order SET DONE=? WHERE ID=?", 1, orderId);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

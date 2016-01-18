@@ -80,11 +80,11 @@
                                                     key="master.menu.admin.accountView"/></a>
                                         </li>
                                         <li>
-                                            <a href="${pageContext.servletContext.contextPath}/ItemViewServlet"><fmt:message
+                                            <a href="ItemViewServlet"><fmt:message
                                                     key="master.menu.admin.editProducts"/></a>
                                         </li>
                                                                                 <li>
-                                            <a href="${pageContext.servletContext.contextPath}/OrderOverviewServlet"><fmt:message
+                                            <a href="OrderOverviewServlet"><fmt:message
                                                 key="master.menu.admin.orders"/></a>
                                         </li>
                                     </ul>
